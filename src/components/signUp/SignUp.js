@@ -15,7 +15,7 @@ import {
 import PhoneInput from "react-native-phone-number-input";
 import { DatePicker } from "react-native-woodpicker";
 
-export const SignUp = (props) => {
+export const SignUp = ({navigation}) => {
   const [value, setValue] = useState("");
   const [formattedValue, setFormattedValue] = useState("");
 
@@ -101,7 +101,7 @@ export const SignUp = (props) => {
             //locale="fr"
           />
           <View style={styles.btns}>
-            <TouchableOpacity activeOpacity={0.7} style={styles.conf1}>
+            <TouchableOpacity onPress={()=>navigation.navigate('login')} activeOpacity={0.7} style={styles.conf1}>
               <Text style={styles.btnConf1}>Back</Text>
             </TouchableOpacity>
             <TouchableOpacity activeOpacity={0.7} style={styles.conf2}>

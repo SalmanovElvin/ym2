@@ -30,6 +30,7 @@ export const Login = ({navigation, route}) => {
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
+
   return (
     <View style={styles.mainContUnion}>
       <View>
@@ -62,7 +63,7 @@ export const Login = ({navigation, route}) => {
             onPress={toggleShowPassword}
           />
         </View>
-        <Text style={styles.forgot}>Forgot password?</Text>
+        <Text onPress={()=>navigation.navigate('forgot')} style={styles.forgot}>Forgot password?</Text>
 
         <TouchableOpacity onPress={getAccess} activeOpacity={0.7} style={styles.conf}>
           <Text style={styles.btnConf}>
@@ -72,7 +73,7 @@ export const Login = ({navigation, route}) => {
 
         <Text style={styles.create}>
           If you don’t have an account you can sign up{" "}
-          <Text style={styles.createHere}>Here</Text> .
+          <Text onPress={()=>navigation.navigate('signUp')} style={styles.createHere}>Here</Text> .
         </Text>
       </View>
       <TouchableOpacity onPress={openUnionLogin} style={styles.changeUnion}>

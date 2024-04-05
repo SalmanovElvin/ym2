@@ -14,6 +14,9 @@ import { SettingsScreen } from "../screens/SettingsScreen";
 import { THEME } from "../theme";
 import { UnionForm } from "../components/unionSignIn/UnionForm";
 import { Login } from "../components/login/Login";
+import { EnterEmail } from "../components/changePassword/EnterEmail";
+import { ChangePassword } from "../components/changePassword/ChangePassword";
+import { SignUp } from "../components/signUp/SignUp";
 
 
 
@@ -59,7 +62,7 @@ function Nav() {
 export default function AppNavigation() {
   const [accessToken, setAccessToken] = useState('');
 
-  const getAccess=()=>{
+  const getAccess = () => {
     setAccessToken('yes');
   }
 
@@ -143,13 +146,27 @@ export default function AppNavigation() {
             name="unionSignIn"
             options={{ title: "", headerShown: false, ...stil }}
             component={UnionForm}
-
           />
           <Stack.Screen
             name="login"
             options={{ title: "", headerShown: false, ...stil }}
             component={Login}
             initialParams={{ getAccess }}
+          />
+          <Stack.Screen
+            name="signUp"
+            options={{ title: "", headerShown: false, ...stil }}
+            component={SignUp}
+          />
+          <Stack.Screen
+            name="forgot"
+            options={{ title: "", headerShown: false, ...stil }}
+            component={EnterEmail}
+          />
+          <Stack.Screen
+            name="newPassword"
+            options={{ title: "", headerShown: false, ...stil }}
+            component={ChangePassword}
           />
         </Stack.Navigator>
       }
