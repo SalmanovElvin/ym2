@@ -2,7 +2,10 @@ import React from "react";
 import { View, StyleSheet, Text, TextInput, Button,TouchableOpacity } from "react-native";
 import Svg, { G, Path, Defs, LinearGradient, Stop } from "react-native-svg";
 
-export const UnionForm = (props) => {
+export const UnionForm = ({navigation}) => {
+  const openLogin = () => {
+    navigation.navigate("login");
+  };
   return (
     <View style={styles.mainContUnion}>
       <View>
@@ -51,7 +54,7 @@ export const UnionForm = (props) => {
         <TextInput style={styles.input} placeholder="Union" />
         <TextInput style={styles.input} placeholder="Local number" />
 
-        <TouchableOpacity activeOpacity={0.7} style={styles.conf}>
+        <TouchableOpacity onPress={openLogin} activeOpacity={0.7} style={styles.conf}>
           <Text style={styles.btnConf}>Continue</Text>
         </TouchableOpacity>
       </View>

@@ -20,6 +20,7 @@ export const SignUp = (props) => {
   const [formattedValue, setFormattedValue] = useState("");
 
   const [pickedDate, setPickedDate] = useState("");
+  
   const handleText = (text) =>
     pickedDate ? (
       pickedDate.toDateString()

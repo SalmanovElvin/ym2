@@ -25,12 +25,12 @@ export default function App() {
 
   return (
       <Provider store={store}>
-        <ChangePassword/>
+        {/* <ChangePassword/> */}
         {/* <EnterEmail/> */}
         {/* <SignUp/> */}
         {/* <Login/> */}
         {/* <UnionForm /> */}
-        {/* <AppNavigation /> */}
+        <AppNavigation />
       </Provider>
   );
 }

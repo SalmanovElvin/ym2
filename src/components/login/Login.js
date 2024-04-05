@@ -11,7 +11,13 @@ import {
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-export const Login = (props) => {
+export const Login = ({navigation}) => {
+
+  const openUnionLogin = () => {
+    navigation.navigate("unionSignIn");
+  };
+
+
   // State variable to hold the password
   const [password, setPassword] = useState("");
 
@@ -67,7 +73,7 @@ export const Login = (props) => {
           <Text style={styles.createHere}>Here</Text> .
         </Text>
       </View>
-      <TouchableOpacity style={styles.changeUnion}>
+      <TouchableOpacity onPress={openUnionLogin} style={styles.changeUnion}>
         <Text style={styles.changeUnion}>Change Union</Text>
       </TouchableOpacity>
     </View>
