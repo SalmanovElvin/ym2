@@ -11,7 +11,9 @@ import {
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-export const Login = ({navigation}) => {
+export const Login = ({navigation, route}) => {
+
+  const {getAccess}=route.params;
 
   const openUnionLogin = () => {
     navigation.navigate("unionSignIn");
@@ -62,7 +64,7 @@ export const Login = ({navigation}) => {
         </View>
         <Text style={styles.forgot}>Forgot password?</Text>
 
-        <TouchableOpacity activeOpacity={0.7} style={styles.conf}>
+        <TouchableOpacity onPress={getAccess} activeOpacity={0.7} style={styles.conf}>
           <Text style={styles.btnConf}>
             Sign in
           </Text>
