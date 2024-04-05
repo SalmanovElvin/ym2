@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect, useState} from "react";
 import { View, StyleSheet, Text, TextInput, Button,TouchableOpacity } from "react-native";
 import Svg, { G, Path, Defs, LinearGradient, Stop } from "react-native-svg";
 
@@ -6,6 +6,19 @@ export const UnionForm = ({navigation}) => {
   const openLogin = () => {
     navigation.navigate("login");
   };
+
+  const [union, setUnion]=useState('');
+  const [localNumber, setLocalNumber]=useState('');
+
+  const getUnionValue=(text)=>{
+    setUnion(text);
+    // console.log(text);
+  }
+  const getLNValue=(text)=>{
+    setLocalNumber(text);
+    // console.log(text);
+  }
+
   return (
     <View style={styles.mainContUnion}>
       <View>
@@ -51,8 +64,8 @@ export const UnionForm = ({navigation}) => {
       </View>
       <View style={styles.mainFormUnion}>
         <Text style={styles.header}>Find My Union Local</Text>
-        <TextInput style={styles.input} placeholder="Union" />
-        <TextInput style={styles.input} placeholder="Local number" />
+        <TextInput onChangeText={getUnionValue} value={union} style={styles.input} placeholder="Union" />
+        <TextInput onChangeText={getLNValue} value={localNumber} style={styles.input} placeholder="Local number" />
 
         <TouchableOpacity onPress={openLogin} activeOpacity={0.7} style={styles.conf}>
           <Text style={styles.btnConf}>Continue</Text>
