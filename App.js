@@ -1,16 +1,21 @@
 import { AppLoading } from "expo";
 import { Provider } from "react-redux";
 import { useState } from "react";
-import store from "./src/store";
 import { bootstrap } from "./src/bootstrap";
 
 import AppNavigation from "./src/navigation/AppNavigation";
 import { UnionForm } from "./src/components/unionSignIn/UnionForm";
 import { View, StyleSheet } from "react-native";
-import { Login } from './src/components/login/Login';
-import { SignUp } from './src/components/signUp/SignUp';
+import { Login } from "./src/components/login/Login";
+import { SignUp } from "./src/components/signUp/SignUp";
 import { EnterEmail } from "./src/components/changePassword/EnterEmail";
 import { ChangePassword } from "./src/components/changePassword/ChangePassword";
+
+import { ApolloProvider } from '@apollo/client';
+import { client } from './graph';
+import { UnionProvider } from './store/union-context';
+import { UserProvider } from './store/user-context';
+import { NotificationProvider } from './store/notification-context';
 
 export default function App() {
   const [isReady, setIsReady] = useState(false);
@@ -24,14 +29,20 @@ export default function App() {
   }
 
   return (
-      <Provider store={store}>
-        {/* <ChangePassword/> */}
-        {/* <EnterEmail/> */}
-        {/* <SignUp/> */}
-        {/* <Login/> */}
-        {/* <UnionForm /> */}
-        <AppNavigation />
-      </Provider>
+    <ApolloProvider client={client}>
+          <UnionProvider>
+            <UserProvider>
+              <NotificationProvider>
+                {/* <ChangePassword/> */}
+                {/* <EnterEmail/> */}
+                {/* <SignUp/> */}
+                {/* <Login/> */}
+                {/* <UnionForm /> */}
+                <AppNavigation />
+              </NotificationProvider>
+            </UserProvider>
+          </UnionProvider>
+    </ApolloProvider>
   );
 }
 

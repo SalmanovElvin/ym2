@@ -5,7 +5,6 @@ import { View, Text, StyleSheet, Button, FlatList, Image } from "react-native";
 import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
 
 
-import { loadPosts } from "../store/actions/post";
 
 export const MainScreen = ({ navigation }) => {
   // const navigator = useNavigation();

@@ -3,11 +3,9 @@ import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import { View, StyleSheet, Button, Image, Text, TextInput } from "react-native";
-import { addPost } from "../store/actions/post";
 import { THEME } from "../theme";
 
 export const PhotoPicker = () => {
-  const dispatch = useDispatch();
   const [image, setImage] = useState(null);
   const [text, setText] = useState("");
 
@@ -42,7 +40,6 @@ export const PhotoPicker = () => {
       img: image,
       booked: false,
     };
-    dispatch(addPost(post));
     navigation.navigate("Main");
   };
 

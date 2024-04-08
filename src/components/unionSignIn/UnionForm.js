@@ -2,12 +2,26 @@ import React,{useEffect, useState} from "react";
 import { View, StyleSheet, Text, TextInput, Button,TouchableOpacity } from "react-native";
 import Svg, { G, Path, Defs, LinearGradient, Stop } from "react-native-svg";
 
+import { GET_UNION } from '../../../graph/queries/unions';
+import { useMutation, useQuery } from '@apollo/client';
+// import { useUserDispatch } from '../../../store/user-context';
+// import { useUnionState, useUnionDispatch } from '../../../store/union-context';
 export const UnionForm = ({navigation}) => {
   const openLogin = () => {
     navigation.navigate("login");
   };
 
-  const [union, setUnion]=useState('');
+
+  // const userDispatch = useUserDispatch();
+  // const unionDispatch = useUnionDispatch();
+  // const union = useUnionState();
+
+
+  // const { data: unionData, loading: unionLoading } = useQuery(GET_UNION, {
+  //   variables: { unionID: union.id },
+  // });
+
+  const [unionVal, setUnion]=useState('');
   const [localNumber, setLocalNumber]=useState('');
 
   const getUnionValue=(text)=>{
@@ -64,7 +78,7 @@ export const UnionForm = ({navigation}) => {
       </View>
       <View style={styles.mainFormUnion}>
         <Text style={styles.header}>Find My Union Local</Text>
-        <TextInput onChangeText={getUnionValue} value={union} style={styles.input} placeholder="Union" />
+        <TextInput onChangeText={getUnionValue} value={unionVal} style={styles.input} placeholder="Union" />
         <TextInput onChangeText={getLNValue} value={localNumber} style={styles.input} placeholder="Local number" />
 
         <TouchableOpacity onPress={openLogin} activeOpacity={0.7} style={styles.conf}>
