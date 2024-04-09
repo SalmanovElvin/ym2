@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { View, Text, StyleSheet, Button, FlatList, Image } from "react-native";
 
 import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
@@ -40,14 +39,6 @@ export const MainScreen = ({ navigation }) => {
   const openPostHandler = (post) => {
     navigation.navigate("Post", { post });
   };
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(loadPosts())
-  }, [dispatch])
-
-  // const allPosts = useSelector(state => state.post.allPosts)
 
   return (
     <View style={styles.wrapper}>

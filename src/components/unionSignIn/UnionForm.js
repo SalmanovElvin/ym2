@@ -28,7 +28,7 @@ export const UnionForm = ({ navigation }) => {
 
     },
     onError: (error) => {
-      alert("Something gone wrong. Please check union and local number.");
+      alert("Union and or Local not found. Please enter your Union Name and your Local Number. If your Union does not have a Local, you can leave the field blank. Tip: You can do a quick web search or ask your Union Representative for this information.");
       console.error(error);
     }
   });

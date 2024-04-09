@@ -18,6 +18,7 @@ import { EnterEmail } from "../components/changePassword/EnterEmail";
 import { ChangePassword } from "../components/changePassword/ChangePassword";
 import { SignUp } from "../components/signUp/SignUp";
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const Stack = createNativeStackNavigator();
@@ -36,7 +37,7 @@ const stil =
 
 function Nav() {
   return (
-    <Stack.Navigator initialRouteName="Main">
+    <Stack.Navigator>
       <Stack.Screen
         name="Main"
         options={{ title: "", ...stil }}
@@ -63,8 +64,47 @@ export default function AppNavigation() {
   const [accessToken, setAccessToken] = useState('');
 
   const getAccess = () => {
+    // console.log('yes');
     setAccessToken('yes');
   }
+
+
+
+  // // Define the key
+  // const UNION_KEY = 'USER';
+
+  // // Function to get item from AsyncStorage with UNION key
+  // const getUnionItem = async () => {
+  //   try {
+  //     // Retrieve item from AsyncStorage
+  //     const item = await AsyncStorage.getItem(UNION_KEY);
+
+  //     const data = JSON.parse(item);
+
+  //     // Access the id property
+  //     const id = data.id;
+
+  //     // Check if item exists
+  //     if (item !== null) {
+  //       // Item found, do something with it
+  //       // console.log(id);
+  //       setAccessToken('yes');
+  //     } else {
+  //       // Item not found
+  //       console.log('No item found with key:', UNION_KEY);
+  //       setAccessToken('');
+  //     }
+  //   } catch (error) {
+  //     // Error retrieving data
+  //     console.error('Error getting item from AsyncStorage:', error);
+  //     setAccessToken('');
+  //   }
+  // };
+
+  // // Call the function to get item from AsyncStorage
+  // getUnionItem();
+
+
 
   return (
     <NavigationContainer>
