@@ -10,10 +10,9 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useMutation } from '@apollo/client';
-import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 
 import { LOGIN_USER } from '../../../graph/mutations/users';
-import { useUnionState, useUnionDispatch } from '../../../store/union-context';
+import { useUnionState } from '../../../store/union-context';
 import { useUserDispatch } from '../../../store/user-context';
 
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -39,8 +38,11 @@ export const Login = ({ navigation, route }) => {
   }
 
   const [loginInfo, setLoginInfo] = useState({});
+  const userDispatch = useUserDispatch();
   const [loginUser, { loading, error, data }] = useMutation(LOGIN_USER, {
     onCompleted:()=>{
+      // console.log(data.login.user);
+      userDispatch({ type: 'LOGIN', payload: data.login.user });
       getAccess();
     },
     variables: {
@@ -48,7 +50,7 @@ export const Login = ({ navigation, route }) => {
       device: 'mobile'
     },
     onError: (err) => {
-      // console.error(err);
+      console.error(err);
       alert('Please check username and password');
     }
   });
