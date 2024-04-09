@@ -1,34 +1,80 @@
-import React,{useEffect, useState} from "react";
-import { View, StyleSheet, Text, TextInput, Button,TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, StyleSheet, Text, TextInput, Button, TouchableOpacity } from "react-native";
 import Svg, { G, Path, Defs, LinearGradient, Stop } from "react-native-svg";
+import { useLazyQuery } from '@apollo/client';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { GET_UNION } from '../../../graph/queries/unions';
+import { GET_UNION, GET_UNION_BY_NAME } from '../../../graph/queries/unions';
 import { useMutation, useQuery } from '@apollo/client';
-// import { useUserDispatch } from '../../../store/user-context';
-// import { useUnionState, useUnionDispatch } from '../../../store/union-context';
-export const UnionForm = ({navigation}) => {
-  const openLogin = () => {
-    navigation.navigate("login");
+import { useUserDispatch } from '../../../store/user-context';
+import { useUnionState, useUnionDispatch } from '../../../store/union-context';
+export const UnionForm = ({ navigation }) => {
+  const openLogin = (e) => {
+    getUnion(e);
   };
 
 
-  // const userDispatch = useUserDispatch();
-  // const unionDispatch = useUnionDispatch();
-  // const union = useUnionState();
+  const userDispatch = useUserDispatch();
+  const unionDispatch = useUnionDispatch();
+  const union = useUnionState();
 
 
-  // const { data: unionData, loading: unionLoading } = useQuery(GET_UNION, {
-  //   variables: { unionID: union.id },
-  // });
 
-  const [unionVal, setUnion]=useState('');
-  const [localNumber, setLocalNumber]=useState('');
+  const [getUnionByName, { loading, error }] = useLazyQuery(GET_UNION_BY_NAME, {
+    onCompleted: (data) => {
+      unionDispatch({ type: 'ASSIGN', payload: data.unionByName });
+      // console.log(data.unionByName);
+      navigation.navigate("login");
 
-  const getUnionValue=(text)=>{
+    },
+    onError: (error) => {
+      alert("Something gone wrong. Please check union and local number.");
+      console.error(error);
+    }
+  });
+
+  const getUnion = (e) => {
+    e.preventDefault();
+    // console.log(unionVal.trim()+' '+localNumber.trim());
+    getUnionByName({ variables: { name: unionVal.trim() + ' ' + localNumber.trim() } });
+  };
+
+
+
+// // Define the key
+// const UNION_KEY = 'UNION';
+
+// // Function to get item from AsyncStorage with UNION key
+// const getUnionItem = async () => {
+//   try {
+//     // Retrieve item from AsyncStorage
+//     const item = await AsyncStorage.getItem(UNION_KEY);
+
+//     // Check if item exists
+//     if (item !== null) {
+//       // Item found, do something with it
+//       console.log('Item found:', item.id);
+//     } else {
+//       // Item not found
+//       console.log('No item found with key:', UNION_KEY);
+//     }
+//   } catch (error) {
+//     // Error retrieving data
+//     console.error('Error getting item from AsyncStorage:', error);
+//   }
+// };
+
+// // Call the function to get item from AsyncStorage
+// getUnionItem();
+
+  const [unionVal, setUnion] = useState('');
+  const [localNumber, setLocalNumber] = useState('');
+
+  const getUnionValue = (text) => {
     setUnion(text);
     // console.log(text);
   }
-  const getLNValue=(text)=>{
+  const getLNValue = (text) => {
     setLocalNumber(text);
     // console.log(text);
   }
@@ -81,7 +127,7 @@ export const UnionForm = ({navigation}) => {
         <TextInput onChangeText={getUnionValue} value={unionVal} style={styles.input} placeholder="Union" />
         <TextInput onChangeText={getLNValue} value={localNumber} style={styles.input} placeholder="Local number" />
 
-        <TouchableOpacity onPress={openLogin} activeOpacity={0.7} style={styles.conf}>
+        <TouchableOpacity onPress={(e) => openLogin(e)} activeOpacity={0.7} style={styles.conf}>
           <Text style={styles.btnConf}>Continue</Text>
         </TouchableOpacity>
       </View>

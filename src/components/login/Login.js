@@ -9,16 +9,60 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from "react-native";
+import { useUnionState } from '../../../store/union-context'
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const Login = ({navigation, route}) => {
+export const Login = ({ navigation, route }) => {
 
-  const {getAccess}=route.params;
+  const { getAccess } = route.params;
 
   const openUnionLogin = () => {
     navigation.navigate("unionSignIn");
   };
 
+  const unionState = useUnionState();
+
+  if(unionState!=null){
+    console.log(unionState.id)
+  }
+
+  //////////////////////////////////////////////////////////////////////
+
+  //This is for using AsyncStorage
+
+  // // Define the key
+  // const UNION_KEY = 'UNION';
+
+  // // Function to get item from AsyncStorage with UNION key
+  // const getUnionItem = async () => {
+  //   try {
+  //     // Retrieve item from AsyncStorage
+  //     const item = await AsyncStorage.getItem(UNION_KEY);
+
+  //     const data = JSON.parse(item);
+
+  //     // Access the id property
+  //     const id = data.id;
+
+  //     // Check if item exists
+  //     if (item !== null) {
+  //       // Item found, do something with it
+  //       console.log(id);
+  //     } else {
+  //       // Item not found
+  //       console.log('No item found with key:', UNION_KEY);
+  //     }
+  //   } catch (error) {
+  //     // Error retrieving data
+  //     console.error('Error getting item from AsyncStorage:', error);
+  //   }
+  // };
+
+  // // Call the function to get item from AsyncStorage
+  // getUnionItem();
+
+//////////////////////////////////////////////////////////////////////////
 
   // State variable to hold the password
   const [password, setPassword] = useState("");
@@ -63,7 +107,7 @@ export const Login = ({navigation, route}) => {
             onPress={toggleShowPassword}
           />
         </View>
-        <Text onPress={()=>navigation.navigate('forgot')} style={styles.forgot}>Forgot password?</Text>
+        <Text onPress={() => navigation.navigate('forgot')} style={styles.forgot}>Forgot password?</Text>
 
         <TouchableOpacity onPress={getAccess} activeOpacity={0.7} style={styles.conf}>
           <Text style={styles.btnConf}>
@@ -73,7 +117,7 @@ export const Login = ({navigation, route}) => {
 
         <Text style={styles.create}>
           If you don’t have an account you can sign up{" "}
-          <Text onPress={()=>navigation.navigate('signUp')} style={styles.createHere}>Here</Text> .
+          <Text onPress={() => navigation.navigate('signUp')} style={styles.createHere}>Here</Text> .
         </Text>
       </View>
       <TouchableOpacity onPress={openUnionLogin} style={styles.changeUnion}>
@@ -130,14 +174,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#34519A",
     height: 56,
     justifyContent: "center",
-    alignItems:'center',
+    alignItems: 'center',
     margin: 10,
     borderRadius: 5,
   },
   btnConf: {
-    color:'#fff',
-    fontWeight:'700',
-    fontSize:16
+    color: '#fff',
+    fontWeight: '700',
+    fontSize: 16
 
   },
   container: {

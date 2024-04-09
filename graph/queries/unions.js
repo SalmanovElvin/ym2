@@ -43,3 +43,68 @@ export const GET_UNION = gql`
     }
   }
 `;
+
+
+//get union by name
+export const GET_UNION_BY_NAME = gql`
+	query unionByName($name: String!) {
+		unionByName(name: $name) {
+			id
+			name
+			status
+			hostEmail
+			defaultEmailPassword
+			information {
+				email
+				unionMail
+				imageURL
+				address
+				city
+				province
+				postalCode
+				phone
+				fax
+				description
+				bannerURL
+				presidentMessage
+				importantLinks {
+					url
+					name
+				}
+				websiteLinks {
+					url
+					name
+				}
+			}
+			bargainingUnits
+			registration {
+				title
+				type
+				key
+				errorMsg
+				required
+				display
+				modify
+				position
+			}
+			grievance {
+				title
+				type
+				key
+				errorMsg
+				required
+				display
+				modify
+				position
+			}
+			bannerURL
+			bannedDomains
+			domain
+			theme
+			themeImage
+			twitter
+			facebook
+			instagram
+		}
+	}
+`;

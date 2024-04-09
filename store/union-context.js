@@ -1,30 +1,30 @@
 import React from 'react';
-import { AsyncStorage } from 'react-native';
-import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
+// Remove import for SecureStore
 
-//Implement redux style state and dispatch items to efficiently utilize union context
+// Implement redux style state and dispatch items to efficiently utilize union context
 const UnionStateContext = React.createContext();
 const UnionDispatchContext = React.createContext();
 
 const UNION_KEY = 'UNION';
 
-//implement redux style reducer to limit actions by dispatch callers
+// Implement redux style reducer to limit actions by dispatch callers
 const unionReducer = (state, action) => {
-  //switch by action types
+  // Switch by action types
   switch (action.type) {
     case 'ASSIGN': {
-      SecureStore.setItemAsync(UNION_KEY, JSON.stringify(action.payload));
+      AsyncStorage.setItem(UNION_KEY, JSON.stringify(action.payload)); // Use AsyncStorage
       return { ...state, ...action.payload };
     }
     case 'UPDATE': {
-      SecureStore.setItemAsync(UNION_KEY, JSON.stringify(action.payload));
+      AsyncStorage.setItem(UNION_KEY, JSON.stringify(action.payload)); // Use AsyncStorage
       return {
         ...state,
         ...action.payload,
       };
     }
     case 'RESET': {
-      SecureStore.setItemAsync(UNION_KEY);
+      AsyncStorage.removeItem(UNION_KEY); // Use AsyncStorage
       return {};
     }
     default: {
@@ -33,12 +33,12 @@ const unionReducer = (state, action) => {
   }
 };
 
-//create union context provider
+// Create union context provider
 const UnionProvider = ({ children }) => {
-  //useReducer to optimize performance and use callbacks
+  // UseReducer to optimize performance and use callbacks
   const [state, dispatch] = React.useReducer(unionReducer, {});
 
-  //pass state and dispatch to wrapped child components
+  // Pass state and dispatch to wrapped child components
   return (
     <UnionStateContext.Provider value={state}>
       <UnionDispatchContext.Provider value={dispatch}>
@@ -48,7 +48,7 @@ const UnionProvider = ({ children }) => {
   );
 };
 
-//custom hook to expose usercontext value while hiding implementation
+// Custom hook to expose usercontext value while hiding implementation
 const useUnionState = () => {
   const context = React.useContext(UnionStateContext);
   if (context === undefined) {
@@ -57,7 +57,7 @@ const useUnionState = () => {
   return context;
 };
 
-//custome hook to expose union context modifications while hiding implementation
+// Custom hook to expose union context modifications while hiding implementation
 const useUnionDispatch = () => {
   const context = React.useContext(UnionDispatchContext);
   if (context === undefined) {

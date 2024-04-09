@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
-//import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
 
-import * as SecureStore from 'expo-secure-store';
 import { useMutation } from '@apollo/client';
 import { SkypeIndicator } from 'react-native-indicators';
 
@@ -11,32 +10,24 @@ import { useUnionDispatch } from './union-context';
 // graph
 import { LOGIN_WITH_TOKEN } from '../graph/mutations/users';
 
-
-//create default value for the user context
 const defaultUser = {
   loggedIn: false,
   profile: {
     firstName: 'Guest',
     lastName: '',
   },
-
   token: undefined,
 };
 
 const USER_KEY = '@USER';
 
-//Implement redux style state and dispatch items to efficiently utilize user context
 const UserStateContext = React.createContext();
 const UserDispatchContext = React.createContext();
 
-//implement redux style reducer to limit actions by dispatch callers
 const userReducer = (state, action) => {
-  //switch by action types
   switch (action.type) {
     case 'LOGIN': {
-      //  AsyncStorage.setItem(USER_KEY, JSON.stringify(action.payload));
-      SecureStore.setItemAsync('token', action.payload.token);
-      SecureStore.setItemAsync('uid', action.payload.unionID);
+      AsyncStorage.setItem(USER_KEY, JSON.stringify(action.payload));
       return {
         ...state,
         ...action.payload,
@@ -44,13 +35,11 @@ const userReducer = (state, action) => {
       };
     }
     case 'LOGOUT': {
-      //   AsyncStorage.removeItem(USER_KEY);
-      SecureStore.deleteItemAsync('token');
-      SecureStore.deleteItemAsync('uid');
+      AsyncStorage.removeItem(USER_KEY);
       return defaultUser;
     }
     case 'UPDATE': {
-      //AsyncStorage.setItem(USER_KEY, JSON.stringify(action.payload));
+      AsyncStorage.setItem(USER_KEY, JSON.stringify(action.payload));
       return {
         ...state,
         ...action.payload,
@@ -62,13 +51,10 @@ const userReducer = (state, action) => {
   }
 };
 
-//create user context provider
 const UserProvider = ({ children }) => {
-  //useReducer to optimize performance and use callbacks
   const [state, dispatch] = React.useReducer(userReducer, defaultUser);
   const [token, setToken] = React.useState();
 
-  // let token;
   const unionDispatch = useUnionDispatch();
 
   const [loginWithToken, { error, loading }] = useMutation(LOGIN_WITH_TOKEN, {
@@ -85,11 +71,8 @@ const UserProvider = ({ children }) => {
   });
 
   useEffect(() => {
-    // console.log('inside use effect user context');
-    // console.log('error :>> ', error);
-    
     const getAsyncToken = async () => {
-      let tempToken = await SecureStore.getItemAsync('token');
+      let tempToken = await AsyncStorage.getItem(USER_KEY);
 
       setToken(tempToken);
       if (!!tempToken) {
@@ -99,12 +82,11 @@ const UserProvider = ({ children }) => {
     getAsyncToken();
   }, []);
 
-  //pass state and dispatch to wrapped child components
   return (
     <UserStateContext.Provider value={state}>
       <UserDispatchContext.Provider value={dispatch}>
         {loading ? (
-            <SkypeIndicator color='white' />
+          <SkypeIndicator color='white' />
         ) : (
           children
         )}
@@ -113,7 +95,6 @@ const UserProvider = ({ children }) => {
   );
 };
 
-//custom hook to abstract usercontext value
 const useUserState = () => {
   const context = React.useContext(UserStateContext);
   if (context === undefined) {
@@ -122,7 +103,6 @@ const useUserState = () => {
   return context;
 };
 
-//custom hook to abstract user context modification
 const useUserDispatch = () => {
   const context = React.useContext(UserDispatchContext);
   if (context === undefined) {

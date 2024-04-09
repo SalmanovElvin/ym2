@@ -7,7 +7,7 @@ import {
 
 import { createUploadLink } from 'apollo-upload-client';
 import { setContext } from 'apollo-link-context';
-import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
 
 const httpLink = createUploadLink({
   // uri: 'http://192.168.2.208:8080/graphql',
@@ -21,8 +21,8 @@ let token = '';
 let uid = '';
 
 const getToken = async () => {
-  token = await SecureStore.getItemAsync('token');
-  uid = await SecureStore.getItemAsync('uid');
+  token = await AsyncStorage.getItem('token'); // Use AsyncStorage
+  uid = await AsyncStorage.getItem('uid'); // Use AsyncStorage
 };
 
 const authLink = setContext((_, { headers }) => {
