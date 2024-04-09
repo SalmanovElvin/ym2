@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -9,7 +9,13 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from "react-native";
-import { useUnionState } from '../../../store/union-context';
+import { useMutation } from '@apollo/client';
+import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
+
+import { LOGIN_USER } from '../../../graph/mutations/users';
+import { useUnionState, useUnionDispatch } from '../../../store/union-context';
+import { useUserDispatch } from '../../../store/user-context';
+
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -17,19 +23,47 @@ export const Login = ({ navigation, route }) => {
 
   const { getAccess } = route.params;
 
+
   const openUnionLogin = () => {
     navigation.navigate("unionSignIn");
   };
 
   const unionState = useUnionState();
-  let logoURL='';
-  if(unionState!=null){
+  let logoURL = '';
+  if (unionState != null) {
     // console.log(unionState.information.imageURL);
-    logoURL=unionState.information.imageURL
-		? {uri: `${unionState.information.imageURL}`}
-		: require('../../../ios-icon.png');
+    logoURL = unionState.information.imageURL
+      ? { uri: `${unionState.information.imageURL}` }
+      : require('../../../ios-icon.png');
     // console.log(logoURL);
   }
+
+  const [loginInfo, setLoginInfo] = useState({});
+  const [loginUser, { loading, error, data }] = useMutation(LOGIN_USER, {
+    onCompleted:()=>{
+      getAccess();
+    },
+    variables: {
+      input: loginInfo,
+      device: 'mobile'
+    },
+    onError: (err) => {
+      // console.error(err);
+      alert('Please check username and password');
+    }
+  });
+  
+  
+  const loginHandler = () => {
+    if (username.trim().length !== 0 && password.trim().length !== 0) {
+      setLoginInfo({ email: username.trim(), username: username.trim(), unionID: unionState.id, password: password.trim() });
+      // console.log(loginInfo);
+      loginUser({ variables: { input: { email: username.trim(), username: username.trim(), unionID: unionState.id, password: password.trim() }, device: 'mobile' } });
+    } else {
+      alert('Please provide both username and password');
+    }
+  };
+ 
 
   //////////////////////////////////////////////////////////////////////
 
@@ -66,11 +100,11 @@ export const Login = ({ navigation, route }) => {
   // // Call the function to get item from AsyncStorage
   // getUnionItem();
 
-//////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////
 
   // State variable to hold the password
   const [password, setPassword] = useState("");
-
+  const [username, setUsername] = useState("");
   // State variable to track password visibility
   const [showPassword, setShowPassword] = useState(false);
 
@@ -82,14 +116,14 @@ export const Login = ({ navigation, route }) => {
   return (
     <View style={styles.mainContUnion}>
       <View>
-      <Image
+        <Image
           style={{ width: 100, height: 100 }}
           source={logoURL}
         />
       </View>
       <View style={styles.mainFormUnion}>
         <Text style={styles.header}>Log into your account</Text>
-        <TextInput style={styles.input} placeholder="Login" />
+        <TextInput onChangeText={setUsername} style={styles.input} keyboardType="email-address" placeholder="Login" />
         <View style={styles.container}>
           <TextInput
             // Set secureTextEntry prop to hide
@@ -110,7 +144,7 @@ export const Login = ({ navigation, route }) => {
         </View>
         <Text onPress={() => navigation.navigate('forgot')} style={styles.forgot}>Forgot password?</Text>
 
-        <TouchableOpacity onPress={getAccess} activeOpacity={0.7} style={styles.conf}>
+        <TouchableOpacity onPress={loginHandler} activeOpacity={0.7} style={styles.conf}>
           <Text style={styles.btnConf}>
             Sign in
           </Text>

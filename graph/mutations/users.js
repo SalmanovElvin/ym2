@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 
 //Login graphql mutation
 export const LOGIN_USER = gql`
-  mutation Login($input: Credential, $device: String) {
+  mutation login($input: Credential, $device: String) {
     login(input: $input, device: $device) {
       user {
         id
