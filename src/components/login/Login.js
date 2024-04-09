@@ -25,7 +25,9 @@ export const Login = ({ navigation, route }) => {
   let logoURL='';
   if(unionState!=null){
     // console.log(unionState.information.imageURL);
-    logoURL={uri: `${unionState.information.imageURL}`};
+    logoURL=unionState.information.imageURL
+		? {uri: `${unionState.information.imageURL}`}
+		: require('../../../ios-icon.png');
     // console.log(logoURL);
   }
 
@@ -80,9 +82,8 @@ export const Login = ({ navigation, route }) => {
   return (
     <View style={styles.mainContUnion}>
       <View>
-        <Image
-          height={60}
-          width={100}
+      <Image
+          style={{ width: 100, height: 100 }}
           source={logoURL}
         />
       </View>
