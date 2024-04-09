@@ -8,7 +8,7 @@ import { SkypeIndicator } from 'react-native-indicators';
 import { useUnionDispatch } from './union-context';
 
 // graph
-import { LOGIN_WITH_TOKEN } from '../graph/mutations/users';
+import { LOGIN_WITH_TOKEN, LOGIN_USER } from '../graph/mutations/users';
 
 const defaultUser = {
   loggedIn: false,
