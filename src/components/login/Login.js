@@ -17,6 +17,7 @@ import { useUserDispatch } from '../../../store/user-context';
 
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import AnimatedLoader from 'react-native-animated-loader';
 
 export const Login = ({ navigation, route }) => {
 
@@ -42,6 +43,7 @@ export const Login = ({ navigation, route }) => {
   const [loginUser, { loading, error, data }] = useMutation(LOGIN_USER, {
     onCompleted: () => {
       // console.log(data.login.user);
+      setVisible(false);
       userDispatch({ type: 'LOGIN', payload: data.login.user });
       getAccess();
     },
@@ -52,6 +54,8 @@ export const Login = ({ navigation, route }) => {
     onError: (err) => {
       // console.error(err.message);
       if (err.message.includes('Your account is pending approval, you will receive an email')) {
+        setVisible(false);
+
         setErrMsg(
           <>
             Account is pending approval. We will send an email to the personal email you used when
@@ -61,6 +65,8 @@ export const Login = ({ navigation, route }) => {
         setErrUser(true);
       }
       if (err.message.includes('Account has been locked. Please reset your password. If you are')) {
+        setVisible(false);
+
         setErrMsg(
           <>
             Account has been locked. Please click on
@@ -75,6 +81,8 @@ export const Login = ({ navigation, route }) => {
         setErrUser(true);
       }
       if (err.message.includes('Login attempt failed.')) {
+        setVisible(false);
+
         setErrMsg(
           <>
             Incorrect password. You have {parseInt(err.message.match(/\d+/)[0])} more attempts before your account is locked. If you forget your password, please click on{' '}
@@ -87,6 +95,8 @@ export const Login = ({ navigation, route }) => {
         setErrUser(true);
       }
       if (err.message.includes('Account with this username or email does not exist')) {
+        setVisible(false);
+
         setErrMsg(
           <>
             Account with this username/email does not exist. If you are a new member, please{' '}
@@ -105,6 +115,7 @@ export const Login = ({ navigation, route }) => {
 
   const loginHandler = () => {
     if (username.trim().length !== 0 && password.trim().length !== 0) {
+      setVisible(true);
       setLoginInfo({ email: username.trim(), username: username.trim(), unionID: unionState.id, password: password.trim() });
       // console.log(loginInfo);
       loginUser({ variables: { input: { email: username.trim(), username: username.trim(), unionID: unionState.id, password: password.trim() }, device: 'mobile' } });
@@ -113,6 +124,7 @@ export const Login = ({ navigation, route }) => {
       // tip='Hint: you can also sign in with the personal email associated with your account.';
       // setErrUser(true);
       alert('Please provide both username and password');
+      setVisible(false);
     }
   };
 
@@ -168,6 +180,10 @@ export const Login = ({ navigation, route }) => {
 
   const [errUser, setErrUser] = useState(false);
   const [errMsg, setErrMsg] = useState(''), [tip, setTip] = useState('');
+
+
+  const [visible, setVisible] = useState(false);
+
   return (
     <View style={styles.mainContUnion}>
       {errUser ?
@@ -216,6 +232,14 @@ export const Login = ({ navigation, route }) => {
         </View>
         <Text onPress={() => navigation.navigate('forgot')} style={styles.forgot}>Forgot password?</Text>
 
+
+        <AnimatedLoader
+          visible={visible}
+          overlayColor="rgba(255,255,255,0.75)"
+          animationStyle={styles.lottie}
+          speed={1}
+          source={require("../../../Animation.json")}>
+        </AnimatedLoader>
         <TouchableOpacity onPress={loginHandler} activeOpacity={0.7} style={styles.conf}>
           <Text style={styles.btnConf}>
             Sign in
@@ -235,6 +259,10 @@ export const Login = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
+  lottie: {
+    width: 80,
+    height: 80,
+  },
   modalBack: {
     zIndex: 999,
     width: '100%',

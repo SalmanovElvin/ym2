@@ -8,6 +8,8 @@ import { GET_UNION, GET_UNION_BY_NAME } from '../../../graph/queries/unions';
 import { useMutation, useQuery } from '@apollo/client';
 import { useUserDispatch } from '../../../store/user-context';
 import { useUnionState, useUnionDispatch } from '../../../store/union-context';
+import AnimatedLoader from 'react-native-animated-loader';
+
 export const UnionForm = ({ navigation }) => {
   const openLogin = (e) => {
     getUnion(e);
@@ -22,12 +24,14 @@ export const UnionForm = ({ navigation }) => {
 
   const [getUnionByName, { loading, error }] = useLazyQuery(GET_UNION_BY_NAME, {
     onCompleted: (data) => {
+      setVisible(false);
       unionDispatch({ type: 'ASSIGN', payload: data.unionByName });
       // console.log(data.unionByName);
       navigation.navigate("login");
 
     },
     onError: (error) => {
+      setVisible(false);
       setErrUnion(true);
       // alert("Union and or Local not found. Please enter your Union Name and your Local Number. If your Union does not have a Local, you can leave the field blank. Tip: You can do a quick web search or ask your Union Representative for this information.");
       // console.error(error);
@@ -38,7 +42,10 @@ export const UnionForm = ({ navigation }) => {
     e.preventDefault();
     // console.log(unionVal.trim()+' '+localNumber.trim());
     if (unionVal.trim().length !== 0) {
+      setVisible(true);
       getUnionByName({ variables: { name: unionVal.trim() + ' ' + localNumber.trim() } });
+    } else {
+      alert('Please, write union.');
     }
   };
 
@@ -83,6 +90,7 @@ export const UnionForm = ({ navigation }) => {
   }
 
 
+  const [visible, setVisible] = useState(false);
   const [errUnion, setErrUnion] = useState(false);
   return (
     <View style={styles.mainContUnion}>
@@ -149,7 +157,13 @@ export const UnionForm = ({ navigation }) => {
         <Text style={styles.header}>Find My Union Local</Text>
         <TextInput onChangeText={getUnionValue} value={unionVal} style={styles.input} placeholder="Union" />
         <TextInput onChangeText={getLNValue} value={localNumber} style={styles.input} placeholder="Local number" />
-
+        <AnimatedLoader
+          visible={visible}
+          overlayColor="rgba(255,255,255,0.75)"
+          animationStyle={styles.lottie}
+          speed={1}
+          source={require("../../../Animation.json")}>
+        </AnimatedLoader>
         <TouchableOpacity onPress={(e) => openLogin(e)} activeOpacity={0.7} style={styles.conf}>
           <Text style={styles.btnConf}>Continue</Text>
         </TouchableOpacity>
@@ -159,6 +173,10 @@ export const UnionForm = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  lottie: {
+    width: 80,
+    height: 80,
+  },
   modalBack: {
     zIndex: 999,
     width: '100%',
