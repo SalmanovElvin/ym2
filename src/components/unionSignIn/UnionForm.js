@@ -28,44 +28,47 @@ export const UnionForm = ({ navigation }) => {
 
     },
     onError: (error) => {
-      alert("Union and or Local not found. Please enter your Union Name and your Local Number. If your Union does not have a Local, you can leave the field blank. Tip: You can do a quick web search or ask your Union Representative for this information.");
-      console.error(error);
+      setErrUnion(true);
+      // alert("Union and or Local not found. Please enter your Union Name and your Local Number. If your Union does not have a Local, you can leave the field blank. Tip: You can do a quick web search or ask your Union Representative for this information.");
+      // console.error(error);
     }
   });
 
   const getUnion = (e) => {
     e.preventDefault();
     // console.log(unionVal.trim()+' '+localNumber.trim());
-    getUnionByName({ variables: { name: unionVal.trim() + ' ' + localNumber.trim() } });
+    if (unionVal.trim().length !== 0) {
+      getUnionByName({ variables: { name: unionVal.trim() + ' ' + localNumber.trim() } });
+    }
   };
 
 
 
-// // Define the key
-// const UNION_KEY = 'UNION';
+  // // Define the key
+  // const UNION_KEY = 'UNION';
 
-// // Function to get item from AsyncStorage with UNION key
-// const getUnionItem = async () => {
-//   try {
-//     // Retrieve item from AsyncStorage
-//     const item = await AsyncStorage.getItem(UNION_KEY);
+  // // Function to get item from AsyncStorage with UNION key
+  // const getUnionItem = async () => {
+  //   try {
+  //     // Retrieve item from AsyncStorage
+  //     const item = await AsyncStorage.getItem(UNION_KEY);
 
-//     // Check if item exists
-//     if (item !== null) {
-//       // Item found, do something with it
-//       console.log('Item found:', item.id);
-//     } else {
-//       // Item not found
-//       console.log('No item found with key:', UNION_KEY);
-//     }
-//   } catch (error) {
-//     // Error retrieving data
-//     console.error('Error getting item from AsyncStorage:', error);
-//   }
-// };
+  //     // Check if item exists
+  //     if (item !== null) {
+  //       // Item found, do something with it
+  //       console.log('Item found:', item.id);
+  //     } else {
+  //       // Item not found
+  //       console.log('No item found with key:', UNION_KEY);
+  //     }
+  //   } catch (error) {
+  //     // Error retrieving data
+  //     console.error('Error getting item from AsyncStorage:', error);
+  //   }
+  // };
 
-// // Call the function to get item from AsyncStorage
-// getUnionItem();
+  // // Call the function to get item from AsyncStorage
+  // getUnionItem();
 
   const [unionVal, setUnion] = useState('');
   const [localNumber, setLocalNumber] = useState('');
@@ -79,8 +82,28 @@ export const UnionForm = ({ navigation }) => {
     // console.log(text);
   }
 
+
+  const [errUnion, setErrUnion] = useState(false);
   return (
     <View style={styles.mainContUnion}>
+      {errUnion ?
+        <View style={styles.modalBack}>
+          <View style={styles.modal}>
+            <Text style={styles.errMsg}>
+              Union and or Local not found.
+              Please enter your Union Name and your Local Number. If your Union does not have a Local, you can leave the field blank.
+            </Text>
+            <Text style={styles.tip}>
+              Tip: You can do a quick web search or ask your Union Representative for this information.
+            </Text>
+            <TouchableOpacity onPress={() => setErrUnion(false)} activeOpacity={0.7} style={styles.conf}>
+              <Text style={styles.btnConf}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        :
+        <></>
+      }
       <View>
         <Svg
           width="163"
@@ -136,6 +159,41 @@ export const UnionForm = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  modalBack: {
+    zIndex: 999,
+    width: '100%',
+    position: 'absolute',
+    backgroundColor: 'rgba(0, 0, 50, 0.2)',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  modal: {
+    width: '70%',
+    backgroundColor: '#fff',
+    padding: 15,
+    justifyContent: 'space-between',
+    shadowColor: "#4468c1",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 11.27,
+  },
+  errMsg: {
+    fontSize: '16px',
+    fontWeight: '500',
+    lineHeight: '22px',
+  },
+  tip: {
+    fontSize: '16px',
+    fontWeight: '500',
+    lineHeight: '22px',
+    fontStyle: 'italic',
+    color: 'green',
+    marginBottom: 15,
+  },
   mainContUnion: {
     flex: 1,
     justifyContent: "center",

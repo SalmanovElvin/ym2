@@ -40,7 +40,7 @@ export const Login = ({ navigation, route }) => {
   const [loginInfo, setLoginInfo] = useState({});
   const userDispatch = useUserDispatch();
   const [loginUser, { loading, error, data }] = useMutation(LOGIN_USER, {
-    onCompleted:()=>{
+    onCompleted: () => {
       // console.log(data.login.user);
       userDispatch({ type: 'LOGIN', payload: data.login.user });
       getAccess();
@@ -50,22 +50,63 @@ export const Login = ({ navigation, route }) => {
       device: 'mobile'
     },
     onError: (err) => {
-      console.error(err);
-      alert('Please check username and password');
+      console.error(err.message);
+      if (err.message.includes('Account has been locked. Please reset your password. If you are')) {
+        setErrMsg(
+          <>
+            Account has been locked. Please click on
+            {' '}
+            <Text onPress={() => { navigation.navigate('forgot'); setErrUser(false); }} style={{ textDecorationLine: 'underline' }}>
+              Forgot Password?
+            </Text>
+            {' '}
+            and enter in the username or personal email associated with your account to reset your password.
+          </>);
+        setTip('');
+        setErrUser(true);
+      }
+      if (err.message.includes('Login attempt failed.')) {
+        setErrMsg(
+          <>
+            Incorrect password. You have {parseInt(err.message.match(/\d+/)[0])} more attempts before your account is locked. If you forget your password, please click on{' '}
+            <Text onPress={() => { navigation.navigate('forgot'); setErrUser(false); }} style={{ textDecorationLine: 'underline' }}>
+              Forgot Password?
+            </Text>{' '}
+            to reset.
+          </>);
+        setTip('');
+        setErrUser(true);
+      }
+      if (err.message.includes('Account with this username or email does not exist')) {
+        setErrMsg(
+          <>
+            Account with this username/email does not exist. If you are a new member, please{' '}
+            <Text onPress={() => { navigation.navigate('signUp'); setErrUser(false); }} style={{ textDecorationLine: 'underline' }}>
+              Register
+            </Text>
+          </>);
+        setTip('Hint: you can also sign in with the personal email associated with your account.');
+        setErrUser(true);
+      }
+
     }
   });
-  
-  
+
+
+
   const loginHandler = () => {
     if (username.trim().length !== 0 && password.trim().length !== 0) {
       setLoginInfo({ email: username.trim(), username: username.trim(), unionID: unionState.id, password: password.trim() });
       // console.log(loginInfo);
       loginUser({ variables: { input: { email: username.trim(), username: username.trim(), unionID: unionState.id, password: password.trim() }, device: 'mobile' } });
     } else {
+      // errMsg='Account with this username/email does not exist. If you are a new member, please {Register}.';
+      // tip='Hint: you can also sign in with the personal email associated with your account.';
+      // setErrUser(true);
       alert('Please provide both username and password');
     }
   };
- 
+
 
   //////////////////////////////////////////////////////////////////////
 
@@ -115,8 +156,28 @@ export const Login = ({ navigation, route }) => {
     setShowPassword(!showPassword);
   };
 
+
+  const [errUser, setErrUser] = useState(false);
+  const [errMsg, setErrMsg] = useState(''), [tip, setTip] = useState('');
   return (
     <View style={styles.mainContUnion}>
+      {errUser ?
+        <View style={styles.modalBack}>
+          <View style={styles.modal}>
+            <Text style={styles.errMsg}>
+              {errMsg}
+            </Text>
+            <Text style={styles.tip}>
+              {tip}
+            </Text>
+            <TouchableOpacity onPress={() => setErrUser(false)} activeOpacity={0.7} style={styles.conf}>
+              <Text style={styles.btnConf}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        :
+        <></>
+      }
       <View>
         <Image
           style={{ width: 100, height: 100 }}
@@ -165,6 +226,41 @@ export const Login = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
+  modalBack: {
+    zIndex: 999,
+    width: '100%',
+    position: 'absolute',
+    backgroundColor: 'rgba(0, 0, 50, 0.2)',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  modal: {
+    width: '70%',
+    backgroundColor: '#fff',
+    padding: 15,
+    justifyContent: 'space-between',
+    shadowColor: "#4468c1",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 11.27,
+  },
+  errMsg: {
+    fontSize: '16px',
+    fontWeight: '500',
+    lineHeight: '22px',
+  },
+  tip: {
+    fontSize: '16px',
+    fontWeight: '500',
+    lineHeight: '22px',
+    fontStyle: 'italic',
+    color: 'green',
+    marginBottom: 15,
+  },
   mainContUnion: {
     flex: 1,
     justifyContent: "center",
