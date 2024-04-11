@@ -334,13 +334,15 @@ const styles = StyleSheet.create({
     padding: 15,
     fontSize: 16,
     color: 'green',
-    width: '50%'
+    width: '70%',
+    textAlign:'center',
   },
   ok2: {
     padding: 5,
     fontSize: 16,
     color: 'green',
-    width: '50%'
+    width: '70%',
+    textAlign:'center',
   },
   lottie: {
     width: 80,

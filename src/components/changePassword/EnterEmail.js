@@ -33,7 +33,7 @@ export const EnterEmail = (props) => {
     <View style={styles.mainContUnion}>
       <View>
         <Image
-          style={{ width: 100, height: 100 }}
+          style={{ width: 100, height: 100, borderRadius: 20 }}
           source={logoURL}
         />
       </View>
