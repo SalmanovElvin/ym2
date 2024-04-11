@@ -43,7 +43,21 @@ export const SignUp = ({ navigation }) => {
     REGISTER_MEMBER,
     {
       onCompleted: () => {
-        console.log('ok');
+        setSuccess(true);
+        setTimeout(function () {
+          setSuccess(false);
+          navigation.navigate('login');
+        }, 7000);
+
+        const interval = setInterval(() => {
+          timeRedirecting--;
+          setTime(timeRedirecting);
+
+          if (timeRedirecting === 0) {
+            clearInterval(interval);
+            console.log("Interval stopped.");
+          }
+        }, 1000);
         setVisible(false);
       },
       onError: (err) => {
@@ -104,6 +118,7 @@ export const SignUp = ({ navigation }) => {
   const [passwordBorder, setPasswordBorder] = useState('');
   const [confirmPasswordBorder, setConfirmPasswordBorder] = useState('');
 
+  let timeRedirecting = 7;
   const registration = () => {
     const memberData = {}, memberProfile = {};
     setVisible(true);
@@ -175,16 +190,36 @@ export const SignUp = ({ navigation }) => {
   const [errUser, setErrUser] = useState(false);
   const [errMsg, setErrMsg] = useState(''), [tip, setTip] = useState('');
   const [visible, setVisible] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [time, setTime] = useState(7);
 
   return (
     <ScrollView style={styles.backCont}>
-       <AnimatedLoader
-          visible={visible}
-          overlayColor="rgba(255,255,255,0.75)"
-          animationStyle={styles.lottie}
-          speed={1}
-          source={require("../../../Animation.json")}>
-        </AnimatedLoader>
+      <AnimatedLoader
+        visible={visible}
+        overlayColor="rgba(255,255,255,0.75)"
+        animationStyle={styles.lottie}
+        speed={1}
+        source={require("../../../Animation.json")}>
+      </AnimatedLoader>
+
+      <AnimatedLoader
+        visible={success}
+        overlayColor="rgba(255,255,255,0.75)"
+        animationStyle={styles.lottie}
+        speed={1}
+        source={require("../../../success.json")}>
+        <Text style={styles.ok}>
+          Registration successful!
+        </Text>
+        <Text style={styles.ok2}>
+          You will be redirected to the login page in {time} seconds.
+        </Text>
+        <Text style={styles.ok2}>
+          Please wait for the admins to confirm your registration. The confirmation will be sent to your email.
+        </Text>
+      </AnimatedLoader>
+
       {errUser ?
         <View style={styles.modalBack}>
           <View style={styles.modal}>
@@ -288,6 +323,18 @@ export const SignUp = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  ok: {
+    padding: 15,
+    fontSize: 16,
+    color: 'green',
+    width: '50%'
+  },
+  ok2: {
+    padding: 5,
+    fontSize: 16,
+    color: 'green',
+    width: '50%'
+  },
   lottie: {
     width: 80,
     height: 80,
