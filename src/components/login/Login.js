@@ -8,6 +8,7 @@ import {
   Image,
   SafeAreaView,
   TouchableOpacity,
+  Keyboard,
 } from "react-native";
 import { useMutation } from '@apollo/client';
 
@@ -118,10 +119,12 @@ export const Login = ({ navigation, route }) => {
   const loginHandler = () => {
     if (username.trim().length !== 0 && password.trim().length !== 0) {
       setVisible(true);
+      Keyboard.dismiss();
       setLoginInfo({ email: username.trim(), username: username.trim(), unionID: unionState.id, password: password.trim() });
       // console.log(loginInfo);
       loginUser({ variables: { input: { email: username.trim(), username: username.trim(), unionID: unionState.id, password: password.trim() }, device: 'mobile' } });
     } else {
+      Keyboard.dismiss();
       setErrMsg('Please provide both username and password');
       setTip('');
       setErrUser(true);

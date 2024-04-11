@@ -10,6 +10,8 @@ import {
   TouchableOpacity,
   ScrollView,
   StatusBar,
+  KeyboardAvoidingView,
+  Platform
 } from "react-native";
 import { useMutation, useQuery } from '@apollo/client';
 
@@ -194,6 +196,10 @@ export const SignUp = ({ navigation }) => {
   const [time, setTime] = useState(7);
 
   return (
+    <KeyboardAvoidingView 
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
+      style={styles.backCont}
+    >
     <ScrollView style={styles.backCont}>
       <AnimatedLoader
         visible={visible}
@@ -319,6 +325,7 @@ export const SignUp = ({ navigation }) => {
         </View>
       </View>
     </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

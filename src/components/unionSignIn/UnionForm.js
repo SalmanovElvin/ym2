@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Text, TextInput, Button, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Text, TextInput, Button, TouchableOpacity, Keyboard } from "react-native";
 import Svg, { G, Path, Defs, LinearGradient, Stop } from "react-native-svg";
 import { useLazyQuery } from '@apollo/client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -32,8 +32,10 @@ export const UnionForm = ({ navigation }) => {
     },
     onError: (error) => {
       setVisible(false);
+      Keyboard.dismiss();
+      setErrMsg(`Union and or Local not found. Please enter your Union Name and your Local Number. If your Union does not have a Local, you can leave the field blank.`);
+      setTip('Tip: You can do a quick web search or ask your Union Representative for this information.');
       setErrUnion(true);
-      // alert("Union and or Local not found. Please enter your Union Name and your Local Number. If your Union does not have a Local, you can leave the field blank. Tip: You can do a quick web search or ask your Union Representative for this information.");
       // console.error(error);
     }
   });
@@ -44,8 +46,13 @@ export const UnionForm = ({ navigation }) => {
     if (unionVal.trim().length !== 0) {
       setVisible(true);
       getUnionByName({ variables: { name: unionVal.trim() + ' ' + localNumber.trim() } });
+      Keyboard.dismiss();
     } else {
-      alert('Please, write union.');
+      setErrMsg(`Please fill in the union and local number fields.`);
+      setTip('');
+      setErrUnion(true);
+      Keyboard.dismiss();
+      // alert('Please, write union.');
     }
   };
 
@@ -92,17 +99,18 @@ export const UnionForm = ({ navigation }) => {
 
   const [visible, setVisible] = useState(false);
   const [errUnion, setErrUnion] = useState(false);
+  const [errMsg, setErrMsg] = useState(''), [tip, setTip] = useState('');
+
   return (
     <View style={styles.mainContUnion}>
       {errUnion ?
         <View style={styles.modalBack}>
           <View style={styles.modal}>
             <Text style={styles.errMsg}>
-              Union and or Local not found.
-              Please enter your Union Name and your Local Number. If your Union does not have a Local, you can leave the field blank.
+              {errMsg}
             </Text>
             <Text style={styles.tip}>
-              Tip: You can do a quick web search or ask your Union Representative for this information.
+              {tip}
             </Text>
             <TouchableOpacity onPress={() => setErrUnion(false)} activeOpacity={0.7} style={styles.conf}>
               <Text style={styles.btnConf}>Close</Text>
