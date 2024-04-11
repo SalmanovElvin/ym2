@@ -36,6 +36,8 @@ export const Login = ({ navigation, route }) => {
       ? { uri: `${unionState.information.imageURL}` }
       : require('../../../ios-icon.png');
     // console.log(logoURL);
+  }else{
+    console.log('shittttt');
   }
 
   const [loginInfo, setLoginInfo] = useState({});
@@ -120,10 +122,9 @@ export const Login = ({ navigation, route }) => {
       // console.log(loginInfo);
       loginUser({ variables: { input: { email: username.trim(), username: username.trim(), unionID: unionState.id, password: password.trim() }, device: 'mobile' } });
     } else {
-      // errMsg='Account with this username/email does not exist. If you are a new member, please {Register}.';
-      // tip='Hint: you can also sign in with the personal email associated with your account.';
-      // setErrUser(true);
-      alert('Please provide both username and password');
+      setErrMsg('Please provide both username and password');
+      setTip('');
+      setErrUser(true);
       setVisible(false);
     }
   };
@@ -267,13 +268,14 @@ const styles = StyleSheet.create({
     zIndex: 999,
     width: '100%',
     position: 'absolute',
-    backgroundColor: 'rgba(0, 0, 50, 0.2)',
+    backgroundColor: 'rgba(0, 0, 50, 0.5)',
     height: '100%',
     alignItems: 'center',
     justifyContent: 'center'
   },
   modal: {
     width: '70%',
+    borderRadius:10,
     backgroundColor: '#fff',
     padding: 15,
     justifyContent: 'space-between',
@@ -345,7 +347,7 @@ const styles = StyleSheet.create({
     height: 56,
     justifyContent: "center",
     alignItems: 'center',
-    margin: 10,
+    marginVertical: 10,
     borderRadius: 5,
   },
   btnConf: {

@@ -11,16 +11,17 @@ import {
   ScrollView,
   StatusBar,
 } from "react-native";
+import { useMutation, useQuery } from '@apollo/client';
+
+import AnimatedLoader from 'react-native-animated-loader';
 
 import PhoneInput from "react-native-phone-number-input";
 import { DatePicker } from "react-native-woodpicker";
 import { useUnionState } from '../../../store/union-context';
+import { REGISTER_MEMBER } from "../../../graph/mutations/users";
 
 export const SignUp = ({ navigation }) => {
-  const [value, setValue] = useState("");
-  const [formattedValue, setFormattedValue] = useState("");
 
-  const [pickedDate, setPickedDate] = useState("");
 
   const handleText = (text) =>
     pickedDate ? (
@@ -36,12 +37,175 @@ export const SignUp = ({ navigation }) => {
       ? { uri: `${unionState.information.imageURL}` }
       : require('../../../ios-icon.png');
   }
+
+
+  const [memberRegistration, { loading: loadingMemberRegister }] = useMutation(
+    REGISTER_MEMBER,
+    {
+      onCompleted: () => {
+        console.log('ok');
+        setVisible(false);
+      },
+      onError: (err) => {
+        console.error(err); // eslint-disable-line
+        if (err.message.includes('Failed to register new user. User with Cell Phone')) {
+
+          setErrMsg(<>Error. An account with this cell phone number {formattedValue} already exists. Please
+            {' '}<Text onPress={() => { navigation.navigate("login"); setErrUser(false); }} style={{ textDecorationLine: 'underline' }}>
+              Login
+            </Text>{' '}
+            .</>);
+          setTip('');
+          setVisible(false);
+          setErrUser(true);
+        }
+
+        if (err.message.includes('Failed to register new user. User with email')) {
+
+          setErrMsg(<>
+            Error. An account with this personal email {email} already exists. Please
+            {' '}<Text onPress={() => { navigation.navigate("login"); setErrUser(false); }} style={{ textDecorationLine: 'underline' }}>
+              Login
+            </Text>{' '}
+            .</>);
+          setTip('');
+          setVisible(false);
+          setErrUser(true);
+        }
+
+
+
+        if (err.message.includes('cannot be empty') || err.message.includes('parsing time')) {
+          setErrMsg(`Error. You must provide all the required information.`);
+          setTip('');
+          setVisible(false);
+          setErrUser(true);
+        }
+      }
+    }
+  );
+
+  const [email, setEmail] = useState('');
+  const [value, setValue] = useState("");
+  const [formattedValue, setFormattedValue] = useState('');
+  const [pickedDate, setPickedDate] = useState('');
+  const [name, setName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+
+
+  const [emailBorder, setEmailBorder] = useState('');
+  const [formattedValueBorder, setFormattedValueBorder] = useState('');
+  const [pickedDateBorder, setPickedDateBorder] = useState('');
+  const [nameBorder, setNameBorder] = useState('');
+  const [lastNameBorder, setLastNameBorder] = useState('');
+  const [passwordBorder, setPasswordBorder] = useState('');
+  const [confirmPasswordBorder, setConfirmPasswordBorder] = useState('');
+
+  const registration = () => {
+    const memberData = {}, memberProfile = {};
+    setVisible(true);
+    if (email.trim().length !== 0) {
+      setEmailBorder({ borderColor: 'green' })
+    } else {
+      setEmailBorder({ borderColor: 'red' })
+    }
+
+    if (name.trim().length !== 0) {
+      setNameBorder({ borderColor: 'green' })
+    } else {
+      setNameBorder({ borderColor: 'red' })
+    }
+
+    if (lastName.trim().length !== 0) {
+      setLastNameBorder({ borderColor: 'green' })
+    } else {
+      setLastNameBorder({ borderColor: 'red' })
+    }
+
+    if (password.trim().length !== 0 && confirmPassword.trim().length !== 0 && password.trim() === confirmPassword.trim()) {
+      setPasswordBorder({ borderColor: 'green' })
+    } else {
+      setPasswordBorder({ borderColor: 'red' })
+    }
+
+    if (pickedDate !== '') {
+      setPickedDateBorder({ borderColor: 'green' })
+    } else {
+      setPickedDateBorder({ borderColor: 'red' })
+    }
+
+    if (value.trim().length !== 0) {
+      setFormattedValueBorder({ borderColor: 'green' })
+    } else {
+      setFormattedValueBorder({ borderColor: 'red' })
+    }
+
+
+
+
+    memberData.dateOfBirth = pickedDate;
+    memberData.firstName = name.trim();
+    memberData.lastName = lastName.trim();
+    memberData.password = password.trim();
+
+    memberProfile.email = email.trim();
+    memberProfile.mobile = formattedValue;
+
+    if (password.trim() === confirmPassword.trim()) {
+      memberRegistration({
+        variables: {
+          unionID: unionState.id,
+          input: {
+            ...memberData,
+            profile: memberProfile
+          } // fire the mutation with the filtered/ final member info
+        }
+      });
+    } else {
+      setErrMsg('Password and confirm password do not match.')
+      setErrUser(true);
+      setVisible(false);
+      setTip('');
+    }
+  }
+
+  const [errUser, setErrUser] = useState(false);
+  const [errMsg, setErrMsg] = useState(''), [tip, setTip] = useState('');
+  const [visible, setVisible] = useState(false);
+
   return (
     <ScrollView style={styles.backCont}>
+       <AnimatedLoader
+          visible={visible}
+          overlayColor="rgba(255,255,255,0.75)"
+          animationStyle={styles.lottie}
+          speed={1}
+          source={require("../../../Animation.json")}>
+        </AnimatedLoader>
+      {errUser ?
+        <View style={styles.modalBack}>
+          <View style={styles.modal}>
+            <Text style={styles.errMsg}>
+              {errMsg}
+            </Text>
+            <Text style={styles.tip}>
+              {tip}
+            </Text>
+            <TouchableOpacity onPress={() => setErrUser(false)} activeOpacity={0.7} style={styles.conf}>
+              <Text style={styles.btnConf}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        :
+        <></>
+      }
       <View style={styles.mainContUnion}>
         <View>
           <Image
-            style={{ width: 100, height: 100 }}
+            style={{ width: 100, height: 100, borderRadius: 20 }}
             source={logoURL}
           />
         </View>
@@ -50,24 +214,27 @@ export const SignUp = ({ navigation }) => {
             Sign up to join your Union community
           </Text>
           <TextInput
-            style={styles.input}
+            onChangeText={setEmail}
+            style={{ ...styles.input, ...emailBorder }}
             placeholder="Personal Email"
             keyboardType="email-address"
           />
-          <TextInput style={styles.input} placeholder="First Name" />
-          <TextInput style={styles.input} placeholder="Last Name" />
+          <TextInput onChangeText={setName} style={{ ...styles.input, ...nameBorder }} placeholder="First Name" />
+          <TextInput onChangeText={setLastName} style={{ ...styles.input, ...lastNameBorder }} placeholder="Last Name" />
           <TextInput
-            style={styles.input}
+            onChangeText={setPassword}
+            style={{ ...styles.input, ...passwordBorder }}
             placeholder="Password"
             secureTextEntry={true}
           />
           <TextInput
-            style={styles.input}
+            onChangeText={setConfirmPassword}
+            style={{ ...styles.input, ...passwordBorder }}
             placeholder="Repeat password"
             secureTextEntry={true}
           />
 
-          <View style={styles.phone}>
+          <View style={{ ...styles.phone, ...formattedValueBorder }}>
             <PhoneInput
               placeholder="Cell phone"
               containerStyle={{ backgroundColor: "#fff" }}
@@ -90,7 +257,7 @@ export const SignUp = ({ navigation }) => {
           </View>
 
           <DatePicker
-            style={styles.dateP}
+            style={{ ...styles.dateP, ...pickedDateBorder }}
             value={pickedDate}
             onDateChange={setPickedDate}
             title="Date Picker"
@@ -110,7 +277,7 @@ export const SignUp = ({ navigation }) => {
             <TouchableOpacity onPress={() => navigation.navigate('login')} activeOpacity={0.7} style={styles.conf1}>
               <Text style={styles.btnConf1}>Back</Text>
             </TouchableOpacity>
-            <TouchableOpacity activeOpacity={0.7} style={styles.conf2}>
+            <TouchableOpacity onPress={registration} activeOpacity={0.7} style={styles.conf2}>
               <Text style={styles.btnConf2}>Sign up</Text>
             </TouchableOpacity>
           </View>
@@ -121,6 +288,62 @@ export const SignUp = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  lottie: {
+    width: 80,
+    height: 80,
+  },
+  modalBack: {
+    zIndex: 999,
+    width: '100%',
+    position: 'absolute',
+    backgroundColor: 'rgba(0, 0, 50, 0.5)',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  modal: {
+    width: '70%',
+    borderRadius: 10,
+    backgroundColor: '#fff',
+    padding: 15,
+    justifyContent: 'space-between',
+    shadowColor: "#4468c1",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 11.27,
+  },
+  errMsg: {
+    fontSize: '16px',
+    fontWeight: '500',
+    lineHeight: '22px',
+  },
+  tip: {
+    fontSize: '16px',
+    fontWeight: '500',
+    lineHeight: '22px',
+    fontStyle: 'italic',
+    color: 'green',
+    marginBottom: 15,
+  },
+  conf: {
+    width: "100%",
+    backgroundColor: "#34519A",
+    height: 56,
+    justifyContent: "center",
+    alignItems: 'center',
+    marginVertical: 10,
+    borderRadius: 5,
+  },
+  btnConf: {
+    color: '#fff',
+    fontWeight: '700',
+    fontSize: 16
+
+  },
+
   btns: {
     width: "100%",
     flexDirection: "row",

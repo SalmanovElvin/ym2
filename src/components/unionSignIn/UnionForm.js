@@ -181,13 +181,14 @@ const styles = StyleSheet.create({
     zIndex: 999,
     width: '100%',
     position: 'absolute',
-    backgroundColor: 'rgba(0, 0, 50, 0.2)',
+    backgroundColor: 'rgba(0, 0, 50, 0.5)',
     height: '100%',
     alignItems: 'center',
     justifyContent: 'center'
   },
   modal: {
     width: '70%',
+    borderRadius: 10,
     backgroundColor: '#fff',
     padding: 15,
     justifyContent: 'space-between',

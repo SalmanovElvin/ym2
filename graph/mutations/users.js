@@ -137,7 +137,7 @@ export const LOGIN_WITH_TOKEN = gql`
 //   }
 // `;
 
-export const REGISTER_USER = gql`
+export const REGISTER_MEMBER = gql`
   mutation memberRegistration($unionID: UnifiedID!, $input: UserInput!) {
     memberRegistration(unionID: $unionID, input: $input) {
       id
