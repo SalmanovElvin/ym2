@@ -209,14 +209,14 @@ const styles = StyleSheet.create({
     shadowRadius: 11.27,
   },
   errMsg: {
-    fontSize: '16px',
+    fontSize: 16,
     fontWeight: '500',
-    lineHeight: '22px',
+    lineHeight: 22,
   },
   tip: {
-    fontSize: '16px',
+    fontSize: 16,
     fontWeight: '500',
-    lineHeight: '22px',
+    lineHeight: 22,
     fontStyle: 'italic',
     color: 'green',
     marginBottom: 15,
@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
   },
   input: {
     width: "90%",
-    borderWidth: "1px",
+    borderWidth: 1,
     borderColor: "#BFC2CD",
     borderStyle: "solid",
     height: 56,
