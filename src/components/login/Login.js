@@ -50,7 +50,16 @@ export const Login = ({ navigation, route }) => {
       device: 'mobile'
     },
     onError: (err) => {
-      console.error(err.message);
+      // console.error(err.message);
+      if (err.message.includes('Your account is pending approval, you will receive an email')) {
+        setErrMsg(
+          <>
+            Account is pending approval. We will send an email to the personal email you used when
+            you registered once your account has been verified. Thank you for your patience.
+          </>);
+        setTip('');
+        setErrUser(true);
+      }
       if (err.message.includes('Account has been locked. Please reset your password. If you are')) {
         setErrMsg(
           <>
@@ -180,7 +189,7 @@ export const Login = ({ navigation, route }) => {
       }
       <View>
         <Image
-          style={{ width: 100, height: 100 }}
+          style={{ width: 100, height: 100, borderRadius: 20 }}
           source={logoURL}
         />
       </View>
