@@ -3,6 +3,7 @@ import {
   ScrollView,
   View,
   StyleSheet,
+  Text,
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
@@ -11,7 +12,10 @@ import { PhotoPicker } from "../components/PhotoPicker";
 export const CreateScreen = ({ navigation }) => {
   return (
     <ScrollView>
-      <TouchableWithoutFeedback
+      <Text>
+        Yes
+      </Text>
+      {/* <TouchableWithoutFeedback
         onPress={() => {
           Keyboard.dismiss();
         }}
@@ -19,7 +23,7 @@ export const CreateScreen = ({ navigation }) => {
         <View style={styles.wrapper}>
           <PhotoPicker />
         </View>
-      </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback> */}
     </ScrollView>
   );
 };
