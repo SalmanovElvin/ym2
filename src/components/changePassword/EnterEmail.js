@@ -7,28 +7,48 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
+
+import { useMutation } from '@apollo/client';
 import { useUnionState } from '../../../store/union-context';
-
+import { REQUEST_PASSWORD_RESET } from '../../../graph/mutations/password';
 export const EnterEmail = (props) => {
-  // State variable to hold the password
-  const [password, setPassword] = useState("");
-
-  // State variable to track password visibility
-  const [showPassword, setShowPassword] = useState(false);
-
-  // Function to toggle the password visibility state
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
 
   const unionState = useUnionState();
+  const [email, setEmail] = useState('');
+
   let logoURL = '';
   if (unionState != null) {
     logoURL = unionState.information.imageURL
       ? { uri: `${unionState.information.imageURL}` }
       : require('../../../ios-icon.png');
   }
+
+  //----------------------------------------------------------------------------Request Mutation
+  const [sendRequest, { loading }] = useMutation(REQUEST_PASSWORD_RESET, {
+    variables: {
+      unionID: unionState.id,
+      username: email
+    },
+    onCompleted: () => {
+      console.log('okey');
+    },
+
+    onError: (err) => {
+      console.error('REQUEST_PASSWORD_RESET mutation err: ', err); // eslint-disable-line
+    }
+  });
+  //----------------------------------------------------------------------------- Password Reset Function
+  const passwordReset = (e) => {
+    e.preventDefault();
+    if (email.trim().length !== 0) {
+      sendRequest();
+    }else{
+      alert('write email')
+    }
+  };
+
+
+
   return (
     <View style={styles.mainContUnion}>
       <View>
@@ -44,9 +64,10 @@ export const EnterEmail = (props) => {
           style={styles.input}
           placeholder="Personal Email"
           keyboardType="email-address"
+          onChangeText={setEmail}
         />
 
-        <TouchableOpacity activeOpacity={0.7} style={styles.conf}>
+        <TouchableOpacity onPress={passwordReset} activeOpacity={0.7} style={styles.conf}>
           <Text style={styles.btnConf}>Request password reset</Text>
         </TouchableOpacity>
       </View>
