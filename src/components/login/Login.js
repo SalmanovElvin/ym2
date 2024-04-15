@@ -242,7 +242,7 @@ export const Login = ({ navigation, route }) => {
           overlayColor="rgba(255,255,255,0.75)"
           animationStyle={styles.lottie}
           speed={1}
-          source={require("../../../Animation.json")}>
+          source={require("../../../animations/Animation.json")}>
         </AnimatedLoader>
         <TouchableOpacity onPress={loginHandler} activeOpacity={0.7} style={styles.conf}>
           <Text style={styles.btnConf}>

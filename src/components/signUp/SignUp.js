@@ -183,9 +183,9 @@ export const SignUp = ({ navigation }) => {
       });
     } else {
       setErrMsg('Password and confirm password do not match.')
+      setTip('');
       setErrUser(true);
       setVisible(false);
-      setTip('');
     }
   }
 
@@ -196,135 +196,135 @@ export const SignUp = ({ navigation }) => {
   const [time, setTime] = useState(7);
 
   return (
-    <KeyboardAvoidingView 
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.backCont}
     >
-    <ScrollView style={styles.backCont}>
-      <AnimatedLoader
-        visible={visible}
-        overlayColor="rgba(255,255,255,0.75)"
-        animationStyle={styles.lottie}
-        speed={1}
-        source={require("../../../Animation.json")}>
-      </AnimatedLoader>
+      <ScrollView style={styles.backCont}>
+        <AnimatedLoader
+          visible={visible}
+          overlayColor="rgba(255,255,255,0.75)"
+          animationStyle={styles.lottie}
+          speed={1}
+          source={require("../../../animations/Animation.json")}>
+        </AnimatedLoader>
 
-      <AnimatedLoader
-        visible={success}
-        overlayColor="rgba(255,255,255,0.75)"
-        animationStyle={styles.lottie}
-        speed={1}
-        source={require("../../../success.json")}>
-        <Text style={styles.ok}>
-          Registration successful!
-        </Text>
-        <Text style={styles.ok2}>
-          You will be redirected to the login page in {time} seconds.
-        </Text>
-        <Text style={styles.ok2}>
-          Please wait for the admins to confirm your registration. The confirmation will be sent to your email.
-        </Text>
-      </AnimatedLoader>
-
-      {errUser ?
-        <View style={styles.modalBack}>
-          <View style={styles.modal}>
-            <Text style={styles.errMsg}>
-              {errMsg}
-            </Text>
-            <Text style={styles.tip}>
-              {tip}
-            </Text>
-            <TouchableOpacity onPress={() => setErrUser(false)} activeOpacity={0.7} style={styles.conf}>
-              <Text style={styles.btnConf}>Close</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        :
-        <></>
-      }
-      <View style={styles.mainContUnion}>
-        <View>
-          <Image
-            style={{ width: 100, height: 100, borderRadius: 20 }}
-            source={logoURL}
-          />
-        </View>
-        <View style={styles.mainFormUnion}>
-          <Text style={styles.header}>
-            Sign up to join your Union community
+        <AnimatedLoader
+          visible={success}
+          overlayColor="rgba(255,255,255,0.75)"
+          animationStyle={styles.lottie}
+          speed={1}
+          source={require("../../../animations/success.json")}>
+          <Text style={styles.ok}>
+            Registration successful!
           </Text>
-          <TextInput
-            onChangeText={setEmail}
-            style={{ ...styles.input, ...emailBorder }}
-            placeholder="Personal Email"
-            keyboardType="email-address"
-          />
-          <TextInput onChangeText={setName} style={{ ...styles.input, ...nameBorder }} placeholder="First Name" />
-          <TextInput onChangeText={setLastName} style={{ ...styles.input, ...lastNameBorder }} placeholder="Last Name" />
-          <TextInput
-            onChangeText={setPassword}
-            style={{ ...styles.input, ...passwordBorder }}
-            placeholder="Password"
-            secureTextEntry={true}
-          />
-          <TextInput
-            onChangeText={setConfirmPassword}
-            style={{ ...styles.input, ...passwordBorder }}
-            placeholder="Repeat password"
-            secureTextEntry={true}
-          />
+          <Text style={styles.ok2}>
+            You will be redirected to the login page in {time} seconds.
+          </Text>
+          <Text style={styles.ok2}>
+            Please wait for the admins to confirm your registration. The confirmation will be sent to your email.
+          </Text>
+        </AnimatedLoader>
 
-          <View style={{ ...styles.phone, ...formattedValueBorder }}>
-            <PhoneInput
-              placeholder="Cell phone"
-              containerStyle={{ backgroundColor: "#fff" }}
-              flagButtonStyle={{ width: '20%' }}
-              textContainerStyle={{ backgroundColor: "#fff" }}
-              defaultValue={value}
-              defaultCode="CA"
-              layout="first"
-              onChangeText={(text) => {
-                setValue(text);
-              }}
-              onChangeFormattedText={(text) => {
-                //   console.log(text);
-                setFormattedValue(text);
-              }}
-              withDarkTheme={false}
-              withShadow
-              autoFocus={false}
+        {errUser ?
+          <View style={styles.modalBack}>
+            <View style={styles.modal}>
+              <Text style={styles.errMsg}>
+                {errMsg}
+              </Text>
+              <Text style={styles.tip}>
+                {tip}
+              </Text>
+              <TouchableOpacity onPress={() => setErrUser(false)} activeOpacity={0.7} style={styles.conf}>
+                <Text style={styles.btnConf}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          :
+          <></>
+        }
+        <View style={styles.mainContUnion}>
+          <View>
+            <Image
+              style={{ width: 100, height: 100, borderRadius: 20 }}
+              source={logoURL}
             />
           </View>
+          <View style={styles.mainFormUnion}>
+            <Text style={styles.header}>
+              Sign up to join your Union community
+            </Text>
+            <TextInput
+              onChangeText={setEmail}
+              style={{ ...styles.input, ...emailBorder }}
+              placeholder="Personal Email"
+              keyboardType="email-address"
+            />
+            <TextInput onChangeText={setName} style={{ ...styles.input, ...nameBorder }} placeholder="First Name" />
+            <TextInput onChangeText={setLastName} style={{ ...styles.input, ...lastNameBorder }} placeholder="Last Name" />
+            <TextInput
+              onChangeText={setPassword}
+              style={{ ...styles.input, ...passwordBorder }}
+              placeholder="Password"
+              secureTextEntry={true}
+            />
+            <TextInput
+              onChangeText={setConfirmPassword}
+              style={{ ...styles.input, ...passwordBorder }}
+              placeholder="Repeat password"
+              secureTextEntry={true}
+            />
 
-          <DatePicker
-            style={{ ...styles.dateP, ...pickedDateBorder }}
-            value={pickedDate}
-            onDateChange={setPickedDate}
-            title="Date Picker"
-            text={handleText()}
-            isNullable={false}
-            iosDisplay="inline"
-          //backdropAnimation={{ opacity: 0 }}
-          //minimumDate={new Date(Date.now())}
-          //maximumDate={new Date(Date.now()+2000000000)}
-          //iosMode="date"
-          //androidMode="countdown"
-          //iosDisplay="spinner"
-          //androidDisplay="spinner"
-          //locale="fr"
-          />
-          <View style={styles.btns}>
-            <TouchableOpacity onPress={() => navigation.navigate('login')} activeOpacity={0.7} style={styles.conf1}>
-              <Text style={styles.btnConf1}>Back</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={registration} activeOpacity={0.7} style={styles.conf2}>
-              <Text style={styles.btnConf2}>Sign up</Text>
-            </TouchableOpacity>
+            <View style={{ ...styles.phone, ...formattedValueBorder }}>
+              <PhoneInput
+                placeholder="Cell phone"
+                containerStyle={{ backgroundColor: "#fff" }}
+                flagButtonStyle={{ width: '20%' }}
+                textContainerStyle={{ backgroundColor: "#fff" }}
+                defaultValue={value}
+                defaultCode="CA"
+                layout="first"
+                onChangeText={(text) => {
+                  setValue(text);
+                }}
+                onChangeFormattedText={(text) => {
+                  //   console.log(text);
+                  setFormattedValue(text);
+                }}
+                withDarkTheme={false}
+                withShadow
+                autoFocus={false}
+              />
+            </View>
+
+            <DatePicker
+              style={{ ...styles.dateP, ...pickedDateBorder }}
+              value={pickedDate}
+              onDateChange={setPickedDate}
+              title="Date Picker"
+              text={handleText()}
+              isNullable={false}
+              iosDisplay="inline"
+            //backdropAnimation={{ opacity: 0 }}
+            //minimumDate={new Date(Date.now())}
+            //maximumDate={new Date(Date.now()+2000000000)}
+            //iosMode="date"
+            //androidMode="countdown"
+            //iosDisplay="spinner"
+            //androidDisplay="spinner"
+            //locale="fr"
+            />
+            <View style={styles.btns}>
+              <TouchableOpacity onPress={() => navigation.navigate('login')} activeOpacity={0.7} style={styles.conf1}>
+                <Text style={styles.btnConf1}>Back</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={registration} activeOpacity={0.7} style={styles.conf2}>
+                <Text style={styles.btnConf2}>Sign up</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 };
@@ -335,14 +335,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'green',
     width: '70%',
-    textAlign:'center',
+    textAlign: 'center',
   },
   ok2: {
     padding: 5,
     fontSize: 16,
     color: 'green',
     width: '70%',
-    textAlign:'center',
+    textAlign: 'center',
   },
   lottie: {
     width: 80,
