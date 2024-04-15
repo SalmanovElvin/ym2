@@ -113,61 +113,27 @@ export default function AppNavigation() {
     setAccessToken('ok');
   }
 
-  // useEffect(() => {
-  //   // Simulate loading delay with setTimeout
-  //   setTimeout(() => {
-  //     setIsLoading(false); // Set loading to false after a delay
-  //   }, 1000); // Adjust the delay as needed
-  // }, []);
+  const [userIN, setUserIN] = useState(false);
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const userVal = await AsyncStorage.getItem('@USER'); // Replace 'key' with your actual key
 
+        if (userVal !== null && JSON.parse(userVal).username !== undefined) {
+          setUserIN(true);
+        } else {
+          console.log('No user data found');
+        }
 
+      } catch (error) {
+        console.error('Error retrieving data:', error);
+      }
+    }
+    getData();
 
+  }, [])
 
-  // if (isLoading) {
-  //   // Show loading indicator while loading
-  //   return (
-  //     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-  //       <ActivityIndicator size="large" color={THEME.MAIN_COLOR} />
-  //     </View>
-  //   );
-  // }
-
-
-  // // Define the key
-  // const UNION_KEY = 'USER';
-
-  // // Function to get item from AsyncStorage with UNION key
-  // const getUnionItem = async () => {
-  //   try {
-  //     // Retrieve item from AsyncStorage
-  //     const item = await AsyncStorage.getItem(UNION_KEY);
-
-  //     const data = JSON.parse(item);
-
-  //     // Access the id property
-  //     const id = data.id;
-
-  //     // Check if item exists
-  //     if (item !== null) {
-  //       // Item found, do something with it
-  //       // console.log(id);
-  //       setAccessToken('yes');
-  //     } else {
-  //       // Item not found
-  //       console.log('No item found with key:', UNION_KEY);
-  //       setAccessToken('');
-  //     }
-  //   } catch (error) {
-  //     // Error retrieving data
-  //     console.error('Error getting item from AsyncStorage:', error);
-  //     setAccessToken('');
-  //   }
-  // };
-
-  // // Call the function to get item from AsyncStorage
-  // getUnionItem();
-
-  if (accessToken.trim().length === 0) {
+  if (accessToken.trim().length === 0 && userIN !== true) {
     return (
       <NavigationContainer>
         <Stack.Navigator initialRouteName="unionSignIn">

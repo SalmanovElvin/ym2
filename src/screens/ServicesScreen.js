@@ -1,22 +1,48 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
 
 import { useUnionState } from '../../store/union-context';
 import { useUserState } from '../../store/user-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export const ServicesScreen = ({ navigation }) => {
   const unionState = useUnionState();
   const userState = useUserState();
 
-  let logoURL = '';
-  if (unionState != null) {
-    // console.log(unionState.information.imageURL);
-    logoURL = unionState.information.imageURL
-      ? { uri: `${unionState.information.imageURL}` }
-      : require('../../ios-icon.png');
-  }
+
+  const [userData, setUserData] = useState(null);
+
+  const [logoURL, setLogoURL] = useState('');
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const value = await AsyncStorage.getItem('UNION'); // Replace 'key' with your actual key
+        const userVal = await AsyncStorage.getItem('@USER'); // Replace 'key' with your actual key
+
+        if (userVal !== null && JSON.parse(userVal).username !== undefined) {
+          setUserData(JSON.parse(userVal));
+          // navigation.navigate('Home');
+          // console.log(JSON.parse(userVal).username);
+        } else {
+          console.log('No user data found');
+        }
+
+        if (value !== null) {
+          setLogoURL({ uri: `${JSON.parse(value).information.imageURL}` })
+          // console.log('Retrieved data:', JSON.parse(value).information.imageURL);
+        } else {
+          console.log('No union data found');
+        }
+      } catch (error) {
+        console.error('Error retrieving data:', error);
+      }
+    }
+    getData();
+
+  }, [])
+
   navigation.setOptions({
     headerStyle: {
       backgroundColor: '#fff', // Change the color here
@@ -32,7 +58,7 @@ export const ServicesScreen = ({ navigation }) => {
     headerRight: () => (
 
       <View style={{ flexDirection: 'row', marginRight: 10 }}>
-        <Svg onPress={()=>navigation.navigate('Create')} style={{ marginRight: 20 }} width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <Svg onPress={() => navigation.navigate('Create')} style={{ marginRight: 20 }} width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
           <Path d="M23.3611 21.588C22.1684 20.0769 21.3263 19.3077 21.3263 15.1418C21.3263 11.3269 19.4442 9.96779 17.8951 9.30769C17.6894 9.22019 17.4957 9.01923 17.433 8.80048C17.1612 7.84327 16.3995 7 15.3869 7C14.3743 7 13.6121 7.84375 13.3432 8.80144C13.2805 9.0226 13.0868 9.22019 12.881 9.30769C11.3301 9.96875 9.44991 11.3231 9.44991 15.1418C9.44758 19.3077 8.60548 20.0769 7.41269 21.588C6.91848 22.2139 7.35138 23.1538 8.21578 23.1538H22.5627C23.4225 23.1538 23.8526 22.2111 23.3611 21.588Z" stroke="#757881" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           <Path d="M17.4889 26.0988C18.0464 25.5218 18.3596 24.7391 18.3596 23.9231H12.4142C12.4142 24.7391 12.7274 25.5218 13.2849 26.0988C13.8424 26.6758 14.5985 27 15.3869 27C16.1753 27 16.9314 26.6758 17.4889 26.0988Z" fill="#757881" stroke="#757881" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           <Circle cx="20.7955" cy="9" r="5" fill="#ED1717" stroke="#F9FAFC" strokeWidth="2" />

@@ -20,7 +20,24 @@ export const UnionForm = ({ navigation }) => {
   const unionDispatch = useUnionDispatch();
   const union = useUnionState();
 
-
+  const [unionIN, setUnionIN] = useState(false);
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const value = await AsyncStorage.getItem('UNION'); // Replace 'key' with your actual key
+        if (value !== null) {
+          setUnionIN(true);
+          navigation.navigate('login');
+          // console.log('Retrieved data:', JSON.parse(value).information.imageURL);
+        } else {
+          console.log('No data found');
+        }
+      } catch (error) {
+        console.error('Error retrieving data:', error);
+      }
+    }
+    getData();
+  }, [])
 
   const [getUnionByName, { loading, error }] = useLazyQuery(GET_UNION_BY_NAME, {
     onCompleted: (data) => {

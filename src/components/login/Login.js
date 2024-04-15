@@ -30,16 +30,9 @@ export const Login = ({ navigation, route }) => {
   };
 
   const unionState = useUnionState();
-  let logoURL = '';
-  if (unionState != null) {
-    // console.log(unionState.information.imageURL);
-    logoURL = unionState.information.imageURL
-      ? { uri: `${unionState.information.imageURL}` }
-      : require('../../../ios-icon.png');
-    // console.log(logoURL);
-  }else{
-    console.log('shittttt');
-  }
+  const [logoURL, setLogoURL] = useState('');
+
+ 
 
   const [loginInfo, setLoginInfo] = useState({});
   const userDispatch = useUserDispatch();
@@ -134,6 +127,38 @@ export const Login = ({ navigation, route }) => {
 
 
   //////////////////////////////////////////////////////////////////////
+
+
+  const [userData, setUserData] = useState(null);
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const value = await AsyncStorage.getItem('UNION'); // Replace 'key' with your actual key
+        const userVal = await AsyncStorage.getItem('@USER'); // Replace 'key' with your actual key
+
+        if (userVal !== null && JSON.parse(userVal).username!==undefined) {
+          setUserData(JSON.parse(userVal));
+          // navigation.navigate('Home');
+          // console.log(JSON.parse(userVal).username);
+        } else {
+          console.log('No user data found');
+        }
+
+        if (value !== null) {
+          setLogoURL({ uri: `${JSON.parse(value).information.imageURL}` })
+          // console.log('Retrieved data:', JSON.parse(value).information.imageURL);
+        } else {
+          console.log('No union data found');
+        }
+      } catch (error) {
+        console.error('Error retrieving data:', error);
+      }
+    }
+    getData();
+
+  }, [])
+
+
 
   //This is for using AsyncStorage
 
@@ -278,7 +303,7 @@ const styles = StyleSheet.create({
   },
   modal: {
     width: '70%',
-    borderRadius:10,
+    borderRadius: 10,
     backgroundColor: '#fff',
     padding: 15,
     justifyContent: 'space-between',
