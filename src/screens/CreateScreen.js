@@ -8,13 +8,20 @@ import {
   Keyboard,
 } from "react-native";
 import { PhotoPicker } from "../components/PhotoPicker";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 export const CreateScreen = ({ navigation }) => {
+  const signOut = async () => {
+    try {
+      // Set the value for the specified key
+      await AsyncStorage.setItem("@USER", 'null');
+      console.log(`Value for key @USER changed successfully.`);
+    } catch (error) {
+      console.error("Error while changing AsyncStorage value:", error);
+    }
+  };
   return (
-    <ScrollView>
-      <Text>
-        Yes
-      </Text>
+    <ScrollView style={styles.wrapper}>
+      <Text onPress={signOut}>Yes</Text>
       {/* <TouchableWithoutFeedback
         onPress={() => {
           Keyboard.dismiss();

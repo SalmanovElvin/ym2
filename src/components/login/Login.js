@@ -10,29 +10,31 @@ import {
   TouchableOpacity,
   Keyboard,
 } from "react-native";
-import { useMutation } from '@apollo/client';
+import { useMutation } from "@apollo/client";
 
-import { LOGIN_USER } from '../../../graph/mutations/users';
-import { useUnionState } from '../../../store/union-context';
-import { useUserDispatch } from '../../../store/user-context';
+import { LOGIN_USER } from "../../../graph/mutations/users";
+import { useUnionState } from "../../../store/union-context";
+import { useUserDispatch } from "../../../store/user-context";
 
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import AnimatedLoader from 'react-native-animated-loader';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import AnimatedLoader from "react-native-animated-loader";
 
 export const Login = ({ navigation, route }) => {
-
   const { getAccess } = route.params;
-
 
   const openUnionLogin = () => {
     navigation.navigate("unionSignIn");
   };
 
   const unionState = useUnionState();
-  const [logoURL, setLogoURL] = useState('');
-
- 
+  // console.log(unionState.information.imageURL);
+  const [logoURL, setLogoURL] = useState("");
+  // if(unionState!==null){
+  //   setLogoURL({
+  //     uri: `${unionState.information.imageURL}`,
+  //   });
+  // }
 
   const [loginInfo, setLoginInfo] = useState({});
   const userDispatch = useUserDispatch();
@@ -40,125 +42,172 @@ export const Login = ({ navigation, route }) => {
     onCompleted: () => {
       // console.log(data.login.user);
       setVisible(false);
-      userDispatch({ type: 'LOGIN', payload: data.login.user });
+      userDispatch({ type: "LOGIN", payload: data.login.user });
       getAccess();
     },
     variables: {
       input: loginInfo,
-      device: 'mobile'
+      device: "mobile",
     },
     onError: (err) => {
       // console.error(err.message);
-      if (err.message.includes('Your account is pending approval, you will receive an email')) {
+      if (
+        err.message.includes(
+          "Your account is pending approval, you will receive an email"
+        )
+      ) {
         setVisible(false);
 
         setErrMsg(
           <>
-            Account is pending approval. We will send an email to the personal email you used when
-            you registered once your account has been verified. Thank you for your patience.
-          </>);
-        setTip('');
+            Account is pending approval. We will send an email to the personal
+            email you used when you registered once your account has been
+            verified. Thank you for your patience.
+          </>
+        );
+        setTip("");
         setErrUser(true);
       }
-      if (err.message.includes('Account has been locked. Please reset your password. If you are')) {
+      if (
+        err.message.includes(
+          "Account has been locked. Please reset your password. If you are"
+        )
+      ) {
         setVisible(false);
 
         setErrMsg(
           <>
-            Account has been locked. Please click on
-            {' '}
-            <Text onPress={() => { navigation.navigate('forgot'); setErrUser(false); }} style={{ textDecorationLine: 'underline' }}>
+            Account has been locked. Please click on{" "}
+            <Text
+              onPress={() => {
+                navigation.navigate("forgot");
+                setErrUser(false);
+              }}
+              style={{ textDecorationLine: "underline" }}
+            >
               Forgot Password?
-            </Text>
-            {' '}
-            and enter in the username or personal email associated with your account to reset your password.
-          </>);
-        setTip('');
+            </Text>{" "}
+            and enter in the username or personal email associated with your
+            account to reset your password.
+          </>
+        );
+        setTip("");
         setErrUser(true);
       }
-      if (err.message.includes('Login attempt failed.')) {
+      if (err.message.includes("Login attempt failed.")) {
         setVisible(false);
 
         setErrMsg(
           <>
-            Incorrect password. You have {parseInt(err.message.match(/\d+/)[0])} more attempts before your account is locked. If you forget your password, please click on{' '}
-            <Text onPress={() => { navigation.navigate('forgot'); setErrUser(false); }} style={{ textDecorationLine: 'underline' }}>
+            Incorrect password. You have {parseInt(err.message.match(/\d+/)[0])}{" "}
+            more attempts before your account is locked. If you forget your
+            password, please click on{" "}
+            <Text
+              onPress={() => {
+                navigation.navigate("forgot");
+                setErrUser(false);
+              }}
+              style={{ textDecorationLine: "underline" }}
+            >
               Forgot Password?
-            </Text>{' '}
+            </Text>{" "}
             to reset.
-          </>);
-        setTip('');
+          </>
+        );
+        setTip("");
         setErrUser(true);
       }
-      if (err.message.includes('Account with this username or email does not exist')) {
+      if (
+        err.message.includes(
+          "Account with this username or email does not exist"
+        )
+      ) {
         setVisible(false);
 
         setErrMsg(
           <>
-            Account with this username/email does not exist. If you are a new member, please{' '}
-            <Text onPress={() => { navigation.navigate('signUp'); setErrUser(false); }} style={{ textDecorationLine: 'underline' }}>
+            Account with this username/email does not exist. If you are a new
+            member, please{" "}
+            <Text
+              onPress={() => {
+                navigation.navigate("signUp");
+                setErrUser(false);
+              }}
+              style={{ textDecorationLine: "underline" }}
+            >
               Register
             </Text>
-          </>);
-        setTip('Hint: you can also sign in with the personal email associated with your account.');
+          </>
+        );
+        setTip(
+          "Hint: you can also sign in with the personal email associated with your account."
+        );
         setErrUser(true);
       }
-
-    }
+    },
   });
-
-
 
   const loginHandler = () => {
     if (username.trim().length !== 0 && password.trim().length !== 0) {
       setVisible(true);
       Keyboard.dismiss();
-      setLoginInfo({ email: username.trim(), username: username.trim(), unionID: unionState.id, password: password.trim() });
+      setLoginInfo({
+        email: username.trim(),
+        username: username.trim(),
+        unionID: unionState.id,
+        password: password.trim(),
+      });
       // console.log(loginInfo);
-      loginUser({ variables: { input: { email: username.trim(), username: username.trim(), unionID: unionState.id, password: password.trim() }, device: 'mobile' } });
+      loginUser({
+        variables: {
+          input: {
+            email: username.trim(),
+            username: username.trim(),
+            unionID: unionState.id,
+            password: password.trim(),
+          },
+          device: "mobile",
+        },
+      });
     } else {
       Keyboard.dismiss();
-      setErrMsg('Please provide both username and password');
-      setTip('');
+      setErrMsg("Please provide both username and password");
+      setTip("");
       setErrUser(true);
       setVisible(false);
     }
   };
 
-
   //////////////////////////////////////////////////////////////////////
-
 
   const [userData, setUserData] = useState(null);
   useEffect(() => {
     const getData = async () => {
       try {
-        const value = await AsyncStorage.getItem('UNION'); // Replace 'key' with your actual key
-        const userVal = await AsyncStorage.getItem('@USER'); // Replace 'key' with your actual key
+        const value = await AsyncStorage.getItem("UNION"); // Replace 'key' with your actual key
 
-        if (userVal !== null && JSON.parse(userVal).username!==undefined) {
+        if (value !== null) {
+          setLogoURL({ uri: `${JSON.parse(value).information.imageURL}` });
+          // console.log('Retrieved data:', JSON.parse(value).information.imageURL);
+        } else {
+          console.log("No union data found");
+        }
+
+        const userVal = await AsyncStorage.getItem("@USER"); // Replace 'key' with your actual key
+
+        if (userVal !== null && JSON.parse(userVal).username !== undefined) {
           setUserData(JSON.parse(userVal));
           // navigation.navigate('Home');
           // console.log(JSON.parse(userVal).username);
         } else {
-          console.log('No user data found');
-        }
-
-        if (value !== null) {
-          setLogoURL({ uri: `${JSON.parse(value).information.imageURL}` })
-          // console.log('Retrieved data:', JSON.parse(value).information.imageURL);
-        } else {
-          console.log('No union data found');
+          console.log("No user data found");
         }
       } catch (error) {
-        console.error('Error retrieving data:', error);
+        console.error("Error retrieving data:", error);
       }
-    }
+    };
     getData();
-
-  }, [])
-
-
+  }, []);
 
   //This is for using AsyncStorage
 
@@ -206,32 +255,31 @@ export const Login = ({ navigation, route }) => {
     setShowPassword(!showPassword);
   };
 
-
   const [errUser, setErrUser] = useState(false);
-  const [errMsg, setErrMsg] = useState(''), [tip, setTip] = useState('');
-
+  const [errMsg, setErrMsg] = useState(""),
+    [tip, setTip] = useState("");
 
   const [visible, setVisible] = useState(false);
 
   return (
     <View style={styles.mainContUnion}>
-      {errUser ?
+      {errUser ? (
         <View style={styles.modalBack}>
           <View style={styles.modal}>
-            <Text style={styles.errMsg}>
-              {errMsg}
-            </Text>
-            <Text style={styles.tip}>
-              {tip}
-            </Text>
-            <TouchableOpacity onPress={() => setErrUser(false)} activeOpacity={0.7} style={styles.conf}>
+            <Text style={styles.errMsg}>{errMsg}</Text>
+            <Text style={styles.tip}>{tip}</Text>
+            <TouchableOpacity
+              onPress={() => setErrUser(false)}
+              activeOpacity={0.7}
+              style={styles.conf}
+            >
               <Text style={styles.btnConf}>Close</Text>
             </TouchableOpacity>
           </View>
         </View>
-        :
+      ) : (
         <></>
-      }
+      )}
       <View>
         <Image
           style={{ width: 100, height: 100, borderRadius: 20 }}
@@ -240,7 +288,12 @@ export const Login = ({ navigation, route }) => {
       </View>
       <View style={styles.mainFormUnion}>
         <Text style={styles.header}>Log into your account</Text>
-        <TextInput onChangeText={setUsername} style={styles.input} keyboardType="email-address" placeholder="Login" />
+        <TextInput
+          onChangeText={setUsername}
+          style={styles.input}
+          keyboardType="email-address"
+          placeholder="Login"
+        />
         <View style={styles.container}>
           <TextInput
             // Set secureTextEntry prop to hide
@@ -259,25 +312,37 @@ export const Login = ({ navigation, route }) => {
             onPress={toggleShowPassword}
           />
         </View>
-        <Text onPress={() => navigation.navigate('forgot')} style={styles.forgot}>Forgot password?</Text>
-
+        <Text
+          onPress={() => navigation.navigate("forgot")}
+          style={styles.forgot}
+        >
+          Forgot password?
+        </Text>
 
         <AnimatedLoader
           visible={visible}
           overlayColor="rgba(255,255,255,0.75)"
           animationStyle={styles.lottie}
           speed={1}
-          source={require("../../../animations/Animation.json")}>
-        </AnimatedLoader>
-        <TouchableOpacity onPress={loginHandler} activeOpacity={0.7} style={styles.conf}>
-          <Text style={styles.btnConf}>
-            Sign in
-          </Text>
+          source={require("../../../animations/Animation.json")}
+        ></AnimatedLoader>
+        <TouchableOpacity
+          onPress={loginHandler}
+          activeOpacity={0.7}
+          style={styles.conf}
+        >
+          <Text style={styles.btnConf}>Sign in</Text>
         </TouchableOpacity>
 
         <Text style={styles.create}>
           If you don’t have an account you can sign up{" "}
-          <Text onPress={() => navigation.navigate('signUp')} style={styles.createHere}>Here</Text> .
+          <Text
+            onPress={() => navigation.navigate("signUp")}
+            style={styles.createHere}
+          >
+            Here
+          </Text>{" "}
+          .
         </Text>
       </View>
       <TouchableOpacity onPress={openUnionLogin} style={styles.changeUnion}>
@@ -294,19 +359,19 @@ const styles = StyleSheet.create({
   },
   modalBack: {
     zIndex: 999,
-    width: '100%',
-    position: 'absolute',
-    backgroundColor: 'rgba(0, 0, 50, 0.5)',
-    height: '100%',
-    alignItems: 'center',
-    justifyContent: 'center'
+    width: "100%",
+    position: "absolute",
+    backgroundColor: "rgba(0, 0, 50, 0.5)",
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
   },
   modal: {
-    width: '70%',
+    width: "70%",
     borderRadius: 10,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     padding: 15,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     shadowColor: "#4468c1",
     shadowOffset: {
       width: 0,
@@ -317,15 +382,15 @@ const styles = StyleSheet.create({
   },
   errMsg: {
     fontSize: 16,
-    fontWeight: '500',
+    fontWeight: "500",
     lineHeight: 22,
   },
   tip: {
     fontSize: 16,
-    fontWeight: '500',
+    fontWeight: "500",
     lineHeight: 22,
-    fontStyle: 'italic',
-    color: 'green',
+    fontStyle: "italic",
+    color: "green",
     marginBottom: 15,
   },
   mainContUnion: {
@@ -374,15 +439,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#34519A",
     height: 56,
     justifyContent: "center",
-    alignItems: 'center',
+    alignItems: "center",
     marginVertical: 10,
     borderRadius: 5,
   },
   btnConf: {
-    color: '#fff',
-    fontWeight: '700',
-    fontSize: 16
-
+    color: "#fff",
+    fontWeight: "700",
+    fontSize: 16,
   },
   container: {
     width: "90%",

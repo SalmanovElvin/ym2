@@ -20,30 +20,30 @@ export const FeedScreen = ({ navigation }) => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const value = await AsyncStorage.getItem('UNION'); // Replace 'key' with your actual key
-        const userVal = await AsyncStorage.getItem('@USER'); // Replace 'key' with your actual key
+        const value = await AsyncStorage.getItem("UNION"); // Replace 'key' with your actual key
+
+        if (value !== null) {
+          setLogoURL({ uri: `${JSON.parse(value).information.imageURL}` });
+          // console.log('Retrieved data:', JSON.parse(value).information.imageURL);
+        } else {
+          console.log("No union data found");
+        }
+
+        const userVal = await AsyncStorage.getItem("@USER"); // Replace 'key' with your actual key
 
         if (userVal !== null && JSON.parse(userVal).username !== undefined) {
           setUserData(JSON.parse(userVal));
           // navigation.navigate('Home');
           // console.log(JSON.parse(userVal).username);
         } else {
-          console.log('No user data found');
-        }
-
-        if (value !== null) {
-          setLogoURL({ uri: `${JSON.parse(value).information.imageURL}` })
-          // console.log('Retrieved data:', JSON.parse(value).information.imageURL);
-        } else {
-          console.log('No union data found');
+          console.log("No user data found");
         }
       } catch (error) {
-        console.error('Error retrieving data:', error);
+        console.error("Error retrieving data:", error);
       }
-    }
+    };
     getData();
-
-  }, [])
+  }, []);
 
 
   navigation.setOptions({
