@@ -35,70 +35,86 @@ const stil =
         headerTintColor: THEME.MAIN_COLOR,
       };
 
-function HomeNav() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Main"
-        options={{ title: "", ...stil }}
-        component={MainScreen}
-      />
-
-      {/* <Stack.Screen
-        name="Services"
-        options={{ title: "", ...stil }}
-        component={ServicesScreen}
-      />
-      <Stack.Screen
-        name="Settings"
-        options={{ title: "", ...stil }}
-        component={SettingsScreen}
-      /> */}
-    </Stack.Navigator>
-  );
-}
-
-function FeedNav() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Feed"
-        options={{ title: "", ...stil }}
-        component={FeedScreen}
-      />
-    </Stack.Navigator>
-  );
-}
-
-function ServicesNav() {
-  const signOutUser = async () => {
-   console.log('check');
-  };
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Services"
-        options={{ title: "", ...stil }}
-        component={ServicesScreen}
-      />
-      <Stack.Screen initialParams={signOutUser} name="Create" component={CreateScreen} />
-    </Stack.Navigator>
-  );
-}
-
-function SettingsNav() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Settings"
-        options={{ title: "", ...stil }}
-        component={SettingsScreen}
-      />
-    </Stack.Navigator>
-  );
-}
-
 export default function AppNavigation() {
+  /////////////////////////////////////////////////////////////
+  function HomeNav() {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Main"
+          options={{ title: "", ...stil }}
+          component={MainScreen}
+        />
+
+        {/* <Stack.Screen
+          name="Services"
+          options={{ title: "", ...stil }}
+          component={ServicesScreen}
+        />
+        <Stack.Screen
+          name="Settings"
+          options={{ title: "", ...stil }}
+          component={SettingsScreen}
+        /> */}
+      </Stack.Navigator>
+    );
+  }
+
+  function FeedNav() {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Feed"
+          options={{ title: "", ...stil }}
+          component={FeedScreen}
+        />
+      </Stack.Navigator>
+    );
+  }
+
+  
+  const [userIN, setUserIN] = useState(false);
+
+  const signOutUser = async () => {
+    try {
+      // Set the value for the specified key
+      await AsyncStorage.setItem("@USER", "null");
+      setUserIN(false);
+      console.log(`Value for key @USER changed successfully.`);
+    } catch (error) {
+      console.error("Error while changing AsyncStorage value:", error);
+    }
+  };
+
+  function ServicesNav() {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Services"
+          options={{ title: "", ...stil }}
+          component={ServicesScreen}
+        />
+        <Stack.Screen
+          initialParams={{ signOutUser }}
+          name="Create"
+          component={CreateScreen}
+        />
+      </Stack.Navigator>
+    );
+  }
+
+  function SettingsNav() {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Settings"
+          options={{ title: "", ...stil }}
+          component={SettingsScreen}
+        />
+      </Stack.Navigator>
+    );
+  }
+  ////////////////////////////////////////////////////////////
   const [accessToken, setAccessToken] = useState("");
   // const [isLoading, setIsLoading] = useState(true);
 
@@ -106,7 +122,6 @@ export default function AppNavigation() {
     setAccessToken("ok");
   };
 
-  const [userIN, setUserIN] = useState(false);
   useEffect(() => {
     const getData = async () => {
       try {

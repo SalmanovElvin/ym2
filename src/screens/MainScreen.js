@@ -10,9 +10,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export const MainScreen = ({ navigation }) => {
   // const navigator = useNavigation();
   const unionState = useUnionState();
-  const userState = useUserState();
 
-  const [userData, setUserData] = useState(null);
+  const [userState, setUserState] = useState(useUserState());
 
   const [logoURL, setLogoURL] = useState("");
   useEffect(() => {
@@ -30,7 +29,7 @@ export const MainScreen = ({ navigation }) => {
         const userVal = await AsyncStorage.getItem("@USER"); // Replace 'key' with your actual key
 
         if (userVal !== null && JSON.parse(userVal).username !== undefined) {
-          setUserData(JSON.parse(userVal));
+          setUserState(JSON.parse(userVal));
           // navigation.navigate('Home');
           // console.log(JSON.parse(userVal).username);
         } else {

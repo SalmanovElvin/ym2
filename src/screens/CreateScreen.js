@@ -22,7 +22,7 @@ export const CreateScreen = ({ navigation, route }) => {
   // };
   return (
     <ScrollView style={styles.wrapper}>
-      <Text onPress={signOut}>Yes</Text>
+      <Text onPress={()=>signOutUser()}>Yes</Text>
       {/* <TouchableWithoutFeedback
         onPress={() => {
           Keyboard.dismiss();
