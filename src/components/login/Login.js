@@ -27,7 +27,7 @@ export const Login = ({ navigation, route }) => {
     navigation.navigate("unionSignIn");
   };
 
-  const unionState = useUnionState();
+  const [unionState, setUnionState] = useState(useUnionState());
   // console.log(unionState.information.imageURL);
   const [logoURL, setLogoURL] = useState("");
   // if(unionState!==null){
@@ -188,6 +188,7 @@ export const Login = ({ navigation, route }) => {
 
         if (value !== null) {
           setLogoURL({ uri: `${JSON.parse(value).information.imageURL}` });
+          setUnionState(JSON.parse(value));
           // console.log('Retrieved data:', JSON.parse(value).information.imageURL);
         } else {
           console.log("No union data found");

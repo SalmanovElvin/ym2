@@ -56,7 +56,7 @@ export const ServicesScreen = ({ navigation, route }) => {
     headerRight: () => (
       <View style={{ flexDirection: "row", marginRight: 10 }}>
         <Svg
-          onPress={() => navigation.navigate("Create")}
+          onPress={() => {navigation.navigate("Create")}}
           style={{ marginRight: 20 }}
           width="32"
           height="32"

@@ -71,6 +71,9 @@ function FeedNav() {
 }
 
 function ServicesNav() {
+  const signOutUser = async () => {
+   console.log('check');
+  };
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -78,7 +81,7 @@ function ServicesNav() {
         options={{ title: "", ...stil }}
         component={ServicesScreen}
       />
-      <Stack.Screen name="Create" component={CreateScreen} />
+      <Stack.Screen initialParams={signOutUser} name="Create" component={CreateScreen} />
     </Stack.Navigator>
   );
 }
