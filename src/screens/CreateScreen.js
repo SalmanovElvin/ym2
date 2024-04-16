@@ -10,28 +10,17 @@ import {
 import { PhotoPicker } from "../components/PhotoPicker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 export const CreateScreen = ({ navigation, route }) => {
- const {signOutUser}=route.params;
-  // const signOutUser = async () => {
-  //   try {
-  //     // Set the value for the specified key
-  //     await AsyncStorage.setItem("@USER", 'null');
-  //     console.log(`Value for key @USER changed successfully.`);
-  //   } catch (error) {
-  //     console.error("Error while changing AsyncStorage value:", error);
-  //   }
-  // };
+  const { signOutUserAnsStr } = route.params;
+
   return (
     <ScrollView style={styles.wrapper}>
-      <Text onPress={()=>signOutUser()}>Yes</Text>
-      {/* <TouchableWithoutFeedback
+      <Text
         onPress={() => {
-          Keyboard.dismiss();
+          signOutUserAnsStr();
         }}
       >
-        <View style={styles.wrapper}>
-          <PhotoPicker />
-        </View>
-      </TouchableWithoutFeedback> */}
+        Close
+      </Text>
     </ScrollView>
   );
 };
@@ -39,16 +28,5 @@ export const CreateScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   wrapper: {
     padding: 10,
-  },
-  title: {
-    fontSize: 20,
-    textAlign: "center",
-    marginVertical: 10,
-  },
-  textArea: {
-    padding: 10,
-    marginBottom: 10,
-    // borderColor: 'grey',
-    // borderWidth: 1,
   },
 });

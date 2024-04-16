@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, ActivityIndicator } from "react-native";
+import { View, ActivityIndicator, NativeModules } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -72,15 +72,16 @@ export default function AppNavigation() {
     );
   }
 
-  
   const [userIN, setUserIN] = useState(false);
 
-  const signOutUser = async () => {
+  const signOutUserAnsStr = async () => {
     try {
       // Set the value for the specified key
       await AsyncStorage.setItem("@USER", "null");
       setUserIN(false);
+      setAccessToken("");
       console.log(`Value for key @USER changed successfully.`);
+      // NativeModules.DevSettings.reload();
     } catch (error) {
       console.error("Error while changing AsyncStorage value:", error);
     }
@@ -95,7 +96,7 @@ export default function AppNavigation() {
           component={ServicesScreen}
         />
         <Stack.Screen
-          initialParams={{ signOutUser }}
+          initialParams={{ signOutUserAnsStr }}
           name="Create"
           component={CreateScreen}
         />
