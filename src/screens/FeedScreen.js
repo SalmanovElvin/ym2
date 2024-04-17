@@ -120,7 +120,7 @@ export const FeedScreen = ({ navigation }) => {
         setNewsFeed([...data.newsFeed.pinned, ...data.newsFeed.data]);
         console.log([...data.newsFeed.pinned, ...data.newsFeed.data][2]);
         // for(let i=0;i<[...data.newsFeed.pinned, ...data.newsFeed.data].length;i++){
-          
+
         //   arr.push([...data.newsFeed.pinned, ...data.newsFeed.data][i].creator.profile);
         // }
         // console.log(arr);
@@ -150,21 +150,17 @@ export const FeedScreen = ({ navigation }) => {
         <ActivityIndicator size="large" color="grey" />
         :
         <>
-          {/* <Text>
-          OK
-        </Text> */}
-          {/* <FlatList
-            data={newsFeed} // Pass the data array
-            renderItem={(item, index) => <NewsFeed news={item} profile={newsFeed[index].creator?.profile} />} // Render each item using renderItem function
-            keyExtractor={item => item.id} // Unique key extractor for each item
-          /> */}
-          <NewsFeed news={newsFeed[0]} />
+          {/* <NewsFeed news={newsFeed[0]} />
           <NewsFeed news={newsFeed[1]} />
           <NewsFeed news={newsFeed[2]} />
           <NewsFeed news={newsFeed[3]} />
-          <NewsFeed news={newsFeed[4]} />
-
-
+          <NewsFeed news={newsFeed[4]} /> */}
+          
+          {newsFeed.map((newsItem, index) => (
+            <View key={index}>
+              <NewsFeed news={newsItem} />
+            </View>
+          ))}
         </>
       }
     </ScrollView>
