@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Keyboard,
+  ActivityIndicator,
 } from "react-native";
 import { useMutation } from "@apollo/client";
 
@@ -282,10 +283,11 @@ export const Login = ({ navigation, route }) => {
         <></>
       )}
       <View>
-        <Image
+        {logoURL === "" ? <ActivityIndicator size="large" color="blue" /> : <Image
           style={{ width: 100, height: 100, borderRadius: 20 }}
           source={logoURL}
-        />
+        />}
+
       </View>
       <View style={styles.mainFormUnion}>
         <Text style={styles.header}>Log into your account</Text>
