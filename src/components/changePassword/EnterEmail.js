@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -9,6 +9,8 @@ import {
   Keyboard,
 } from "react-native";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import { useMutation } from '@apollo/client';
 import { useUnionState } from '../../../store/union-context';
 import { REQUEST_PASSWORD_RESET } from '../../../graph/mutations/password';
@@ -17,15 +19,31 @@ import AnimatedLoader from 'react-native-animated-loader';
 
 export const EnterEmail = ({ navigation }) => {
 
-  const unionState = useUnionState();
+  const [unionState, setUnionState] = useState(useUnionState());
   const [email, setEmail] = useState('');
 
-  let logoURL = '';
-  if (unionState != null) {
-    logoURL = unionState.information.imageURL
-      ? { uri: `${unionState.information.imageURL}` }
-      : require('../../../ios-icon.png');
-  }
+  const [logoURL, setLogoURL] = useState("");
+
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const value = await AsyncStorage.getItem("UNION"); // Replace 'key' with your actual key
+
+        if (value !== null) {
+          setLogoURL({ uri: `${JSON.parse(value).information.imageURL}` });
+          setUnionState(JSON.parse(value));
+          // console.log('Retrieved data:', JSON.parse(value).information.imageURL);
+        } else {
+          console.log("No union data found");
+        }
+      } catch (error) {
+        console.error("Error retrieving data:", error);
+      }
+    };
+    getData();
+  }, []);
+
 
 
   let timeRedirecting = 7;
@@ -63,7 +81,7 @@ export const EnterEmail = ({ navigation }) => {
           {' '}<Text onPress={() => { navigation.navigate("signUp"); setErrUser(false); }} style={{ textDecorationLine: 'underline' }}>
             Register
           </Text>{' '}.
-          </>);
+        </>);
         setTip('Hint: you can also use the personal email associated with your account to reset your password.');
         setErrUser(true);
         setVisible(false);
