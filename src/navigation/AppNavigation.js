@@ -64,7 +64,7 @@ export default function AppNavigation() {
     return (
       <Stack.Navigator>
         <Stack.Screen
-          name="Feed"
+          name="FeedsScr"
           options={{ title: "", ...stil }}
           component={FeedScreen}
         />
@@ -91,7 +91,7 @@ export default function AppNavigation() {
     return (
       <Stack.Navigator>
         <Stack.Screen
-          name="Services"
+          name="ServicesScr"
           options={{ title: "", ...stil }}
           component={ServicesScreen}
         />
@@ -108,7 +108,7 @@ export default function AppNavigation() {
     return (
       <Stack.Navigator>
         <Stack.Screen
-          name="Settings"
+          name="SettingsScr"
           options={{ title: "", ...stil }}
           component={SettingsScreen}
         />

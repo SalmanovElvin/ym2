@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Button, FlatList, Image, ScrollView } from "react-native";
+import { View, Text, StyleSheet, Button, FlatList, Image, ScrollView, ActivityIndicator } from "react-native";
 import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
 
 import { useUnionState } from '../../store/union-context';
@@ -7,15 +7,17 @@ import { useUserState } from '../../store/user-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NewsFeed } from "../components/newsFeed/NewsFeed";
 
-
+import { GET_NEWS } from "../../graph/queries/news";
+import { useQuery } from '@apollo/client';
 
 
 export const FeedScreen = ({ navigation }) => {
-  const unionState = useUnionState();
+  const union = useUnionState();
   const userState = useUserState();
 
 
   const [userData, setUserData] = useState(null);
+  const [unionData, setUnionData] = useState('');
 
   const [logoURL, setLogoURL] = useState('');
   useEffect(() => {
@@ -25,6 +27,7 @@ export const FeedScreen = ({ navigation }) => {
 
         if (value !== null) {
           setLogoURL({ uri: `${JSON.parse(value).information.imageURL}` });
+          setUnionData(JSON.parse(value));
           // console.log('Retrieved data:', JSON.parse(value).information.imageURL);
         } else {
           console.log("No union data found");
@@ -83,15 +86,87 @@ export const FeedScreen = ({ navigation }) => {
     ),
   });
 
+  const [newsFeed, setNewsFeed] = useState([]);
+  // const [newsTest, setNewsTest] = useState([]);
+
+  const [isFetching, setIsFetching] = useState(false);
+
+  //query
+  const { data, loading, error, refetch } = useQuery(GET_NEWS, {
+    variables: {
+      unionID: unionData.id,
+      page: 1,
+      perpage: 999,
+      category: '',
+    },
+    onCompleted: () => {
+      if (
+        data &&
+        data.newsFeed &&
+        data.newsFeed.data &&
+        data.newsFeed.data.length
+      ) {
+        setNewsFeed([...data.newsFeed.data]);
+      }
+      if (
+        data &&
+        data.newsFeed &&
+        data.newsFeed.data &&
+        data.newsFeed.data.length &&
+        data.newsFeed.pinned &&
+        data.newsFeed.pinned.length
+      ) {
+
+        setNewsFeed([...data.newsFeed.pinned, ...data.newsFeed.data]);
+        console.log([...data.newsFeed.pinned, ...data.newsFeed.data][2]);
+        // for(let i=0;i<[...data.newsFeed.pinned, ...data.newsFeed.data].length;i++){
+          
+        //   arr.push([...data.newsFeed.pinned, ...data.newsFeed.data][i].creator.profile);
+        // }
+        // console.log(arr);
+      }
+      setIsFetching(false);
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+    fetchPolicy: 'cache-and-network',
+    notifyOnNetworkStatusChange: true,
+  });
+
+
+
+  useEffect(() => {
+    refetch();
+    setIsFetching(true);
+  }, [])
+
+
+
 
   return (
     <ScrollView style={styles.wrapper}>
-      <NewsFeed/>
-      <NewsFeed/>
-      <NewsFeed/>
-      <NewsFeed/>
-      <NewsFeed/>
-      <NewsFeed/>
+      {newsFeed.length === 0 ?
+        <ActivityIndicator size="large" color="grey" />
+        :
+        <>
+          {/* <Text>
+          OK
+        </Text> */}
+          {/* <FlatList
+            data={newsFeed} // Pass the data array
+            renderItem={(item, index) => <NewsFeed news={item} profile={newsFeed[index].creator?.profile} />} // Render each item using renderItem function
+            keyExtractor={item => item.id} // Unique key extractor for each item
+          /> */}
+          <NewsFeed news={newsFeed[0]} />
+          <NewsFeed news={newsFeed[1]} />
+          <NewsFeed news={newsFeed[2]} />
+          <NewsFeed news={newsFeed[3]} />
+          <NewsFeed news={newsFeed[4]} />
+
+
+        </>
+      }
     </ScrollView>
   )
 };

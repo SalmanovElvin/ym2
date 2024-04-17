@@ -1,28 +1,97 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Button, FlatList, Image, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Button, FlatList, Image, TouchableOpacity, ActivityIndicator } from "react-native";
 import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
 
 
 
 
 
-export const NewsFeed = ({ navigation }) => {
+export const NewsFeed = ({ navigation, news }) => {
     const [isCollapsed, setIsCollapsed] = useState(false);
     const toggleCollapsible = () => {
         setIsCollapsed(!isCollapsed);
     };
-    const txt = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.';
+
+    // First date: March 2, 2021, at 17:25:02 UTC
+    const firstDate = new Date(news?.createdOn);
+
+    // Current date
+    const currentDate = new Date();
+
+    // Calculate the difference in milliseconds
+    const difference = currentDate.getTime() - firstDate.getTime();
+
+    // Convert milliseconds to seconds, minutes, hours, weeks, months, and years
+    const secondsDifference = Math.floor(difference / 1000);
+    const minutesDifference = Math.floor(difference / (1000 * 60));
+    const hoursDifference = Math.floor(difference / (1000 * 60 * 60));
+    const weeksDifference = Math.floor(difference / (1000 * 60 * 60 * 24 * 7));
+    const monthsDifference = Math.floor(currentDate.getMonth() - firstDate.getMonth() + (12 * (currentDate.getFullYear() - firstDate.getFullYear())));
+    const yearsDifference = Math.floor(currentDate.getFullYear() - firstDate.getFullYear());
+    const [postedTime, setPostedTime] = useState('');
+
+    useEffect(() => {
+        if (yearsDifference !== 0) {
+            if (yearsDifference === 1) {
+                setPostedTime(`${yearsDifference} year`);
+            } else {
+                setPostedTime(`${yearsDifference} years`);
+            }
+        } else {
+            if (monthsDifference !== 0) {
+                if (monthsDifference === 1) {
+                    setPostedTime(`${monthsDifference} month`);
+                } else {
+                    setPostedTime(`${monthsDifference} months`);
+                }
+            } else {
+                if (weeksDifference !== 0) {
+                    if (weeksDifference === 1) {
+                        setPostedTime(`${weeksDifference} week`);
+                    } else {
+                        setPostedTime(`${weeksDifference} weeks`);
+                    }
+                } else {
+                    if (hoursDifference !== 0) {
+                        if (hoursDifference === 1) {
+                            setPostedTime(`${hoursDifference} hour`);
+                        } else {
+                            setPostedTime(`${hoursDifference} hours`);
+                        }
+                    } else {
+                        if (minutesDifference !== 0) {
+                            if (minutesDifference === 1) {
+                                setPostedTime(`${minutesDifference} minute`);
+                            } else {
+                                setPostedTime(`${minutesDifference} minute`);
+                            }
+                        } else {
+                            if (secondsDifference !== 0) {
+                                if (secondsDifference === 1) {
+                                    setPostedTime(`${secondsDifference} second`);
+                                } else {
+                                    setPostedTime(`${secondsDifference} seconds`);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }, [])
+
+
     return (
         <View style={styles.wrapper}>
             <View style={styles.feedHeader}>
                 <View style={styles.photo}>
                     <Image
                         style={{ width: 40, height: 40, borderRadius: 50 }}
-                        source={{ uri: 'https://kinsta.com/wp-content/uploads/2020/08/tiger-jpg.jpg' }}
+                        source={{ uri: news?.creator?.profile?.imageURL }}
                     />
                     <View style={styles.nameWrapper}>
-                        <Text style={styles.name}>Name Surname</Text>
-                        <Text style={styles.postedTime}>posted 2 hours ago</Text>
+                        <Text style={styles.name}>{news?.creator?.firstName} {news?.creator?.lastName}</Text>
+                        <Text style={styles.postedTime}>posted {postedTime} ago</Text>
                     </View>
                 </View>
                 <View style={styles.headerIcons}>
@@ -47,19 +116,23 @@ export const NewsFeed = ({ navigation }) => {
             </View>
             {isCollapsed && (
                 <Text style={styles.descriptionTxt}>
-                    {txt.length < 75 ? txt : `${txt.slice(0, 75)}...`}
+                    {news.content.length < 75 ? news.content : `${news.content.slice(0, 75)}...`}
                 </Text>
             )}
 
             {!isCollapsed && (
                 <>
                     <Text style={styles.descriptionTxt}>
-                        {txt}
+                        {news?.content}
                     </Text>
-                    <Image
-                        style={{ width: '100%', height: 244, borderRadius: 5 }}
-                        source={{ uri: 'https://kinsta.com/wp-content/uploads/2020/08/tiger-jpg.jpg' }}
-                    />
+                    {news?.images !== null && news?.images.length !== 0 ?
+                        <Image
+                            style={{ width: '100%', height: 244, borderRadius: 5 }}
+                            source={{ uri: news?.images[0] }}
+                        />
+                        :
+                        <></>
+                    }
 
                 </>
             )}
@@ -69,7 +142,7 @@ export const NewsFeed = ({ navigation }) => {
                         <Path d="M6.5 1.5C3.4625 1.5 1 4.08259 1 7.26822C1 13.0364 7.5 18.2803 11 19.5C14.5 18.2803 21 13.0364 21 7.26822C21 4.08259 18.5375 1.5 15.5 1.5C13.64 1.5 11.995 2.46854 11 3.95097C10.4928 3.19334 9.81908 2.57503 9.03577 2.14839C8.25245 1.72175 7.38265 1.49935 6.5 1.5Z" stroke="#242529" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                     </Svg>
                     <Text style={styles.count}>
-                        7
+                        {news?.likes?.length}
                     </Text>
                 </View>
                 <View style={styles.bottomIconWrapper}>
@@ -88,7 +161,7 @@ export const NewsFeed = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     wrapper: {
-        marginVertical:10,
+        marginVertical: 10,
         paddingHorizontal: 24,
         paddingVertical: 16,
         backgroundColor: '#fff',
@@ -116,7 +189,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
     },
     name: {
-        fontFamily: 'Inter',
+        // fontFamily: 'Inter',
         fontSize: 16,
         fontWeight: '500',
         lineHeight: 19.36,
