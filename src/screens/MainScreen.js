@@ -119,10 +119,6 @@ export const MainScreen = ({ navigation }) => {
     ),
   });
 
-  const openPostHandler = (post) => {
-    navigation.navigate("Post", { post });
-  };
-
   return (
     <View style={styles.wrapper}>
       <Text>Hello {userState.username}</Text>

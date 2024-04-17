@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Button, FlatList, Image } from "react-native";
+import { View, Text, StyleSheet, Button, FlatList, Image, ScrollView } from "react-native";
 import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
 
 import { useUnionState } from '../../store/union-context';
 import { useUserState } from '../../store/user-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { NewsFeed } from "../components/newsFeed/NewsFeed";
 
 
 
@@ -83,21 +84,21 @@ export const FeedScreen = ({ navigation }) => {
   });
 
 
-
-  const openPostHandler = post => {
-    navigation.navigate('Post', { post });
-  }
-
   return (
-    <View style={styles.wrapper}>
-      <Text>Feeds</Text>
-    </View>
+    <ScrollView style={styles.wrapper}>
+      <NewsFeed/>
+      <NewsFeed/>
+      <NewsFeed/>
+      <NewsFeed/>
+      <NewsFeed/>
+      <NewsFeed/>
+    </ScrollView>
   )
 };
 
 
 const styles = StyleSheet.create({
   wrapper: {
-    padding: 10,
+    paddingVertical: 10,
   },
 });
