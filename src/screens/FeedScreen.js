@@ -118,7 +118,7 @@ export const FeedScreen = ({ navigation }) => {
       ) {
 
         setNewsFeed([...data.newsFeed.pinned, ...data.newsFeed.data]);
-        console.log([...data.newsFeed.pinned, ...data.newsFeed.data][2]);
+        // console.log([...data.newsFeed.pinned, ...data.newsFeed.data]);
         // for(let i=0;i<[...data.newsFeed.pinned, ...data.newsFeed.data].length;i++){
 
         //   arr.push([...data.newsFeed.pinned, ...data.newsFeed.data][i].creator.profile);
