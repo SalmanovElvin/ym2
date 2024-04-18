@@ -192,14 +192,13 @@ export const NewsFeed = ({ navigation, news }) => {
     if (isLiked == false) {
       likeNewsItem();
       setLikeCount(likeCount + 1);
-    } else {
-      setLikeCount(likeCount - 1);
-    }
-    setIsLiked(!isLiked);
+    } //else {
+      //setLikeCount(likeCount - 1);
+    //}
+    // setIsLiked(!isLiked);
+    setIsLiked(true);
 
-    // setTimeout(() => {
-    //   console.log(news.likes);
-    // }, 1000);
+  
   };
 
   const animationRef = useRef();

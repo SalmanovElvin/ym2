@@ -188,7 +188,11 @@ export const FeedScreen = ({ navigation }) => {
   return (
     <View style={styles.wrapper}>
       {newsFeed.length === 0 ? (
-        <ActivityIndicator size="large" color="grey" />
+        <View
+          style={{ height:'100%', justifyContent: "center", alignItems: "center" }}
+        >
+          <ActivityIndicator size="large" color="blue" />
+        </View>
       ) : (
         <>
           {/* <NewsFeed news={newsFeed[0]} />
