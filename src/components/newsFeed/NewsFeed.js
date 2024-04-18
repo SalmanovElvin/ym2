@@ -18,6 +18,7 @@ import Svg, {
   Rect,
   Ellipse,
 } from "react-native-svg";
+import HTMLView from "react-native-htmlview";
 
 export const NewsFeed = ({ navigation, news }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -128,7 +129,7 @@ export const NewsFeed = ({ navigation, news }) => {
                 d="M222.324 959.994c0.65-74.688 29.145-144.534 80.868-197.979 53.219-54.995 126.117-84.134 201.904-84.794 74.199-0.646 145.202 29.791 197.979 80.867 54.995 53.219 84.13 126.119 84.79 201.905 0.603 68.932 107.549 68.99 106.947 0-1.857-213.527-176.184-387.865-389.716-389.721-213.551-1.854-387.885 178.986-389.721 389.721-0.601 68.991 106.349 68.933 106.949 0.001z"
                 fill="#E5594F"
               />
-            </Svg>  
+            </Svg>
           )}
 
           <View style={styles.nameWrapper}>
@@ -207,15 +208,21 @@ export const NewsFeed = ({ navigation, news }) => {
       </View>
       {isCollapsed && (
         <Text style={styles.descriptionTxt}>
-          {news.content.length < 75
-            ? news.content
-            : `${news.content.slice(0, 75)}...`}
+          {news.content.length < 75 ? (
+            <HTMLView value={news?.content} />
+          ) : (
+            <>
+              <HTMLView value={news.content.slice(0, 75)+'...'} stylesheet={styles} />
+            </>
+          )}
         </Text>
       )}
 
       {!isCollapsed && (
         <>
-          <Text style={styles.descriptionTxt}>{news?.content}</Text>
+          <Text style={styles.descriptionTxt}>
+            <HTMLView value={news?.content} />
+          </Text>
           {news?.images !== null && news?.images.length !== 0 ? (
             <Image
               style={{ width: "100%", height: 244, borderRadius: 5 }}
