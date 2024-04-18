@@ -10,6 +10,7 @@ import {
   TouchableWithoutFeedback,
   ActivityIndicator,
 } from "react-native";
+import { useMutation, useQuery } from "@apollo/client";
 import Svg, {
   G,
   Circle,
@@ -19,9 +20,11 @@ import Svg, {
   Rect,
   Ellipse,
 } from "react-native-svg";
+import { LIKE_NEWS_ITEM } from "../../../graph/mutations/news";
 import HTMLView from "react-native-htmlview";
 import AnimatedLoader from "react-native-animated-loader";
 import LottieView from "lottie-react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const NewsFeed = ({ navigation, news }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -103,6 +106,49 @@ export const NewsFeed = ({ navigation, news }) => {
     }
   }, []);
 
+  const [userData, setUserData] = useState(null);
+  const [unionData, setUnionData] = useState("");
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const value = await AsyncStorage.getItem("UNION"); // Replace 'key' with your actual key
+
+        if (value !== null) {
+          setUnionData(JSON.parse(value));
+        } else {
+          console.log("No union data found");
+        }
+
+        const userVal = await AsyncStorage.getItem("@USER"); // Replace 'key' with your actual key
+
+        if (userVal !== null && JSON.parse(userVal).username !== undefined) {
+          setUserData(JSON.parse(userVal));
+        } else {
+          console.log("No user data found");
+        }
+      } catch (error) {
+        console.error("Error retrieving data:", error);
+      }
+    };
+    getData();
+
+    for (let i = 0; i < news?.likes; i++) {
+      if (news.likes[i] === userData.id) {
+        setIsLiked(true);
+      }
+    }
+  }, []);
+
+  const [likeNewsItem] = useMutation(LIKE_NEWS_ITEM, {
+    variables: {
+      unionID: userData?.unionID,
+      newsID: news?.id,
+      userID: userData?.id,
+    },
+    onCompleted: () => {},
+    notifyOnNetworkStatusChange: true,
+  });
+
   const [isLiked, setIsLiked] = useState(false);
   const [likeVisible, setLikeVisible] = useState(false);
   const lastPressRef = useRef(0);
@@ -123,13 +169,22 @@ export const NewsFeed = ({ navigation, news }) => {
           setLikeVisible(false);
         }, 1000);
         likeHandler();
+        likeNewsItem();
       }
     }
 
     lastPressRef.current = currentTime;
   };
   const likeHandler = () => {
+    // console.log(userData.unionID);
+
     setIsLiked(!isLiked);
+    if (isLiked == false) {
+      likeNewsItem();
+    }
+    // setTimeout(() => {
+    //   console.log(news.likes);
+    // }, 1000);
   };
 
   const animationRef = useRef();
@@ -274,8 +329,8 @@ export const NewsFeed = ({ navigation, news }) => {
                   ref={animationRef}
                   source={require("../../../animations/like.json")} // Replace with your animation file
                   style={{
-                    width: 100,
-                    height: 100,
+                    width: 170,
+                    height: 170,
                     position: "absolute",
                     zIndex: 999,
                   }}
