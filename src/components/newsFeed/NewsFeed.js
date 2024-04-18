@@ -27,6 +27,7 @@ import LottieView from "lottie-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const NewsFeed = ({ navigation, news }) => {
+    // console.log(news.likes);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const toggleCollapsible = () => {
     setIsCollapsed(!isCollapsed);
@@ -123,6 +124,15 @@ export const NewsFeed = ({ navigation, news }) => {
 
         if (userVal !== null && JSON.parse(userVal).username !== undefined) {
           setUserData(JSON.parse(userVal));
+        //   console.log(news.likes);
+        for (let i = 0; i < news?.likes?.length; i++) {
+            if (news.likes[i] == JSON.parse(userVal).id) {
+              setIsLiked(true);
+            }
+          }
+        //   setTimeout(() => {
+            
+        //   }, 200);
         } else {
           console.log("No user data found");
         }
@@ -131,11 +141,6 @@ export const NewsFeed = ({ navigation, news }) => {
       }
     };
     getData();
-    for (let i = 0; i < news?.likes.length; i++) {
-      if (news.likes[i] === `${userData.id}`) {
-        setIsLiked(true);
-      }
-    }
   }, []);
 
   const [likeNewsItem] = useMutation(LIKE_NEWS_ITEM, {
@@ -147,12 +152,16 @@ export const NewsFeed = ({ navigation, news }) => {
     onCompleted: () => {
       console.log("ok");
     },
+    onError: (err) => {
+      console.log(err);
+    },
     notifyOnNetworkStatusChange: true,
   });
 
   const [isLiked, setIsLiked] = useState(false);
   const [likeVisible, setLikeVisible] = useState(false);
   const lastPressRef = useRef(0);
+
   const handleDoublePress = () => {
     const currentTime = new Date().getTime();
     const delta = currentTime - lastPressRef.current;
@@ -171,18 +180,24 @@ export const NewsFeed = ({ navigation, news }) => {
         }, 1000);
         likeHandler();
         likeNewsItem();
+        setLikeCount(likeCount+1);
       }
     }
 
     lastPressRef.current = currentTime;
   };
+//   {isLiked ? +news?.likes?.length + 1 : news?.likes?.length}
+  const [likeCount, setLikeCount] = useState(news.likes?.length);
   const likeHandler = () => {
-    // console.log(userData.unionID);
-
-    setIsLiked(!isLiked);
-    if (isLiked == false) {
+    // console.log(unionData);
+    if (isLiked == false) { 
       likeNewsItem();
+      setLikeCount(likeCount+1) 
+    } else {
+        setLikeCount(likeCount-1)
     }
+    setIsLiked(!isLiked); 
+
     // setTimeout(() => {
     //   console.log(news.likes);
     // }, 1000);
@@ -315,7 +330,7 @@ export const NewsFeed = ({ navigation, news }) => {
           <Text style={styles.descriptionTxt}>
             <HTMLView value={news?.content} />
           </Text>
-          {news?.images !== null && news?.images.length !== 0 ? (
+          {news?.images !== null && news?.images?.length !== 0 ? (
             <TouchableOpacity
               style={{
                 position: "relative",
@@ -369,9 +384,7 @@ export const NewsFeed = ({ navigation, news }) => {
               strokeLinejoin="round"
             />
           </Svg>
-          <Text style={styles.count}>
-            {isLiked ? +news?.likes?.length + 1 : news?.likes?.length}
-          </Text>
+          <Text style={styles.count}>{likeCount}</Text>
         </View>
         <View style={styles.bottomIconWrapper}>
           <Svg
