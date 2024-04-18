@@ -49,6 +49,7 @@ export const NewsFeed = ({ navigation, news }) => {
     currentDate.getFullYear() - firstDate.getFullYear()
   );
   const [postedTime, setPostedTime] = useState("");
+  const [isLiked, setIsLiked] = useState(false);
 
   useEffect(() => {
     if (yearsDifference !== 0) {
@@ -100,6 +101,9 @@ export const NewsFeed = ({ navigation, news }) => {
     }
   }, []);
 
+  const likeHandler = () => {
+    setIsLiked(!isLiked);
+  };
   return (
     <View style={styles.wrapper}>
       <View style={styles.feedHeader}>
@@ -212,7 +216,10 @@ export const NewsFeed = ({ navigation, news }) => {
             <HTMLView value={news?.content} />
           ) : (
             <>
-              <HTMLView value={news.content.slice(0, 75)+'...'} stylesheet={styles} />
+              <HTMLView
+                value={news.content.slice(0, 75) + "..."}
+                stylesheet={styles}
+              />
             </>
           )}
         </Text>
@@ -236,21 +243,24 @@ export const NewsFeed = ({ navigation, news }) => {
       <View style={styles.iconsWrapper}>
         <View style={styles.bottomIconWrapper}>
           <Svg
+            onPress={() => likeHandler()}
             width="22"
             height="21"
             viewBox="0 0 22 21"
-            fill="none"
+            fill={isLiked ? "red" : "none"}
             xmlns="http://www.w3.org/2000/svg"
           >
             <Path
               d="M6.5 1.5C3.4625 1.5 1 4.08259 1 7.26822C1 13.0364 7.5 18.2803 11 19.5C14.5 18.2803 21 13.0364 21 7.26822C21 4.08259 18.5375 1.5 15.5 1.5C13.64 1.5 11.995 2.46854 11 3.95097C10.4928 3.19334 9.81908 2.57503 9.03577 2.14839C8.25245 1.72175 7.38265 1.49935 6.5 1.5Z"
-              stroke="#242529"
+              stroke={isLiked ? "red" : "#242529"}
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
             />
           </Svg>
-          <Text style={styles.count}>{news?.likes?.length}</Text>
+          <Text style={styles.count}>
+            {isLiked ? +news?.likes?.length + 1 : news?.likes?.length}
+          </Text>
         </View>
         <View style={styles.bottomIconWrapper}>
           <Svg
