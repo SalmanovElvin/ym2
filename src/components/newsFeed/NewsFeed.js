@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   ActivityIndicator,
 } from "react-native";
 import Svg, {
@@ -19,6 +20,8 @@ import Svg, {
   Ellipse,
 } from "react-native-svg";
 import HTMLView from "react-native-htmlview";
+import AnimatedLoader from "react-native-animated-loader";
+import LottieView from "lottie-react-native";
 
 export const NewsFeed = ({ navigation, news }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -49,7 +52,6 @@ export const NewsFeed = ({ navigation, news }) => {
     currentDate.getFullYear() - firstDate.getFullYear()
   );
   const [postedTime, setPostedTime] = useState("");
-  const [isLiked, setIsLiked] = useState(false);
 
   useEffect(() => {
     if (yearsDifference !== 0) {
@@ -101,9 +103,36 @@ export const NewsFeed = ({ navigation, news }) => {
     }
   }, []);
 
+  const [isLiked, setIsLiked] = useState(false);
+  const [likeVisible, setLikeVisible] = useState(false);
+  const lastPressRef = useRef(0);
+  const handleDoublePress = () => {
+    const currentTime = new Date().getTime();
+    const delta = currentTime - lastPressRef.current;
+
+    const DOUBLE_PRESS_DELAY = 300; // Adjust the delay as needed (in milliseconds)
+
+    if (delta < DOUBLE_PRESS_DELAY) {
+      // Double click detected
+      if (isLiked === false) {
+        setLikeVisible(true);
+        setTimeout(() => {
+          animationRef.current.play();
+        }, 100);
+        setTimeout(() => {
+          setLikeVisible(false);
+        }, 1000);
+        likeHandler();
+      }
+    }
+
+    lastPressRef.current = currentTime;
+  };
   const likeHandler = () => {
     setIsLiked(!isLiked);
   };
+
+  const animationRef = useRef();
   return (
     <View style={styles.wrapper}>
       <View style={styles.feedHeader}>
@@ -231,10 +260,36 @@ export const NewsFeed = ({ navigation, news }) => {
             <HTMLView value={news?.content} />
           </Text>
           {news?.images !== null && news?.images.length !== 0 ? (
-            <Image
-              style={{ width: "100%", height: 244, borderRadius: 5 }}
-              source={{ uri: news?.images[0] }}
-            />
+            <TouchableOpacity
+              style={{
+                position: "relative",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              onPress={handleDoublePress}
+              activeOpacity={0.8}
+            >
+              {likeVisible ? (
+                <LottieView
+                  ref={animationRef}
+                  source={require("../../../animations/like.json")} // Replace with your animation file
+                  style={{
+                    width: 100,
+                    height: 100,
+                    position: "absolute",
+                    zIndex: 999,
+                  }}
+                  loop={false} // Set loop to false to play the animation only once
+                />
+              ) : (
+                <></>
+              )}
+
+              <Image
+                style={{ width: "100%", height: 244, borderRadius: 5 }}
+                source={{ uri: news?.images[0] }}
+              />
+            </TouchableOpacity>
           ) : (
             <></>
           )}
@@ -286,6 +341,10 @@ export const NewsFeed = ({ navigation, news }) => {
 };
 
 const styles = StyleSheet.create({
+  lottie: {
+    width: 100,
+    height: 100,
+  },
   wrapper: {
     marginVertical: 10,
     paddingHorizontal: 24,
