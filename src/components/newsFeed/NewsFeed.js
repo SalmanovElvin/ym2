@@ -131,9 +131,8 @@ export const NewsFeed = ({ navigation, news }) => {
       }
     };
     getData();
-
-    for (let i = 0; i < news?.likes; i++) {
-      if (news.likes[i] === userData.id) {
+    for (let i = 0; i < news?.likes.length; i++) {
+      if (news.likes[i] === `${userData.id}`) {
         setIsLiked(true);
       }
     }
@@ -145,7 +144,9 @@ export const NewsFeed = ({ navigation, news }) => {
       newsID: news?.id,
       userID: userData?.id,
     },
-    onCompleted: () => {},
+    onCompleted: () => {
+      console.log("ok");
+    },
     notifyOnNetworkStatusChange: true,
   });
 
