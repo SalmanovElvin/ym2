@@ -27,7 +27,7 @@ import LottieView from "lottie-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const NewsFeed = ({ navigation, news }) => {
-    // console.log(news.likes);
+  // console.log(news.likes);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const toggleCollapsible = () => {
     setIsCollapsed(!isCollapsed);
@@ -124,15 +124,15 @@ export const NewsFeed = ({ navigation, news }) => {
 
         if (userVal !== null && JSON.parse(userVal).username !== undefined) {
           setUserData(JSON.parse(userVal));
-        //   console.log(news.likes);
-        for (let i = 0; i < news?.likes?.length; i++) {
+          //   console.log(news.likes);
+          for (let i = 0; i < news?.likes?.length; i++) {
             if (news.likes[i] == JSON.parse(userVal).id) {
               setIsLiked(true);
             }
           }
-        //   setTimeout(() => {
-            
-        //   }, 200);
+          //   setTimeout(() => {
+
+          //   }, 200);
         } else {
           console.log("No user data found");
         }
@@ -171,32 +171,31 @@ export const NewsFeed = ({ navigation, news }) => {
     if (delta < DOUBLE_PRESS_DELAY) {
       // Double click detected
       if (isLiked === false) {
-        setLikeVisible(true);
-        setTimeout(() => {
-          animationRef.current.play();
-        }, 100);
-        setTimeout(() => {
-          setLikeVisible(false);
-        }, 1000);
         likeHandler();
         likeNewsItem();
-        setLikeCount(likeCount+1);
+        setLikeCount(likeCount + 1);
       }
+      setLikeVisible(true);
+      setTimeout(() => {
+        animationRef.current.play();
+      }, 100);
+      setTimeout(() => {
+        setLikeVisible(false);
+      }, 1000);
     }
 
     lastPressRef.current = currentTime;
   };
-//   {isLiked ? +news?.likes?.length + 1 : news?.likes?.length}
+  //   {isLiked ? +news?.likes?.length + 1 : news?.likes?.length}
   const [likeCount, setLikeCount] = useState(news.likes?.length);
   const likeHandler = () => {
-    // console.log(unionData);
-    if (isLiked == false) { 
+    if (isLiked == false) {
       likeNewsItem();
-      setLikeCount(likeCount+1) 
+      setLikeCount(likeCount + 1);
     } else {
-        setLikeCount(likeCount-1)
+      setLikeCount(likeCount - 1);
     }
-    setIsLiked(!isLiked); 
+    setIsLiked(!isLiked);
 
     // setTimeout(() => {
     //   console.log(news.likes);
