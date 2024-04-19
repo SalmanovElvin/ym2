@@ -26,7 +26,7 @@ import AnimatedLoader from "react-native-animated-loader";
 import LottieView from "lottie-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const NewsFeed = ({ navigation, news, getNews }) => {
+export const NewsFeed = React.memo(({ navigation, news, getNews }) => {
   // console.log(news.likes);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const toggleCollapsible = () => {
@@ -230,6 +230,7 @@ export const NewsFeed = ({ navigation, news, getNews }) => {
   //   {isLiked ? +news?.likes?.length + 1 : news?.likes?.length}
   const [likeCount, setLikeCount] = useState(news.likes?.length);
   const likeHandler = () => {
+    // console.log(news.content);
     if (isLiked == false) {
       likeNewsItem();
       setLikeCount(likeCount + 1);
@@ -355,12 +356,14 @@ export const NewsFeed = ({ navigation, news, getNews }) => {
         <Text style={styles.descriptionTxt}>
           {news.content.length < 75 ? (
             <HTMLView value={news?.content} />
+            // news?.content
           ) : (
             <>
               <HTMLView
                 value={news.content.slice(0, 75) + "..."}
                 stylesheet={styles}
               />
+              {/* {news.content.slice(0, 75) + "..."} */}
             </>
           )}
         </Text>
@@ -370,6 +373,7 @@ export const NewsFeed = ({ navigation, news, getNews }) => {
         <>
           <Text style={styles.descriptionTxt}>
             <HTMLView value={news?.content} />
+            {/* {news?.content} */}
           </Text>
           {news?.images !== null && news?.images?.length !== 0 ? (
             <TouchableOpacity
@@ -448,7 +452,7 @@ export const NewsFeed = ({ navigation, news, getNews }) => {
       </View>
     </View>
   );
-};
+})
 
 const styles = StyleSheet.create({
   lottie: {

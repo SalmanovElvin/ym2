@@ -216,7 +216,7 @@ export const FeedScreen = ({ navigation }) => {
           <FlatList
             data={newsFeed}
             renderItem={({ item }) => <NewsFeed getNews={getNewsFunc} key={item?.id} news={item} />}
-            keyExtractor={({ item }) => item?.id}
+            keyExtractor={(item) => item?.id}
           />
 
           {/* {newsFeed.map((newsItem, index) => (
