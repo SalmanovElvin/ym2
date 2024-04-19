@@ -43,6 +43,7 @@ export const Login = ({ navigation, route }) => {
     onCompleted: () => {
       // console.log(data.login.user);
       setVisible(false);
+      
       userDispatch({ type: "LOGIN", payload: data.login.user });
       getAccess();
     },

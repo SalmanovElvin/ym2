@@ -28,6 +28,8 @@ const userReducer = (state, action) => {
   switch (action.type) {
     case 'LOGIN': {
       AsyncStorage.setItem(USER_KEY, JSON.stringify(action.payload));
+      AsyncStorage.setItem('token', action.payload.token);
+      AsyncStorage.setItem('uid', action.payload.unionID);
       return {
         ...state,
         ...action.payload,

@@ -49,8 +49,8 @@ export const NewsFeed = ({ navigation, news }) => {
   const weeksDifference = Math.floor(difference / (1000 * 60 * 60 * 24 * 7));
   const monthsDifference = Math.floor(
     currentDate.getMonth() -
-      firstDate.getMonth() +
-      12 * (currentDate.getFullYear() - firstDate.getFullYear())
+    firstDate.getMonth() +
+    12 * (currentDate.getFullYear() - firstDate.getFullYear())
   );
   const yearsDifference = Math.floor(
     currentDate.getFullYear() - firstDate.getFullYear()
@@ -150,7 +150,7 @@ export const NewsFeed = ({ navigation, news }) => {
       userID: userData?.id,
     },
     onCompleted: () => {
-      console.log("ok");
+      console.log("liked");
     },
     onError: (err) => {
       console.log(err);
@@ -175,13 +175,15 @@ export const NewsFeed = ({ navigation, news }) => {
         likeNewsItem();
         setLikeCount(likeCount + 1);
       }
-      setLikeVisible(true);
-      setTimeout(() => {
-        animationRef.current.play();
-      }, 100);
-      setTimeout(() => {
-        setLikeVisible(false);
-      }, 1000);
+      if (likeVisible === false) {
+        setLikeVisible(true);
+        setTimeout(() => {
+          animationRef.current.play();
+        }, 100);
+        setTimeout(() => {
+          setLikeVisible(false);
+        }, 1000);
+      }
     }
 
     lastPressRef.current = currentTime;
@@ -193,12 +195,12 @@ export const NewsFeed = ({ navigation, news }) => {
       likeNewsItem();
       setLikeCount(likeCount + 1);
     } //else {
-      //setLikeCount(likeCount - 1);
+    //setLikeCount(likeCount - 1);
     //}
     // setIsLiked(!isLiked);
     setIsLiked(true);
 
-  
+
   };
 
   const animationRef = useRef();
