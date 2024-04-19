@@ -45,3 +45,9 @@ export const PIN_NEWS = gql`
     pinNewsPost(unionID: $unionID, newsID: $newsID)
   }
 `;
+
+export const SHOW_PIN = gql`
+  mutation showPin($unionID: UnifiedID!, $newsID: UnifiedID!, $show: Boolean!) {
+    showPin(unionID: $unionID, newsID: $newsID, show: $show)
+  }
+`;

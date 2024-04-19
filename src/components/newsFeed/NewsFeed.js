@@ -20,13 +20,13 @@ import Svg, {
   Rect,
   Ellipse,
 } from "react-native-svg";
-import { LIKE_NEWS_ITEM, PIN_NEWS, } from "../../../graph/mutations/news";
+import { LIKE_NEWS_ITEM, PIN_NEWS, SHOW_PIN } from "../../../graph/mutations/news";
 import HTMLView from "react-native-htmlview";
 import AnimatedLoader from "react-native-animated-loader";
 import LottieView from "lottie-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const NewsFeed = ({ navigation, news }) => {
+export const NewsFeed = ({ navigation, news, getNews }) => {
   // console.log(news.likes);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const toggleCollapsible = () => {
@@ -167,12 +167,34 @@ export const NewsFeed = ({ navigation, news }) => {
       console.log(err);
     },
     onCompleted: () => {
-      console.log('pinned');
+      console.log('pinned or unpinned');
     }
   });
 
+  const [showPin] = useMutation(SHOW_PIN, {
+    onError: (err) => {
+      console.log(err);
+    },
+    onCompleted: () => {
+      console.log('unpinned');
+    }
+  });
+
+
   const pinCard = () => {
+    // if (news?.pinned === true) {
+    // showPin({
+    //   variables: {
+    //     unionID: userData.unionID,
+    //     newsID: news.id,
+    //     show: false
+    //   }
+    // });
+    // getNews();
+    // } else {
     pinNews();
+    getNews();
+    // }
   };
 
   const [isLiked, setIsLiked] = useState(false);
@@ -211,7 +233,8 @@ export const NewsFeed = ({ navigation, news }) => {
     if (isLiked == false) {
       likeNewsItem();
       setLikeCount(likeCount + 1);
-    } //else {
+    } 
+    //else {
     //setLikeCount(likeCount - 1);
     //}
     // setIsLiked(!isLiked);
@@ -262,7 +285,7 @@ export const NewsFeed = ({ navigation, news }) => {
         </View>
         <View style={styles.headerIcons}>
           <TouchableOpacity
-          onPress={pinCard}
+            onPress={pinCard}
             style={{
               height: 20,
               width: 20,

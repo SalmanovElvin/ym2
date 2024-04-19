@@ -185,11 +185,20 @@ export const FeedScreen = ({ navigation }) => {
     setIsFetching(true);
   }, []);
 
+
+  const getNewsFunc = () => {
+    setNewsFeed([]);
+    setTimeout(() => {
+      refetch();
+      setIsFetching(true);
+    }, 500);
+  }
+
   return (
     <View style={styles.wrapper}>
       {newsFeed.length === 0 ? (
         <View
-          style={{ height:'100%', justifyContent: "center", alignItems: "center" }}
+          style={{ height: '100%', justifyContent: "center", alignItems: "center" }}
         >
           <ActivityIndicator size="large" color="blue" />
         </View>
@@ -206,7 +215,7 @@ export const FeedScreen = ({ navigation }) => {
 
           <FlatList
             data={newsFeed}
-            renderItem={({ item }) => <NewsFeed key={item.id} news={item} />}
+            renderItem={({ item }) => <NewsFeed getNews={getNewsFunc} key={item?.id} news={item} />}
             keyExtractor={({ item }) => item?.id}
           />
 
