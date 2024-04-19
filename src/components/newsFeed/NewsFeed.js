@@ -233,7 +233,7 @@ export const NewsFeed = ({ navigation, news, getNews }) => {
     if (isLiked == false) {
       likeNewsItem();
       setLikeCount(likeCount + 1);
-    } 
+    }
     //else {
     //setLikeCount(likeCount - 1);
     //}
