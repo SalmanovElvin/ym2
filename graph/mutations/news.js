@@ -39,3 +39,9 @@ export const DELETE_COMMENT = gql`
     deleteComment(unionID: $unionID, newsID: $newsID, commentID: $commentID)
   }
 `;
+
+export const PIN_NEWS = gql`
+  mutation pinNewsPost($unionID: UnifiedID!, $newsID: UnifiedID!) {
+    pinNewsPost(unionID: $unionID, newsID: $newsID)
+  }
+`;

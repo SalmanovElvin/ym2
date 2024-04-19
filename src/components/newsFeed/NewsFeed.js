@@ -20,7 +20,7 @@ import Svg, {
   Rect,
   Ellipse,
 } from "react-native-svg";
-import { LIKE_NEWS_ITEM } from "../../../graph/mutations/news";
+import { LIKE_NEWS_ITEM, PIN_NEWS, } from "../../../graph/mutations/news";
 import HTMLView from "react-native-htmlview";
 import AnimatedLoader from "react-native-animated-loader";
 import LottieView from "lottie-react-native";
@@ -158,6 +158,23 @@ export const NewsFeed = ({ navigation, news }) => {
     notifyOnNetworkStatusChange: true,
   });
 
+  const [pinNews] = useMutation(PIN_NEWS, {
+    variables: {
+      unionID: userData?.unionID,
+      newsID: news?.id
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+    onCompleted: () => {
+      console.log('pinned');
+    }
+  });
+
+  const pinCard = () => {
+    pinNews();
+  };
+
   const [isLiked, setIsLiked] = useState(false);
   const [likeVisible, setLikeVisible] = useState(false);
   const lastPressRef = useRef(0);
@@ -245,6 +262,7 @@ export const NewsFeed = ({ navigation, news }) => {
         </View>
         <View style={styles.headerIcons}>
           <TouchableOpacity
+          onPress={pinCard}
             style={{
               height: 20,
               width: 20,
