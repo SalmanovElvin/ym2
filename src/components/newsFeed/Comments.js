@@ -28,7 +28,7 @@ import LottieView from "lottie-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const Comments = React.memo(({ navigation, route }) => {
-    const { news, userData, logoURL } = route.params;
+    const { news, userData, logoURL, commentCount } = route.params;
 
 
     navigation.setOptions({
@@ -134,6 +134,12 @@ export const Comments = React.memo(({ navigation, route }) => {
     const [postedTime, setPostedTime] = useState("");
 
     useEffect(() => {
+        for (let i = 0; i < news?.likes?.length; i++) {
+            if (news.likes[i] == userData.id) {
+                setIsLiked(true);
+            }
+        }
+
         if (yearsDifference !== 0) {
             if (yearsDifference === 1) {
                 setPostedTime(`${yearsDifference} year`);
@@ -242,6 +248,8 @@ export const Comments = React.memo(({ navigation, route }) => {
 
 
     const animationRef = useRef();
+    const lastPressRef = useRef(0);
+
 
     return (
         <View style={styles.wrapper}>
@@ -286,7 +294,8 @@ export const Comments = React.memo(({ navigation, route }) => {
 
 
             <Text style={styles.descriptionTxt}>
-                {news.content}
+                aaa
+                {/* {news?.content} */}
                 {/* {Platform.OS === 'android' ?
                     news.content.replace(/<[^>]+>/g, '')
                     :
@@ -363,7 +372,7 @@ export const Comments = React.memo(({ navigation, route }) => {
                             strokeLinejoin="round"
                         />
                     </Svg>
-                    <Text style={styles.count}>3</Text>
+                    <Text style={styles.count}>{commentCount}</Text>
                 </View>
             </View>
         </View >

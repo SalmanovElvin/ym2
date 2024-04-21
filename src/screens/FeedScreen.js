@@ -201,9 +201,9 @@ export const FeedScreen = ({ navigation }) => {
     setErrUser(true);
   }
 
-  const openComments = (newsID, userData) => {
+  const openComments = (newsID, userData, commentCount) => {
     // console.log(newsFeed.find(item => item.id === newsID));
-    navigation.navigate('Comment', { news: newsFeed.find(item => item.id === newsID), userData: userData, logoURL: logoURL });
+    navigation.navigate('Comment', { news: newsFeed.find(item => item.id === newsID), userData: userData, logoURL: logoURL, commentCount: commentCount });
   }
 
   const [errUser, setErrUser] = useState(false);
