@@ -32,6 +32,82 @@ import LottieView from "lottie-react-native";
 
 const Comment = (comment) => {
     // console.log(comment.comment);
+
+
+    // First date: March 2, 2021, at 17:25:02 UTC
+    const firstDate = new Date(comment.comment.createdOn);
+
+    // Current date
+    const currentDate = new Date();
+
+    // Calculate the difference in milliseconds
+    const difference = currentDate.getTime() - firstDate.getTime();
+
+    // Convert milliseconds to seconds, minutes, hours, weeks, months, and years
+    const secondsDifference = Math.floor(difference / 1000);
+    const minutesDifference = Math.floor(difference / (1000 * 60));
+    const hoursDifference = Math.floor(difference / (1000 * 60 * 60));
+    const weeksDifference = Math.floor(difference / (1000 * 60 * 60 * 24 * 7));
+    const monthsDifference = Math.floor(
+        currentDate.getMonth() -
+        firstDate.getMonth() +
+        12 * (currentDate.getFullYear() - firstDate.getFullYear())
+    );
+    const yearsDifference = Math.floor(
+        currentDate.getFullYear() - firstDate.getFullYear()
+    );
+    const [postedTime, setPostedTime] = useState("");
+
+    useEffect(() => {
+
+        if (yearsDifference !== 0) {
+            if (yearsDifference === 1) {
+                setPostedTime(`${yearsDifference} year`);
+            } else {
+                setPostedTime(`${yearsDifference} years`);
+            }
+        } else {
+            if (monthsDifference !== 0) {
+                if (monthsDifference === 1) {
+                    setPostedTime(`${monthsDifference} month`);
+                } else {
+                    setPostedTime(`${monthsDifference} months`);
+                }
+            } else {
+                if (weeksDifference !== 0) {
+                    if (weeksDifference === 1) {
+                        setPostedTime(`${weeksDifference} week`);
+                    } else {
+                        setPostedTime(`${weeksDifference} weeks`);
+                    }
+                } else {
+                    if (hoursDifference !== 0) {
+                        if (hoursDifference === 1) {
+                            setPostedTime(`${hoursDifference} hour`);
+                        } else {
+                            setPostedTime(`${hoursDifference} hours`);
+                        }
+                    } else {
+                        if (minutesDifference !== 0) {
+                            if (minutesDifference === 1) {
+                                setPostedTime(`${minutesDifference} minute`);
+                            } else {
+                                setPostedTime(`${minutesDifference} minutes`);
+                            }
+                        } else {
+                            if (secondsDifference !== 0) {
+                                if (secondsDifference === 1) {
+                                    setPostedTime(`${secondsDifference} second`);
+                                } else {
+                                    setPostedTime(`${secondsDifference} seconds`);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }, []);
     return (
         <View style={styles.comment}>
             {comment?.comment?.creator?.profile?.imageURL !== "" ? (
@@ -67,7 +143,7 @@ const Comment = (comment) => {
                     <Text style={{ fontSize: 14, fontWeight: '400', color: '#242529', marginTop: 4 }}>{comment?.comment?.content}</Text>
                 </View>
                 <View style={styles.commentBottom}>
-                    <Text style={{ fontSize: 14, fontWeight: '400', color: '#696666', marginLeft: 8, marginTop: 4 }}>5h</Text>
+                    <Text style={{ fontSize: 14, fontWeight: '400', color: '#696666', marginLeft: 8, marginTop: 4 }}>{postedTime}</Text>
                     {/* <Text>Reply</Text> */}
                 </View>
             </View>
@@ -252,7 +328,7 @@ export const Comments = React.memo(({ navigation, route }) => {
                             if (minutesDifference === 1) {
                                 setPostedTime(`${minutesDifference} minute`);
                             } else {
-                                setPostedTime(`${minutesDifference} minute`);
+                                setPostedTime(`${minutesDifference} minutes`);
                             }
                         } else {
                             if (secondsDifference !== 0) {

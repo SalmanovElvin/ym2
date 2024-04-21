@@ -92,7 +92,7 @@ export const NewsFeed = ({ navigation, news, getNews, showErr, openComments }) =
               if (minutesDifference === 1) {
                 setPostedTime(`${minutesDifference} minute`);
               } else {
-                setPostedTime(`${minutesDifference} minute`);
+                setPostedTime(`${minutesDifference} minutes`);
               }
             } else {
               if (secondsDifference !== 0) {
