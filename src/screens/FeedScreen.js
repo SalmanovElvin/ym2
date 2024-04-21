@@ -8,6 +8,7 @@ import {
   Image,
   ScrollView,
   ActivityIndicator,
+  TouchableOpacity
 } from "react-native";
 import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
 
@@ -194,6 +195,15 @@ export const FeedScreen = ({ navigation }) => {
     }, 500);
   }
 
+  const showErr = () => {
+    setErrMsg("You do not have access to pin or unpin news.");
+    setTip("Only admin accounts can perform this operation.");
+    setErrUser(true);
+  }
+
+  const [errUser, setErrUser] = useState(false);
+  const [errMsg, setErrMsg] = useState(""),
+    [tip, setTip] = useState("");
   return (
     <View style={styles.wrapper}>
       {newsFeed.length === 0 ? (
@@ -204,6 +214,24 @@ export const FeedScreen = ({ navigation }) => {
         </View>
       ) : (
         <>
+
+          {errUser ? (
+            <View style={styles.modalBack}>
+              <View style={styles.modal}>
+                <Text style={styles.errMsg}>{errMsg}</Text>
+                <Text style={styles.tip}>{tip}</Text>
+                <TouchableOpacity
+                  onPress={() => setErrUser(false)}
+                  activeOpacity={0.7}
+                  style={styles.conf}
+                >
+                  <Text style={styles.btnConf}>Close</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          ) : (
+            <></>
+          )}
           {/* <NewsFeed news={newsFeed[0]} />
           <NewsFeed news={newsFeed[1]} />
           <NewsFeed news={newsFeed[2]} />
@@ -215,7 +243,7 @@ export const FeedScreen = ({ navigation }) => {
 
           <FlatList
             data={newsFeed}
-            renderItem={({ item }) => <NewsFeed getNews={getNewsFunc} key={item?.id} news={item} />}
+            renderItem={({ item }) => <NewsFeed showErr={showErr} getNews={getNewsFunc} key={item?.id} news={item} />}
             keyExtractor={(item) => item?.id}
           />
 
@@ -231,7 +259,56 @@ export const FeedScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  modalBack: {
+    zIndex: 999,
+    width: "100%",
+    position: "absolute",
+    backgroundColor: "rgba(0, 0, 50, 0.5)",
+    height: '100%',
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  modal: {
+    width: "70%",
+    borderRadius: 10,
+    backgroundColor: "#fff",
+    padding: 15,
+    justifyContent: "space-between",
+    shadowColor: "#4468c1",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 11.27,
+  },
+  errMsg: {
+    fontSize: 16,
+    fontWeight: "500",
+    lineHeight: 22,
+  },
+  tip: {
+    fontSize: 16,
+    fontWeight: "500",
+    lineHeight: 22,
+    fontStyle: "italic",
+    color: "green",
+    marginBottom: 15,
+  },
+  conf: {
+    width: "100%",
+    backgroundColor: "#34519A",
+    height: 56,
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 10,
+    borderRadius: 5,
+  },
+  btnConf: {
+    color: "#fff",
+    fontWeight: "700",
+    fontSize: 16,
+  },
   wrapper: {
-    paddingVertical: 10,
   },
 });

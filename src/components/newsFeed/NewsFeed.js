@@ -26,7 +26,7 @@ import AnimatedLoader from "react-native-animated-loader";
 import LottieView from "lottie-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const NewsFeed = React.memo(({ navigation, news, getNews }) => {
+export const NewsFeed = React.memo(({ navigation, news, getNews, showErr }) => {
   // console.log(news.likes);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const toggleCollapsible = () => {
@@ -164,10 +164,13 @@ export const NewsFeed = React.memo(({ navigation, news, getNews }) => {
       newsID: news?.id
     },
     onError: (err) => {
-      console.log(err);
+      if (err.message.includes('access restriction')) {
+        showErr();
+      }
     },
     onCompleted: () => {
       console.log('pinned or unpinned');
+      getNews();
     }
   });
 
@@ -182,19 +185,7 @@ export const NewsFeed = React.memo(({ navigation, news, getNews }) => {
 
 
   const pinCard = () => {
-    // if (news?.pinned === true) {
-    // showPin({
-    //   variables: {
-    //     unionID: userData.unionID,
-    //     newsID: news.id,
-    //     show: false
-    //   }
-    // });
-    // getNews();
-    // } else {
     pinNews();
-    getNews();
-    // }
   };
 
   const [isLiked, setIsLiked] = useState(false);
@@ -245,6 +236,7 @@ export const NewsFeed = React.memo(({ navigation, news, getNews }) => {
   };
 
   const animationRef = useRef();
+
   return (
     <View style={styles.wrapper}>
       <View style={styles.feedHeader}>
