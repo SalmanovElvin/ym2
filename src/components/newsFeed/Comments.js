@@ -13,6 +13,8 @@ import {
     ScrollView
 } from "react-native";
 import { useMutation, useQuery } from "@apollo/client";
+import { GET_NEWS_COMMENT } from "../../../graph/queries/news";
+
 import Svg, {
     G,
     Circle,
@@ -24,9 +26,7 @@ import Svg, {
 } from "react-native-svg";
 import { LIKE_NEWS_ITEM, PIN_NEWS, SHOW_PIN } from "../../../graph/mutations/news";
 import HTMLView from "react-native-htmlview";
-import AnimatedLoader from "react-native-animated-loader";
 import LottieView from "lottie-react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 export const Comments = React.memo(({ navigation, route }) => {
@@ -119,6 +119,26 @@ export const Comments = React.memo(({ navigation, route }) => {
         ),
     });
 
+    const [comments, setComments] = useState([]);
+    const [isLoaded, setIsLoaded] = useState(false);
+
+    const { data, loading, error, refetch } = useQuery(GET_NEWS_COMMENT, {
+        variables: {
+            unionID: userData?.unionID,
+            newsID: news?.id,
+        },
+        onCompleted: (data) => {
+            setComments(data.newsComments);
+            setIsLoaded(true);
+            console.log(data.newsComments);
+        },
+        onError: (err) => {
+            console.log(err);
+        },
+        fetchPolicy: 'cache-and-network',
+        notifyOnNetworkStatusChange: true,
+    });
+
 
     // First date: March 2, 2021, at 17:25:02 UTC
     const firstDate = new Date(news?.createdOn);
@@ -145,6 +165,7 @@ export const Comments = React.memo(({ navigation, route }) => {
     const [postedTime, setPostedTime] = useState("");
 
     useEffect(() => {
+        refetch();
         for (let i = 0; i < news?.likes?.length; i++) {
             if (news.likes[i] == userData.id) {
                 setIsLiked(true);
@@ -384,10 +405,40 @@ export const Comments = React.memo(({ navigation, route }) => {
                     <Text style={styles.count}>{commentCount}</Text>
                 </View>
             </View>
+            <View style={styles.commentWrapper}>
+                {!isLoaded ?
+                    <View
+                        style={{ justifyContent: "center", alignItems: "center" }}
+                    >
+                        <ActivityIndicator size="large" color="blue" />
+                    </View>
+                    :
+                    <View>
+                        {comments == null ?
+                            <Text style={styles.commentHeader}>
+                                No comments
+                            </Text>
+                            :
+                            <Text style={styles.commentHeader}>
+                                Recent comments
+                            </Text>
+                        }
+                    </View>
+                }
+            </View>
         </ScrollView >
     );
 })
 const styles = StyleSheet.create({
+    commentWrapper: {
+        marginTop: 10,
+        marginBottom: 35
+    },
+    commentHeader: {
+        fontWeight: '500',
+        fontSize: 16,
+        color: '#0B0B0B'
+    },
     lottie: {
         width: 100,
         height: 100,
@@ -454,8 +505,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "center",
         width: "20%",
-        marginTop: 15,
-        marginBottom: 30
+        marginVertical: 15,
     },
     bottomIconWrapper: {
         flexDirection: "row",
