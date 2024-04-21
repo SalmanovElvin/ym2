@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   ActivityIndicator,
+  Platform
 } from "react-native";
 import { useMutation, useQuery } from "@apollo/client";
 import Svg, {
@@ -347,15 +348,21 @@ export const NewsFeed = React.memo(({ navigation, news, getNews, showErr }) => {
       {isCollapsed && (
         <Text style={styles.descriptionTxt}>
           {news.content.length < 75 ? (
-            <HTMLView value={news?.content} />
+            Platform.OS === 'android' ?
+              news?.content.replace(/<[^>]+>/g, '')
+              :
+              <HTMLView value={news?.content} />
             // news?.content
           ) : (
             <>
-              <HTMLView
-                value={news.content.slice(0, 75) + "..."}
-                stylesheet={styles}
-              />
-              {/* {news.content.slice(0, 75) + "..."} */}
+              {Platform.OS === 'android' ?
+                (news.content.slice(0, 75) + "...").replace(/<[^>]+>/g, '')
+                :
+                <HTMLView
+                  value={news.content.slice(0, 75) + "..."}
+                  stylesheet={styles}
+                />
+              }
             </>
           )}
         </Text>
@@ -364,8 +371,11 @@ export const NewsFeed = React.memo(({ navigation, news, getNews, showErr }) => {
       {!isCollapsed && (
         <>
           <Text style={styles.descriptionTxt}>
-            <HTMLView value={news?.content} />
-            {/* {news?.content} */}
+            {Platform.OS === 'android' ?
+              news?.content.replace(/<[^>]+>/g, '')
+              :
+              <HTMLView value={news?.content} />
+            }
           </Text>
           {news?.images !== null && news?.images?.length !== 0 ? (
             <TouchableOpacity
@@ -445,7 +455,6 @@ export const NewsFeed = React.memo(({ navigation, news, getNews, showErr }) => {
     </View>
   );
 })
-
 const styles = StyleSheet.create({
   lottie: {
     width: 100,
@@ -501,7 +510,8 @@ const styles = StyleSheet.create({
   },
   descriptionTxt: {
     // fontFamily: 'Inter',
-    fontSize: 16,
+    flex: 1,
+    fontSize: 14,
     fontWeight: "400",
     lineHeight: 19.36,
     color: "#242529",
