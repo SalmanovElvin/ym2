@@ -22,12 +22,13 @@ import Svg, {
   Ellipse,
 } from "react-native-svg";
 import { LIKE_NEWS_ITEM, PIN_NEWS, SHOW_PIN } from "../../../graph/mutations/news";
+import { GET_NEWS_COMMENT } from "../../../graph/queries/news";
 import HTMLView from "react-native-htmlview";
 import AnimatedLoader from "react-native-animated-loader";
 import LottieView from "lottie-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const NewsFeed = React.memo(({ navigation, news, getNews, showErr }) => {
+export const NewsFeed = ({ navigation, news, getNews, showErr, openComments }) => {
   // console.log(news.likes);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const toggleCollapsible = () => {
@@ -141,6 +142,7 @@ export const NewsFeed = React.memo(({ navigation, news, getNews, showErr }) => {
         console.error("Error retrieving data:", error);
       }
     };
+    refetch();
     getData();
   }, []);
 
@@ -235,6 +237,24 @@ export const NewsFeed = React.memo(({ navigation, news, getNews, showErr }) => {
 
 
   };
+
+  const [commentCount, setCommentCount] = useState('');
+  //graphQL query to get news comments of news post
+  const { data, loading, error, refetch } = useQuery(GET_NEWS_COMMENT, {
+    variables: {
+      unionID: userData?.unionID,
+      newsID: news?.id,
+    },
+    onCompleted: (data) => {
+      setCommentCount(data.newsComments ? data.newsComments.length : '');
+      // console.log(data.newsComments);
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+    fetchPolicy: 'cache-and-network',
+    notifyOnNetworkStatusChange: true,
+  });
 
   const animationRef = useRef();
 
@@ -435,6 +455,7 @@ export const NewsFeed = React.memo(({ navigation, news, getNews, showErr }) => {
         </View>
         <View style={styles.bottomIconWrapper}>
           <Svg
+            onPress={() => openComments(news.id, userData)}
             width="20"
             height="21"
             viewBox="0 0 20 21"
@@ -449,12 +470,12 @@ export const NewsFeed = React.memo(({ navigation, news, getNews, showErr }) => {
               strokeLinejoin="round"
             />
           </Svg>
-          <Text style={styles.count}>3</Text>
+          <Text style={styles.count}>{commentCount}</Text>
         </View>
       </View>
     </View>
   );
-})
+}
 const styles = StyleSheet.create({
   lottie: {
     width: 100,

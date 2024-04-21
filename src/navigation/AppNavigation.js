@@ -22,6 +22,8 @@ import { SignUp } from "../components/signUp/SignUp";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ApolloProvider } from "@apollo/client";
 import { client } from "../../graph";
+import { NewsFeed } from "../components/newsFeed/NewsFeed";
+import { Comments } from "../components/newsFeed/Comments";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -29,13 +31,13 @@ const Tab = createBottomTabNavigator();
 const stil =
   Platform.OS === "android"
     ? {
-        headerStyle: { backgroundColor: THEME.MAIN_COLOR },
-        headerTintColor: "#fff",
-      }
+      headerStyle: { backgroundColor: THEME.MAIN_COLOR },
+      headerTintColor: "#fff",
+    }
     : {
-        headerStyle: { backgroundColor: "#fff" },
-        headerTintColor: THEME.MAIN_COLOR,
-      };
+      headerStyle: { backgroundColor: "#fff" },
+      headerTintColor: THEME.MAIN_COLOR,
+    };
 
 export default function AppNavigation() {
   /////////////////////////////////////////////////////////////
@@ -69,6 +71,16 @@ export default function AppNavigation() {
           name="FeedsScr"
           options={{ title: "", ...stil }}
           component={FeedScreen}
+        />
+        <Stack.Screen
+          name="NewsFeed"
+          options={{ title: "", ...stil }}
+          component={NewsFeed}
+        />
+        <Stack.Screen
+          name="Comment"
+          options={{ title: "", ...stil }}
+          component={Comments}
         />
       </Stack.Navigator>
     );
