@@ -9,7 +9,8 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback,
     ActivityIndicator,
-    Platform
+    Platform,
+    ScrollView
 } from "react-native";
 import { useMutation, useQuery } from "@apollo/client";
 import Svg, {
@@ -26,6 +27,7 @@ import HTMLView from "react-native-htmlview";
 import AnimatedLoader from "react-native-animated-loader";
 import LottieView from "lottie-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 export const Comments = React.memo(({ navigation, route }) => {
     const { news, userData, logoURL, commentCount } = route.params;
@@ -104,7 +106,16 @@ export const Comments = React.memo(({ navigation, route }) => {
             </View>
         ),
         headerLeft: () => (
-            <Image style={{ width: 50, height: 35 }} source={logoURL} />
+            // <Image style={{ width: 50, height: 35 }} source={logoURL} />
+            <TouchableOpacity onPress={() => navigation.navigate('FeedsScr')} activeOpacity={0.6} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                <Svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <Path d="M6.5 1L1.5 6L6.5 11" stroke="#242529" strokeWidth="2" strokeLinecap="round" />
+                </Svg>
+                <Text style={{ marginLeft: 15, fontWeight: '700', fontSize: 16, color: '#242529' }}>
+                    News List
+                </Text>
+
+            </TouchableOpacity>
         ),
     });
 
@@ -252,7 +263,7 @@ export const Comments = React.memo(({ navigation, route }) => {
 
 
     return (
-        <View style={styles.wrapper}>
+        <ScrollView style={styles.wrapper}>
             <View style={styles.feedHeader}>
                 <View style={styles.photo}>
                     {news?.creator?.profile?.imageURL !== "" ? (
@@ -294,13 +305,11 @@ export const Comments = React.memo(({ navigation, route }) => {
 
 
             <Text style={styles.descriptionTxt}>
-                aaa
-                {/* {news?.content} */}
-                {/* {Platform.OS === 'android' ?
-                    news.content.replace(/<[^>]+>/g, '')
+                {Platform.OS === 'android' ?
+                    news?.content.replace(/<[^>]+>/g, '')
                     :
-                    <HTMLView value={news.content} />
-                } */}
+                    <HTMLView value={news?.content} />
+                }
             </Text>
             {news?.images !== null && news?.images?.length !== 0 ? (
                 <TouchableOpacity
@@ -375,7 +384,7 @@ export const Comments = React.memo(({ navigation, route }) => {
                     <Text style={styles.count}>{commentCount}</Text>
                 </View>
             </View>
-        </View >
+        </ScrollView >
     );
 })
 const styles = StyleSheet.create({
@@ -384,7 +393,7 @@ const styles = StyleSheet.create({
         height: 100,
     },
     wrapper: {
-        marginVertical: 10,
+        marginTop: 10,
         paddingHorizontal: 24,
         paddingVertical: 16,
         backgroundColor: "#fff",
@@ -446,6 +455,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         width: "20%",
         marginTop: 15,
+        marginBottom: 30
     },
     bottomIconWrapper: {
         flexDirection: "row",
