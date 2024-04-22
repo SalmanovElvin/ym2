@@ -347,6 +347,6 @@ const styles = StyleSheet.create({
 });
 
 function isCloseToTop({ layoutMeasurement, contentOffset, contentSize }) {
-  const paddingToTop = -80;
+  const paddingToTop = -60;
   return contentOffset.y < paddingToTop;
 }

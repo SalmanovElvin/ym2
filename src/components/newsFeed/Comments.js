@@ -32,6 +32,7 @@ import {
   PIN_NEWS,
   SHOW_PIN,
   NEW_COMMENT,
+  DELETE_COMMENT,
 } from "../../../graph/mutations/news";
 import HTMLView from "react-native-htmlview";
 import LottieView from "lottie-react-native";
@@ -492,12 +493,37 @@ export const Comments = React.memo(({ navigation, route }) => {
 
   const [modalDelete, setModalDelete] = useState(false);
   const [deleteName, setDeleteName] = useState(false);
+  const [deletedCommentId, setDeletedCommentId] = useState(false);
+
+  const [deleteComment] = useMutation(DELETE_COMMENT, {
+    variables: {
+      unionID: userData.unionID,
+      newsID: news.id,
+      commentID: deletedCommentId,
+    },
+    onCompleted: () => {
+      swal("Success", "Comment successfully deleted", "success");
+    },
+    onError: () => swal("Error", "Unable to delete comment", "error"),
+    refetchQueries: ["singleNews"],
+  });
+
+  const DeleteFunc = () => {
+    deleteComment();
+    setModalDelete(false);
+    setIsLoaded(false);
+    setTimeout(() => {
+      refetch();
+    }, 300);
+  };
 
   const openDeleteModal = (comment) => {
     setDeleteName(
       comment?.creator?.firstName + " " + comment?.creator?.lastName
     );
     setModalDelete(true);
+
+    setDeletedCommentId(comment.id);
   };
 
   return (
@@ -521,7 +547,7 @@ export const Comments = React.memo(({ navigation, route }) => {
               }}
             >
               <TouchableOpacity
-                onPress={() => setModalDelete(false)}
+                onPress={() => DeleteFunc()}
                 activeOpacity={0.7}
                 style={styles.conf1}
               >
