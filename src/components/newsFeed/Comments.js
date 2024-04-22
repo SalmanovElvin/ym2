@@ -12,6 +12,8 @@ import {
   Platform,
   ScrollView,
   TextInput,
+  KeyboardAvoidingView,
+  Keyboard,
 } from "react-native";
 import { useMutation, useQuery } from "@apollo/client";
 import { GET_NEWS_COMMENT } from "../../../graph/queries/news";
@@ -29,6 +31,7 @@ import {
   LIKE_NEWS_ITEM,
   PIN_NEWS,
   SHOW_PIN,
+  NEW_COMMENT,
 } from "../../../graph/mutations/news";
 import HTMLView from "react-native-htmlview";
 import LottieView from "lottie-react-native";
@@ -118,7 +121,7 @@ const Comment = (comment) => {
         />
       ) : (
         <Svg
-          style={{ width: 30, height: 30, borderRadius: 50, marginTop: 5 }}
+          style={{ width: 40, height: 30, borderRadius: 50, marginTop: 5 }}
           viewBox="0 0 1024 1024"
           class="icon"
           version="1.1"
@@ -300,6 +303,7 @@ export const Comments = React.memo(({ navigation, route }) => {
     onCompleted: (data) => {
       // console.log(data.newsComments[0].creator.profile.imageURL);
       setComments(data.newsComments);
+      //   console.log(data.newsComments);
       setIsLoaded(true);
     },
     onError: (err) => {
@@ -308,6 +312,37 @@ export const Comments = React.memo(({ navigation, route }) => {
     fetchPolicy: "cache-and-network",
     notifyOnNetworkStatusChange: true,
   });
+
+  const [newCommentContent, setNewCommentContent] = useState("");
+
+  const [addNewComment] = useMutation(NEW_COMMENT, {
+    variables: {
+      unionID: userData.unionID,
+      newsID: news.id,
+      comment: {
+        content: "" + newCommentContent,
+        createdOn: new Date(),
+        userID: userData.id,
+      },
+    },
+    onCompleted: () => {},
+    onError: (err) => {
+      console.log(err);
+    },
+    // notifyOnNetworkStatusChange: true,
+    // refetchQueries: ["newsComments"],
+  });
+
+  const sendComment = () => {
+    if (newCommentContent.trim().length !== 0) {
+      // console.log(newCommentContent);
+      setIsLoaded(false);
+      addNewComment();
+      refetch();
+      setNewCommentContent("");
+      Keyboard.dismiss();
+    }
+  };
 
   // First date: March 2, 2021, at 17:25:02 UTC
   const firstDate = new Date(news?.createdOn);
@@ -393,7 +428,6 @@ export const Comments = React.memo(({ navigation, route }) => {
   const [likeCount, setLikeCount] = useState(news.likes?.length);
   const [likeVisible, setLikeVisible] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
-  const [newMessage, setNewMessage] = useState("");
 
   const likeHandler = () => {
     if (isLiked == false) {
@@ -449,7 +483,11 @@ export const Comments = React.memo(({ navigation, route }) => {
   const lastPressRef = useRef(0);
 
   return (
-    <View>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : null}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 90}
+    >
       <ScrollView style={styles.wrapper}>
         <View style={styles.feedHeader}>
           <View style={styles.photo}>
@@ -595,11 +633,12 @@ export const Comments = React.memo(({ navigation, route }) => {
       </ScrollView>
       <View style={styles.newCommentWrapper}>
         <TextInput
+          value={newCommentContent}
           style={styles.newCommentInput}
-          onChangeText={setNewMessage}
+          onChangeText={setNewCommentContent}
           placeholder="Write a comment"
         />
-        <TouchableOpacity activeOpacity={0.6}>
+        <TouchableOpacity onPress={sendComment} activeOpacity={0.6}>
           <Svg
             width="40"
             height="40"
@@ -615,13 +654,14 @@ export const Comments = React.memo(({ navigation, route }) => {
           </Svg>
         </TouchableOpacity>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 });
 const styles = StyleSheet.create({
   newCommentWrapper: {
-    position: "absolute",
-    bottom: 0,
+    // position: "absolute",
+    // bottom: 0,
+    // left: 0,
     height: 56,
     width: "100%",
     backgroundColor: "#fff",
@@ -643,7 +683,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "400",
     color: "#696666",
-    width:'85%'
+    width: "85%",
   },
   commentWrapper: {
     marginTop: 10,
@@ -674,6 +714,7 @@ const styles = StyleSheet.create({
     height: 100,
   },
   wrapper: {
+    flexGrow: 1,
     marginTop: 10,
     paddingHorizontal: 24,
     paddingVertical: 16,

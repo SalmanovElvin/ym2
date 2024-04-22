@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const CREATE_NEWS = gql`
   mutation createNews(
@@ -20,7 +20,7 @@ export const LIKE_NEWS_ITEM = gql`
   }
 `;
 
-export const ADD_COMMENT = gql`
+export const NEW_COMMENT = gql`
   mutation newComment(
     $unionID: UnifiedID!
     $newsID: UnifiedID!
