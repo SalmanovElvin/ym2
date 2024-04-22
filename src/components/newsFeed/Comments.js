@@ -36,7 +36,7 @@ import {
 import HTMLView from "react-native-htmlview";
 import LottieView from "lottie-react-native";
 
-const Comment = ({ comment }) => {
+const Comment = ({ comment, openDeleteModal }) => {
   // console.log(comment.comment);
 
   // First date: March 2, 2021, at 17:25:02 UTC
@@ -114,9 +114,8 @@ const Comment = ({ comment }) => {
   }, []);
 
   handleLongPress = () => {
-    // Do something when long press is detected
-    console.log("Long press detected!");
-    // You can implement any custom logic here
+    // console.log("Long press detected!");
+    openDeleteModal(comment);
   };
   return (
     <View style={styles.comment}>
@@ -491,12 +490,56 @@ export const Comments = React.memo(({ navigation, route }) => {
   const animationRef = useRef();
   const lastPressRef = useRef(0);
 
+  const [modalDelete, setModalDelete] = useState(false);
+  const [deleteName, setDeleteName] = useState(false);
+
+  const openDeleteModal = (comment) => {
+    setDeleteName(
+      comment?.creator?.firstName + " " + comment?.creator?.lastName
+    );
+    setModalDelete(true);
+  };
+
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
       keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 90}
     >
+      {modalDelete ? (
+        <View style={styles.modalBack}>
+          <View style={styles.modal}>
+            <Text style={styles.errMsg}>
+              Do you want to delete {deleteName}'s comment?
+            </Text>
+            <Text style={styles.tip}></Text>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <TouchableOpacity
+                onPress={() => setModalDelete(false)}
+                activeOpacity={0.7}
+                style={styles.conf1}
+              >
+                <Text style={styles.btnConf1}>Yes</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setModalDelete(false)}
+                activeOpacity={0.7}
+                style={styles.conf2}
+              >
+                <Text style={styles.btnConf2}>No</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      ) : (
+        <></>
+      )}
       <ScrollView style={styles.wrapper}>
         <View style={styles.feedHeader}>
           <View style={styles.photo}>
@@ -631,7 +674,12 @@ export const Comments = React.memo(({ navigation, route }) => {
                   <Text style={styles.commentHeader}>Recent comments</Text>
                   <FlatList
                     data={comments}
-                    renderItem={({ item }) => <Comment comment={item} />}
+                    renderItem={({ item }) => (
+                      <Comment
+                        openDeleteModal={openDeleteModal}
+                        comment={item}
+                      />
+                    )}
                     keyExtractor={(item) => item?.id}
                   />
                 </>
@@ -667,6 +715,74 @@ export const Comments = React.memo(({ navigation, route }) => {
   );
 });
 const styles = StyleSheet.create({
+  modalBack: {
+    zIndex: 999,
+    width: "100%",
+    position: "absolute",
+    backgroundColor: "rgba(0, 0, 50, 0.5)",
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  modal: {
+    width: "70%",
+    borderRadius: 10,
+    backgroundColor: "#fff",
+    padding: 15,
+    justifyContent: "space-between",
+    shadowColor: "#4468c1",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 11.27,
+  },
+  errMsg: {
+    fontSize: 16,
+    fontWeight: "500",
+    lineHeight: 22,
+  },
+  tip: {
+    fontSize: 16,
+    fontWeight: "500",
+    lineHeight: 22,
+    fontStyle: "italic",
+    color: "green",
+    marginBottom: 15,
+  },
+  conf1: {
+    width: "47%",
+    backgroundColor: "#34519A",
+    height: 56,
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 10,
+    borderRadius: 5,
+  },
+  conf2: {
+    width: "47%",
+    backgroundColor: "transparent",
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: "#34519A",
+    height: 56,
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 10,
+    borderRadius: 5,
+  },
+  btnConf1: {
+    color: "#fff",
+    fontWeight: "700",
+    fontSize: 16,
+  },
+  btnConf2: {
+    color: "#34519A",
+    fontWeight: "700",
+    fontSize: 16,
+  },
+
   newCommentWrapper: {
     // position: "absolute",
     // bottom: 0,
