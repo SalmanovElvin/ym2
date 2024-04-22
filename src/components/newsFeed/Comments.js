@@ -502,9 +502,15 @@ export const Comments = React.memo(({ navigation, route }) => {
       commentID: deletedCommentId,
     },
     onCompleted: () => {
-      swal("Success", "Comment successfully deleted", "success");
+      console.log("delete");
     },
-    onError: () => swal("Error", "Unable to delete comment", "error"),
+    onError: (err) =>{
+        // console.log(err)
+        if(err.message.includes('access restriction')){
+            alert('Only admin accounts can delete comments...');
+        }
+        
+    } ,
     refetchQueries: ["singleNews"],
   });
 
