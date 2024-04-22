@@ -338,9 +338,11 @@ export const Comments = React.memo(({ navigation, route }) => {
       // console.log(newCommentContent);
       setIsLoaded(false);
       addNewComment();
-      refetch();
       setNewCommentContent("");
       Keyboard.dismiss();
+      setTimeout(() => {
+        refetch();
+      }, 300);
     }
   };
 

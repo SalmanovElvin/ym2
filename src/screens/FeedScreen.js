@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   View,
   Text,
@@ -8,7 +8,7 @@ import {
   Image,
   ScrollView,
   ActivityIndicator,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
 
@@ -165,6 +165,7 @@ export const FeedScreen = ({ navigation }) => {
         data.newsFeed.pinned.length
       ) {
         setNewsFeed([...data.newsFeed.pinned, ...data.newsFeed.data]);
+        
         // console.log([...data.newsFeed.pinned, ...data.newsFeed.data]);
         // for(let i=0;i<[...data.newsFeed.pinned, ...data.newsFeed.data].length;i++){
 
@@ -186,58 +187,77 @@ export const FeedScreen = ({ navigation }) => {
     setIsFetching(true);
   }, []);
 
-
   const getNewsFunc = () => {
     setNewsFeed([]);
     setTimeout(() => {
       refetch();
       setIsFetching(true);
     }, 500);
-  }
+  };
 
   const showErr = () => {
     setErrMsg("You do not have access to pin or unpin news.");
     setTip("Only admin accounts can perform this operation.");
     setErrUser(true);
-  }
+  };
 
   const openComments = (newsID, userData, commentCount) => {
     // console.log(newsFeed.find(item => item.id === newsID));
-    navigation.navigate('Comment', { news: newsFeed.find(item => item.id === newsID), userData: userData, logoURL: logoURL, commentCount: commentCount });
-  }
+    navigation.navigate("Comment", {
+      news: newsFeed.find((item) => item.id === newsID),
+      userData: userData,
+      logoURL: logoURL,
+      commentCount: commentCount,
+    });
+  };
 
   const [errUser, setErrUser] = useState(false);
   const [errMsg, setErrMsg] = useState(""),
     [tip, setTip] = useState("");
-  return (
-    <View style={styles.wrapper}>
-      {newsFeed.length === 0 ? (
-        <View
-          style={{ height: '100%', justifyContent: "center", alignItems: "center" }}
-        >
-          <ActivityIndicator size="large" color="blue" />
-        </View>
-      ) : (
-        <>
 
-          {errUser ? (
-            <View style={styles.modalBack}>
-              <View style={styles.modal}>
-                <Text style={styles.errMsg}>{errMsg}</Text>
-                <Text style={styles.tip}>{tip}</Text>
-                <TouchableOpacity
-                  onPress={() => setErrUser(false)}
-                  activeOpacity={0.7}
-                  style={styles.conf}
-                >
-                  <Text style={styles.btnConf}>Close</Text>
-                </TouchableOpacity>
+    const scrollViewRef = useRef();
+  return (
+    <ScrollView style={styles.wrapper}
+    ref={scrollViewRef}
+    onScroll={({ nativeEvent }) => {
+      if (isCloseToTop(nativeEvent)) {
+        // console.log('test');
+        getNewsFunc(); // Call refetch when close to the top
+      }
+    }}
+    scrollEventThrottle={400}>
+      
+        {newsFeed.length === 0 ? (
+          <View
+            style={{
+              height: "100%",
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop:20
+            }}
+          >
+            <ActivityIndicator size="large" color="blue" />
+          </View>
+        ) : (
+          <>
+            {errUser ? (
+              <View style={styles.modalBack}>
+                <View style={styles.modal}>
+                  <Text style={styles.errMsg}>{errMsg}</Text>
+                  <Text style={styles.tip}>{tip}</Text>
+                  <TouchableOpacity
+                    onPress={() => setErrUser(false)}
+                    activeOpacity={0.7}
+                    style={styles.conf}
+                  >
+                    <Text style={styles.btnConf}>Close</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
-            </View>
-          ) : (
-            <></>
-          )}
-          {/* <NewsFeed news={newsFeed[0]} />
+            ) : (
+              <></>
+            )}
+            {/* <NewsFeed news={newsFeed[0]} />
           <NewsFeed news={newsFeed[1]} />
           <NewsFeed news={newsFeed[2]} />
           <NewsFeed news={newsFeed[3]} />
@@ -246,20 +266,28 @@ export const FeedScreen = ({ navigation }) => {
           <NewsFeed news={newsFeed[6]} />
           <NewsFeed news={newsFeed[7]} /> */}
 
-          <FlatList
-            data={newsFeed}
-            renderItem={({ item }) => <NewsFeed openComments={openComments} showErr={showErr} getNews={getNewsFunc} key={item?.id} news={item} />}
-            keyExtractor={(item) => item?.id}
-          />
+            <FlatList
+              data={newsFeed}
+              renderItem={({ item }) => (
+                <NewsFeed
+                  openComments={openComments}
+                  showErr={showErr}
+                  getNews={getNewsFunc}
+                  key={item?.id}
+                  news={item}
+                />
+              )}
+              keyExtractor={(item) => item?.id}
+            />
 
-          {/* {newsFeed.map((newsItem, index) => (
+            {/* {newsFeed.map((newsItem, index) => (
             <View key={index}>
               <NewsFeed news={newsItem} />
             </View>
           ))} */}
-        </>
-      )}
-    </View>
+          </>
+        )}
+    </ScrollView>
   );
 };
 
@@ -269,7 +297,7 @@ const styles = StyleSheet.create({
     width: "100%",
     position: "absolute",
     backgroundColor: "rgba(0, 0, 50, 0.5)",
-    height: '100%',
+    height: "100%",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -317,3 +345,8 @@ const styles = StyleSheet.create({
   wrapper: {
   },
 });
+
+function isCloseToTop({ layoutMeasurement, contentOffset, contentSize }) {
+  const paddingToTop = -80;
+  return contentOffset.y < paddingToTop;
+}
