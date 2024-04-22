@@ -605,7 +605,7 @@ export const Comments = React.memo(({ navigation, route }) => {
                 strokeLinejoin="round"
               />
             </Svg>
-            <Text style={styles.count}>{commentCount}</Text>
+            <Text style={styles.count}>{comments.length}</Text>
           </View>
         </View>
         <View style={styles.commentWrapper}>
