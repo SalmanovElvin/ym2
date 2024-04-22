@@ -31,13 +31,13 @@ const Tab = createBottomTabNavigator();
 const stil =
   Platform.OS === "android"
     ? {
-      headerStyle: { backgroundColor: THEME.MAIN_COLOR },
-      headerTintColor: "#fff",
-    }
+        headerStyle: { backgroundColor: THEME.MAIN_COLOR },
+        headerTintColor: "#fff",
+      }
     : {
-      headerStyle: { backgroundColor: "#fff" },
-      headerTintColor: THEME.MAIN_COLOR,
-    };
+        headerStyle: { backgroundColor: "#fff" },
+        headerTintColor: THEME.MAIN_COLOR,
+      };
 
 export default function AppNavigation() {
   /////////////////////////////////////////////////////////////
@@ -79,7 +79,7 @@ export default function AppNavigation() {
         />
         <Stack.Screen
           name="Comment"
-          options={{ title: "", ...stil }}
+          options={{ title: "", tabBarVisible: false, ...stil }}
           component={Comments}
         />
       </Stack.Navigator>

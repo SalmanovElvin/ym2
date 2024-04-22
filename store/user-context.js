@@ -1,46 +1,46 @@
-import React, { useEffect } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
+import React, { useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage"; // Import AsyncStorage
 
-import { useMutation } from '@apollo/client';
-import { SkypeIndicator } from 'react-native-indicators';
+import { useMutation } from "@apollo/client";
+import { SkypeIndicator } from "react-native-indicators";
 
 // context
-import { useUnionDispatch } from './union-context';
+import { useUnionDispatch } from "./union-context";
 
 // graph
-import { LOGIN_WITH_TOKEN, LOGIN_USER } from '../graph/mutations/users';
+import { LOGIN_WITH_TOKEN, LOGIN_USER } from "../graph/mutations/users";
 
 const defaultUser = {
   loggedIn: false,
   profile: {
-    firstName: 'Guest',
-    lastName: '',
+    firstName: "Guest",
+    lastName: "",
   },
   token: undefined,
 };
 
-const USER_KEY = '@USER';
+const USER_KEY = "@USER";
 
 const UserStateContext = React.createContext();
 const UserDispatchContext = React.createContext();
 
 const userReducer = (state, action) => {
   switch (action.type) {
-    case 'LOGIN': {
+    case "LOGIN": {
       AsyncStorage.setItem(USER_KEY, JSON.stringify(action.payload));
-      AsyncStorage.setItem('token', action.payload.token);
-      AsyncStorage.setItem('uid', action.payload.unionID);
+      AsyncStorage.setItem("token", action.payload.token);
+      AsyncStorage.setItem("uid", action.payload.unionID);
       return {
         ...state,
         ...action.payload,
         loggedIn: true,
       };
     }
-    case 'LOGOUT': {
+    case "LOGOUT": {
       AsyncStorage.removeItem(USER_KEY);
       return defaultUser;
     }
-    case 'UPDATE': {
+    case "UPDATE": {
       AsyncStorage.setItem(USER_KEY, JSON.stringify(action.payload));
       return {
         ...state,
@@ -62,11 +62,11 @@ const UserProvider = ({ children }) => {
   const [loginWithToken, { error, loading }] = useMutation(LOGIN_WITH_TOKEN, {
     onCompleted: (data) => {
       unionDispatch({
-        type: 'ASSIGN',
+        type: "ASSIGN",
         payload: data.loginWithToken.union,
       });
       dispatch({
-        type: 'LOGIN',
+        type: "LOGIN",
         payload: { ...data.loginWithToken.user, token: token },
       });
     },
@@ -78,7 +78,7 @@ const UserProvider = ({ children }) => {
 
       setToken(tempToken);
       if (!!tempToken) {
-        loginWithToken({ variables: { token: tempToken, device: 'mobile' } });
+        loginWithToken({ variables: { token: tempToken, device: "mobile" } });
       }
     };
     getAsyncToken();
@@ -87,11 +87,7 @@ const UserProvider = ({ children }) => {
   return (
     <UserStateContext.Provider value={state}>
       <UserDispatchContext.Provider value={dispatch}>
-        {loading ? (
-          <SkypeIndicator color='white' />
-        ) : (
-          children
-        )}
+        {loading ? <SkypeIndicator color="white" /> : children}
       </UserDispatchContext.Provider>
     </UserStateContext.Provider>
   );
@@ -100,7 +96,7 @@ const UserProvider = ({ children }) => {
 const useUserState = () => {
   const context = React.useContext(UserStateContext);
   if (context === undefined) {
-    throw new Error('useUserState must be used within UserProvider');
+    throw new Error("useUserState must be used within UserProvider");
   }
   return context;
 };
@@ -108,8 +104,8 @@ const useUserState = () => {
 const useUserDispatch = () => {
   const context = React.useContext(UserDispatchContext);
   if (context === undefined) {
-    console.log('error!! useUserDispatch must be used within UserProvider');
-    throw new Error('useUserDispatch must be used within UserProvider');
+    console.log("error!! useUserDispatch must be used within UserProvider");
+    throw new Error("useUserDispatch must be used within UserProvider");
   }
   return context;
 };
