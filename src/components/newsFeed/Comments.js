@@ -36,11 +36,11 @@ import {
 import HTMLView from "react-native-htmlview";
 import LottieView from "lottie-react-native";
 
-const Comment = (comment) => {
+const Comment = ({ comment }) => {
   // console.log(comment.comment);
 
   // First date: March 2, 2021, at 17:25:02 UTC
-  const firstDate = new Date(comment.comment.createdOn);
+  const firstDate = new Date(comment.createdOn);
 
   // Current date
   const currentDate = new Date();
@@ -112,12 +112,18 @@ const Comment = (comment) => {
       }
     }
   }, []);
+
+  handleLongPress = () => {
+    // Do something when long press is detected
+    console.log("Long press detected!");
+    // You can implement any custom logic here
+  };
   return (
     <View style={styles.comment}>
-      {comment?.comment?.creator?.profile?.imageURL !== "" ? (
+      {comment?.creator?.profile?.imageURL !== "" ? (
         <Image
           style={{ width: 40, height: 40, borderRadius: 50, marginTop: 5 }}
-          source={{ uri: comment?.comment?.creator?.profile?.imageURL }}
+          source={{ uri: comment?.creator?.profile?.imageURL }}
         />
       ) : (
         <Svg
@@ -142,22 +148,23 @@ const Comment = (comment) => {
         </Svg>
       )}
       <View style={{ marginLeft: 10 }}>
-        <View style={styles.commentBlock}>
-          <Text style={{ fontSize: 16, fontWeight: "500", color: "#0B0B0B" }}>
-            {comment?.comment?.creator?.firstName}{" "}
-            {comment?.comment?.creator?.lastName}
-          </Text>
-          <Text
-            style={{
-              fontSize: 14,
-              fontWeight: "400",
-              color: "#242529",
-              marginTop: 4,
-            }}
-          >
-            {comment?.comment?.content}
-          </Text>
-        </View>
+        <TouchableWithoutFeedback onLongPress={this.handleLongPress}>
+          <View style={styles.commentBlock}>
+            <Text style={{ fontSize: 16, fontWeight: "500", color: "#0B0B0B" }}>
+              {comment?.creator?.firstName} {comment?.creator?.lastName}
+            </Text>
+            <Text
+              style={{
+                fontSize: 14,
+                fontWeight: "400",
+                color: "#242529",
+                marginTop: 4,
+              }}
+            >
+              {comment?.content}
+            </Text>
+          </View>
+        </TouchableWithoutFeedback>
         <View style={styles.commentBottom}>
           <Text
             style={{
