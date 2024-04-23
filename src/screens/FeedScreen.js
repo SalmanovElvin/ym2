@@ -9,6 +9,7 @@ import {
   ScrollView,
   ActivityIndicator,
   TouchableOpacity,
+  Dimensions
 } from "react-native";
 import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
 
@@ -165,7 +166,7 @@ export const FeedScreen = ({ navigation }) => {
         data.newsFeed.pinned.length
       ) {
         setNewsFeed([...data.newsFeed.pinned, ...data.newsFeed.data]);
-        
+
         // console.log([...data.newsFeed.pinned, ...data.newsFeed.data]);
         // for(let i=0;i<[...data.newsFeed.pinned, ...data.newsFeed.data].length;i++){
 
@@ -215,48 +216,50 @@ export const FeedScreen = ({ navigation }) => {
   const [errMsg, setErrMsg] = useState(""),
     [tip, setTip] = useState("");
 
-    const scrollViewRef = useRef();
+  const scrollViewRef = useRef();
   return (
-    <ScrollView style={styles.wrapper}
-    ref={scrollViewRef}
-    onScroll={({ nativeEvent }) => {
-      if (isCloseToTop(nativeEvent)) {
-        // console.log('test');
-        getNewsFunc(); // Call refetch when close to the top
-      }
-    }}
-    scrollEventThrottle={400}>
-      
+    <View>
+      {errUser ? (
+        <View style={styles.modalBack}>
+          <View style={styles.modal}>
+            <Text style={styles.errMsg}>{errMsg}</Text>
+            <Text style={styles.tip}>{tip}</Text>
+            <TouchableOpacity
+              onPress={() => setErrUser(false)}
+              activeOpacity={0.7}
+              style={styles.conf}
+            >
+              <Text style={styles.btnConf}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      ) : (
+        <></>
+      )}
+      <ScrollView style={styles.wrapper}
+        ref={scrollViewRef}
+        onScroll={({ nativeEvent }) => {
+          if (isCloseToTop(nativeEvent)) {
+            // console.log('test');
+            getNewsFunc(); // Call refetch when close to the top
+          }
+        }}
+        scrollEventThrottle={400}>
+
         {newsFeed.length === 0 ? (
           <View
             style={{
               height: "100%",
               justifyContent: "center",
               alignItems: "center",
-              marginTop:20
+              marginTop: 20
             }}
           >
             <ActivityIndicator size="large" color="blue" />
           </View>
         ) : (
           <>
-            {errUser ? (
-              <View style={styles.modalBack}>
-                <View style={styles.modal}>
-                  <Text style={styles.errMsg}>{errMsg}</Text>
-                  <Text style={styles.tip}>{tip}</Text>
-                  <TouchableOpacity
-                    onPress={() => setErrUser(false)}
-                    activeOpacity={0.7}
-                    style={styles.conf}
-                  >
-                    <Text style={styles.btnConf}>Close</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            ) : (
-              <></>
-            )}
+
             {/* <NewsFeed news={newsFeed[0]} />
           <NewsFeed news={newsFeed[1]} />
           <NewsFeed news={newsFeed[2]} />
@@ -287,17 +290,23 @@ export const FeedScreen = ({ navigation }) => {
           ))} */}
           </>
         )}
-    </ScrollView>
+      </ScrollView>
+
+    </View>
   );
 };
+
+const screenHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
   modalBack: {
     zIndex: 999,
     width: "100%",
     position: "absolute",
+    top: 0,
+    left: 0,
     backgroundColor: "rgba(0, 0, 50, 0.5)",
-    height: "100%",
+    height: screenHeight - 150,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -343,6 +352,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   wrapper: {
+
   },
 });
 
