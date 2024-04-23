@@ -9,7 +9,9 @@ import {
   ScrollView,
   ActivityIndicator,
   TouchableOpacity,
-  Dimensions
+  Dimensions,
+  RefreshControl,
+  SafeAreaView,
 } from "react-native";
 import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
 
@@ -156,6 +158,8 @@ export const FeedScreen = ({ navigation }) => {
         data.newsFeed.data.length
       ) {
         setNewsFeed([...data.newsFeed.data]);
+        setRefreshing(false);
+
       }
       if (
         data &&
@@ -166,6 +170,7 @@ export const FeedScreen = ({ navigation }) => {
         data.newsFeed.pinned.length
       ) {
         setNewsFeed([...data.newsFeed.pinned, ...data.newsFeed.data]);
+        setRefreshing(false);
 
         // console.log([...data.newsFeed.pinned, ...data.newsFeed.data]);
         // for(let i=0;i<[...data.newsFeed.pinned, ...data.newsFeed.data].length;i++){
@@ -189,7 +194,7 @@ export const FeedScreen = ({ navigation }) => {
   }, []);
 
   const getNewsFunc = () => {
-    setNewsFeed([]);
+    // setNewsFeed([]);
     setTimeout(() => {
       refetch();
       setIsFetching(true);
@@ -217,8 +222,15 @@ export const FeedScreen = ({ navigation }) => {
     [tip, setTip] = useState("");
 
   const scrollViewRef = useRef();
+
+  const [refreshing, setRefreshing] = React.useState(false);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    getNewsFunc();
+  }, []);
+
   return (
-    <View>
+    <SafeAreaView style={{ flex: 1, }}>
       {errUser ? (
         <View style={styles.modalBack}>
           <View style={styles.modal}>
@@ -237,30 +249,26 @@ export const FeedScreen = ({ navigation }) => {
         <></>
       )}
       <ScrollView style={styles.wrapper}
-        ref={scrollViewRef}
-        onScroll={({ nativeEvent }) => {
-          if (isCloseToTop(nativeEvent)) {
-            // console.log('test');
-            getNewsFunc(); // Call refetch when close to the top
-          }
-        }}
-        scrollEventThrottle={400}>
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
 
-        {newsFeed.length === 0 ? (
-          <View
-            style={{
-              height: 100,
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: 20
-            }}
-          >
-            <ActivityIndicator size="large" color="blue" />
-          </View>
-        ) : (
-          <>
+        {
+          newsFeed.length === 0 ? (
+            <View
+              style={{
+                height: 100,
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: 20
+              }}
+            >
+              <ActivityIndicator size="large" color="blue" />
+            </View>
+          ) : (
+            <>
 
-            {/* <NewsFeed news={newsFeed[0]} />
+              {/* <NewsFeed news={newsFeed[0]} />
           <NewsFeed news={newsFeed[1]} />
           <NewsFeed news={newsFeed[2]} />
           <NewsFeed news={newsFeed[3]} />
@@ -269,30 +277,31 @@ export const FeedScreen = ({ navigation }) => {
           <NewsFeed news={newsFeed[6]} />
           <NewsFeed news={newsFeed[7]} /> */}
 
-            <FlatList
-              data={newsFeed}
-              renderItem={({ item }) => (
-                <NewsFeed
-                  openComments={openComments}
-                  showErr={showErr}
-                  getNews={getNewsFunc}
-                  key={item?.id}
-                  news={item}
-                />
-              )}
-              keyExtractor={(item) => item?.id}
-            />
+              <FlatList
+                data={newsFeed}
+                renderItem={({ item }) => (
+                  <NewsFeed
+                    openComments={openComments}
+                    showErr={showErr}
+                    getNews={getNewsFunc}
+                    key={item?.id}
+                    news={item}
+                  />
+                )}
+                keyExtractor={(item) => item?.id}
+              />
 
-            {/* {newsFeed.map((newsItem, index) => (
+              {/* {newsFeed.map((newsItem, index) => (
             <View key={index}>
               <NewsFeed news={newsItem} />
             </View>
           ))} */}
-          </>
-        )}
+            </>
+          )
+        }
       </ScrollView>
 
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -355,8 +364,3 @@ const styles = StyleSheet.create({
 
   },
 });
-
-function isCloseToTop({ layoutMeasurement, contentOffset, contentSize }) {
-  const paddingToTop = -60;
-  return contentOffset.y < paddingToTop;
-}
