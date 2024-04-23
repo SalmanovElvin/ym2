@@ -434,7 +434,7 @@ export const Comments = React.memo(({ navigation, route }) => {
     }
   }, []);
 
-  const [likeCount, setLikeCount] = useState(news.likes?.length);
+  const [likeCount, setLikeCount] = useState(news?.likes?.length);
   const [likeVisible, setLikeVisible] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
 
@@ -536,7 +536,7 @@ export const Comments = React.memo(({ navigation, route }) => {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : null}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 90}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
     >
       {modalDelete ? (
         <View style={styles.modalBack}>
@@ -689,7 +689,7 @@ export const Comments = React.memo(({ navigation, route }) => {
                 strokeLinejoin="round"
               />
             </Svg>
-            <Text style={styles.count}>{comments.length}</Text>
+            <Text style={styles.count}>{comments?.length}</Text>
           </View>
         </View>
         <View style={styles.commentWrapper}>
@@ -833,7 +833,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   newCommentInput: {
-    paddingVertical: 12,
+    
+    paddingVertical: Platform.OS === "ios" ? 12 : 8,
     paddingHorizontal: 16,
     borderRadius: 20,
     backgroundColor: "#EAEBF0",
