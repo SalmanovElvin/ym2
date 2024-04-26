@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Button, FlatList, Image, TouchableOpacity, ActivityIndicator } from "react-native";
+import { View, Text, StyleSheet, Button, FlatList, Image, ScrollView, TouchableOpacity, ActivityIndicator } from "react-native";
 
 import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
 
@@ -142,7 +142,7 @@ export const NotificationsPage = ({ navigation, route }) => {
 
 
     return (
-        <View style={styles.wrapper}>
+        <ScrollView style={styles.wrapper}>
             <FlatList
                 data={notifications}
                 renderItem={({ item }) => (
@@ -153,12 +153,13 @@ export const NotificationsPage = ({ navigation, route }) => {
                 keyExtractor={(item) => item?.id}
             />
 
-        </View>
+        </ScrollView>
     );
 };
 
 const styles = StyleSheet.create({
     wrapper: {
         padding: 10,
+        overflow:'scroll'
     },
 });
