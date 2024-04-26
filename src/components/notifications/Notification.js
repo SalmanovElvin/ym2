@@ -7,7 +7,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useMutation, useQuery } from "@apollo/client";
 
 export const Notification = ({ navigation, notification }) => {
-
+        const originalDate = new Date(notification?.createdOn);
+        const formattedDate = `${originalDate.getFullYear()}-${(originalDate.getMonth() + 1).toString().padStart(2, '0')}-${originalDate.getDate().toString().padStart(2, '0')} ${originalDate.getHours().toString().padStart(2, '0')}:${originalDate.getMinutes().toString().padStart(2, '0')}:${originalDate.getSeconds().toString().padStart(2, '0')}`;
 
     return (
         <View style={styles.wrapper}>
@@ -16,7 +17,7 @@ export const Notification = ({ navigation, notification }) => {
                 :
                 <></>}
             <Text style={{ color: '#242529', fontWeight: '400', fontSize: 16 }}>{notification.message}</Text>
-            <Text style={{ color: '#848587', fontSize: 14, fontWeight: '400', marginTop: 5 }}>2023-07-08 09:03:14</Text>
+            <Text style={{ color: '#848587', fontSize: 14, fontWeight: '400', marginTop: 5 }}>{formattedDate}</Text>
         </View>
     );
 };
