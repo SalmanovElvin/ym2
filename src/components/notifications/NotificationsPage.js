@@ -7,6 +7,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useMutation, useQuery } from "@apollo/client";
 import { Notification } from "./Notification";
 import { GET_NOTIFICATIONS } from "../../../graph/queries/notifications";
+import { READ_NOTIFICATION_ALL } from "../../../graph/mutations/notifications";
 
 export const NotificationsPage = ({ navigation }) => {
     navigation.setOptions({
@@ -24,7 +25,7 @@ export const NotificationsPage = ({ navigation }) => {
             justifyContent: 'center'
         },
         headerRight: () => (
-            <TouchableOpacity activeOpacity={0.6} style={{ flexDirection: "row", marginRight: 10 }}>
+            <TouchableOpacity onPress={readNotificationAll} activeOpacity={0.6} style={{ flexDirection: "row", marginRight: 10 }}>
                 <Text style={{ color: '#0F3BAA', fontWeight: '600', fontSize: 16 }}>Read all</Text>
             </TouchableOpacity>
         ),
@@ -67,6 +68,7 @@ export const NotificationsPage = ({ navigation }) => {
         ),
     });
 
+
     const [userData, setUserData] = useState(null);
 
     useEffect(() => {
@@ -84,34 +86,56 @@ export const NotificationsPage = ({ navigation }) => {
             }
         };
         getData();
-
     }, []);
 
 
-    const [notifications, setNotifications] = useState([]);
+    const [notifications, setNotifications] = useState([]),
+        [nonReadNotifications, setNonReadNotifications] = useState([]);
 
-    const { loading, error, data } = useQuery(GET_NOTIFICATIONS, {
+    const { loading, error, data, refetch: refetchNotifications } = useQuery(GET_NOTIFICATIONS, {
         variables: {
             unionID: userData?.unionID,
             userID: userData?.id,
         },
         onCompleted: () => {
             setNotifications(data.notifications);
+            let arr = [];
+            for (let i = 0; i < data?.notifications?.length; i++) {
+                if (data.notifications[i].read == false) {
+                    arr.push(data.notifications[i].id);
+                }
+            }
+            setNonReadNotifications(arr);
             // console.log(data.notifications);
         },
         onError: (err) => {
             console.log(err);
-        }
+        },
     });
 
+    const [readNotificationAll] = useMutation(READ_NOTIFICATION_ALL, {
+        variables: {
+            notificationID: nonReadNotifications
+        },
+        onCompleted: () => {
+            console.log("read all");
+            navigation.navigate("Main");
+        },
+        onError: (err) => {
+            console.log(err);
+        },
+    });
 
-    if (notifications.length === 0) {
+    if (notifications?.length === 0) {
         return (
             <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
                 <ActivityIndicator size="large" color="blue" />
             </View>
         )
     }
+
+
+
 
     return (
         <View style={styles.wrapper}>
