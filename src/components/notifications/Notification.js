@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Button, FlatList, Image, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Button, FlatList, Image, TouchableOpacity, ScrollView } from "react-native";
 
 import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
 
@@ -60,14 +60,16 @@ export const Notification = ({ navigation, notification }) => {
         });
     }
     return (
-        <TouchableOpacity onLongPress={readNotification} activeOpacity={0.6} style={styles.wrapper}>
-            {isRead == false ?
-                <View style={styles.nonRead}></View>
-                :
-                <></>}
-            <Text style={{ color: '#242529', fontWeight: '400', fontSize: 16 }}>{notification.message}</Text>
-            <Text style={{ color: '#848587', fontSize: 14, fontWeight: '400', marginTop: 5 }}>{formattedDate}</Text>
-        </TouchableOpacity>
+        <ScrollView>
+            <TouchableOpacity onLongPress={readNotification} activeOpacity={0.6} style={styles.wrapper}>
+                {isRead == false ?
+                    <View style={styles.nonRead}></View>
+                    :
+                    <></>}
+                <Text style={{ color: '#242529', fontWeight: '400', fontSize: 16 }}>{notification.message}</Text>
+                <Text style={{ color: '#848587', fontSize: 14, fontWeight: '400', marginTop: 5 }}>{formattedDate}</Text>
+            </TouchableOpacity>
+        </ScrollView>
     );
 };
 
