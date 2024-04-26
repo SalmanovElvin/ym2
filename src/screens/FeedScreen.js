@@ -229,6 +229,10 @@ export const FeedScreen = ({ navigation }) => {
     getNewsFunc();
   }, []);
 
+  // For notifications
+
+
+
   return (
     <SafeAreaView style={{ flex: 1, }}>
       {errUser ? (
