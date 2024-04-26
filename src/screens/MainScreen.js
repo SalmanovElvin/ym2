@@ -13,7 +13,7 @@ export const MainScreen = ({ navigation }) => {
   // const navigator = useNavigation();
   const unionState = useUnionState();
 
-  const [userState, setUserState] = useState(useUserState());
+  const [userData, setUserData] = useState(useUserState());
 
   const [logoURL, setLogoURL] = useState("");
   useEffect(() => {
@@ -31,7 +31,7 @@ export const MainScreen = ({ navigation }) => {
         const userVal = await AsyncStorage.getItem("@USER"); // Replace 'key' with your actual key
 
         if (userVal !== null && JSON.parse(userVal).username !== undefined) {
-          setUserState(JSON.parse(userVal));
+          setUserData(JSON.parse(userVal));
           // navigation.navigate('Home');
           // console.log(JSON.parse(userVal).username);
         } else {
@@ -152,34 +152,6 @@ export const MainScreen = ({ navigation }) => {
     ),
   });
 
-  const [userData, setUserData] = useState(null);
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        // const value = await AsyncStorage.getItem("UNION"); // Replace 'key' with your actual key
-
-        // if (value !== null) {
-        //   setUnionData(JSON.parse(value));
-        // } else {
-        //   console.log("No union data found");
-        // }
-
-        const userVal = await AsyncStorage.getItem("@USER"); // Replace 'key' with your actual key
-
-        if (userVal !== null && JSON.parse(userVal).username !== undefined) {
-          setUserData(JSON.parse(userVal));
-        } else {
-          console.log("No user data found");
-        }
-      } catch (error) {
-        console.error("Error retrieving data:", error);
-      }
-    };
-    getData();
-  }, []);
-
-
 
   const [isNotifications, setIsNotifications] = useState(false);
 
@@ -217,7 +189,7 @@ export const MainScreen = ({ navigation }) => {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
-        <Text>Hello {userState.username}</Text>
+        <Text>Hello {userData.username}</Text>
       </ScrollView>
     </SafeAreaView>
   );
