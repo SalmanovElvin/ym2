@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Button, FlatList, Image } from "react-native";
+import { View, Text, StyleSheet, Button, FlatList, Image, SafeAreaView, ScrollView, RefreshControl } from "react-native";
 
 import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
 import { useUnionState } from "../../store/union-context";
@@ -182,12 +182,14 @@ export const MainScreen = ({ navigation }) => {
 
 
   const [isNotifications, setIsNotifications] = useState(false);
-  const { loading, error, data } = useQuery(GET_NOTIFICATIONS, {
+
+  const { loading, error, data, refetch: getNotifications } = useQuery(GET_NOTIFICATIONS, {
     variables: {
       unionID: userData?.unionID,
       userID: userData?.id,
     },
     onCompleted: () => {
+      setRefreshing(false);
       for (let i = 0; i < data.notifications.length; i++) {
         if (data.notifications[i].read == false) {
           setIsNotifications(true);
@@ -197,18 +199,33 @@ export const MainScreen = ({ navigation }) => {
     },
     onError: (err) => {
       console.log(err);
-    }
+    },
+    fetchPolicy: "cache-and-network",
+    notifyOnNetworkStatusChange: true,
   });
 
+
+  const [refreshing, setRefreshing] = React.useState(false);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    getNotifications();
+  }, []);
+
   return (
-    <View style={styles.wrapper}>
-      <Text>Hello {userState.username}</Text>
-    </View>
+    <SafeAreaView style={styles.wrapper}>
+      <ScrollView style={styles.wrapper}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
+        <Text>Hello {userState.username}</Text>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   wrapper: {
+    flex: 1,
     padding: 10,
   },
 });
