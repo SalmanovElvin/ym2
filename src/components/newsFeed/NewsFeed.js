@@ -247,7 +247,7 @@ export const NewsFeed = ({ navigation, news, getNews, showErr, openComments }) =
     },
     onCompleted: (data) => {
       setCommentCount(data.newsComments ? data.newsComments.length : '');
-      // console.log(data.newsComments);
+      console.log(data.newsComments);
     },
     onError: (err) => {
       console.log(err);

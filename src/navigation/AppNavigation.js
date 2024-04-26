@@ -24,6 +24,7 @@ import { ApolloProvider } from "@apollo/client";
 import { client } from "../../graph";
 import { NewsFeed } from "../components/newsFeed/NewsFeed";
 import { Comments } from "../components/newsFeed/Comments";
+import { NotificationsPage } from "../components/notifications/NotificationsPage";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -48,6 +49,11 @@ export default function AppNavigation() {
           name="Main"
           options={{ title: "", ...stil }}
           component={MainScreen}
+        />
+        <Stack.Screen
+          name="Notifications"
+          options={{ title: "", ...stil }}
+          component={NotificationsPage}
         />
 
         {/* <Stack.Screen
