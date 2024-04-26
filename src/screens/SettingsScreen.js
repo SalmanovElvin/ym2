@@ -14,8 +14,9 @@ import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
 import { useUnionState } from "../../store/union-context";
 import { useUserState } from "../../store/user-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Header } from "../components/header/Header";
 
-export const SettingsScreen = ({ navigation }) => {
+export const SettingsScreen = ({ navigation, route }) => {
   const unionState = useUnionState();
   const userState = useUserState();
 
@@ -128,9 +129,12 @@ export const SettingsScreen = ({ navigation }) => {
   });
 
   return (
-    <ScrollView>
-      <Text style={styles.title}>Settings</Text>
-    </ScrollView>
+    <>
+      <Header from={route.name} />
+      <ScrollView>
+        <Text style={styles.title}>Settings</Text>
+      </ScrollView>
+    </>
   );
 };
 

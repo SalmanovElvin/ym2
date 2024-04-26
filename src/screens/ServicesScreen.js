@@ -5,6 +5,7 @@ import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
 import { useUnionState } from "../../store/union-context";
 import { useUserState } from "../../store/user-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Header } from "../components/header/Header";
 
 export const ServicesScreen = ({ navigation, route }) => {
   const unionState = useUnionState();
@@ -120,9 +121,12 @@ export const ServicesScreen = ({ navigation, route }) => {
   });
 
   return (
-    <View style={styles.center}>
-      <Text>Services</Text>
-    </View>
+    <>
+      <Header from={route.name} />
+      <View style={styles.center}>
+        <Text>Services</Text>
+      </View>
+    </>
   );
 };
 

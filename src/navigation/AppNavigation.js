@@ -32,13 +32,13 @@ const Tab = createBottomTabNavigator();
 const stil =
   Platform.OS === "android"
     ? {
-        headerStyle: { backgroundColor: THEME.MAIN_COLOR },
-        headerTintColor: "#fff",
-      }
+      headerStyle: { backgroundColor: THEME.MAIN_COLOR },
+      headerTintColor: "#fff",
+    }
     : {
-        headerStyle: { backgroundColor: "#fff" },
-        headerTintColor: THEME.MAIN_COLOR,
-      };
+      headerStyle: { backgroundColor: "#fff" },
+      headerTintColor: THEME.MAIN_COLOR,
+    };
 
 export default function AppNavigation() {
   /////////////////////////////////////////////////////////////
@@ -47,7 +47,7 @@ export default function AppNavigation() {
       <Stack.Navigator>
         <Stack.Screen
           name="Main"
-          options={{ title: "", ...stil }}
+          options={{ headerShown: false, title: "", ...stil }}
           component={MainScreen}
         />
         <Stack.Screen
@@ -75,7 +75,7 @@ export default function AppNavigation() {
       <Stack.Navigator>
         <Stack.Screen
           name="FeedsScr"
-          options={{ title: "", ...stil }}
+          options={{ headerShown: false, title: "", ...stil }}
           component={FeedScreen}
         />
         <Stack.Screen
@@ -87,6 +87,11 @@ export default function AppNavigation() {
           name="Comment"
           options={{ title: "", tabBarVisible: false, ...stil }}
           component={Comments}
+        />
+        <Stack.Screen
+          name="Notifications"
+          options={{ title: "", ...stil }}
+          component={NotificationsPage}
         />
       </Stack.Navigator>
     );
@@ -112,13 +117,18 @@ export default function AppNavigation() {
       <Stack.Navigator>
         <Stack.Screen
           name="ServicesScr"
-          options={{ title: "", ...stil }}
+          options={{ headerShown: false, title: "", ...stil }}
           component={ServicesScreen}
         />
         <Stack.Screen
           initialParams={{ signOutUserAnsStr }}
           name="Create"
           component={CreateScreen}
+        />
+        <Stack.Screen
+          name="Notifications"
+          options={{ title: "", ...stil }}
+          component={NotificationsPage}
         />
       </Stack.Navigator>
     );
@@ -129,8 +139,13 @@ export default function AppNavigation() {
       <Stack.Navigator>
         <Stack.Screen
           name="SettingsScr"
-          options={{ title: "", ...stil }}
+          options={{ headerShown: false, title: "", ...stil }}
           component={SettingsScreen}
+        />
+        <Stack.Screen
+          name="Notifications"
+          options={{ title: "", ...stil }}
+          component={NotificationsPage}
         />
       </Stack.Navigator>
     );
