@@ -25,6 +25,7 @@ import { client } from "../../graph";
 import { NewsFeed } from "../components/newsFeed/NewsFeed";
 import { Comments } from "../components/newsFeed/Comments";
 import { NotificationsPage } from "../components/notifications/NotificationsPage";
+import { Chats } from "../components/chats/Chats";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -55,7 +56,11 @@ export default function AppNavigation() {
           options={{ title: "", ...stil }}
           component={NotificationsPage}
         />
-
+        <Stack.Screen
+          name="Chats"
+          options={{ title: "", ...stil }}
+          component={Chats}
+        />
         {/* <Stack.Screen
           name="Services"
           options={{ title: "", ...stil }}
@@ -92,6 +97,11 @@ export default function AppNavigation() {
           name="Notifications"
           options={{ title: "", ...stil }}
           component={NotificationsPage}
+        />
+        <Stack.Screen
+          name="Chats"
+          options={{ title: "", ...stil }}
+          component={Chats}
         />
       </Stack.Navigator>
     );
@@ -130,6 +140,11 @@ export default function AppNavigation() {
           options={{ title: "", ...stil }}
           component={NotificationsPage}
         />
+        <Stack.Screen
+          name="Chats"
+          options={{ title: "", ...stil }}
+          component={Chats}
+        />
       </Stack.Navigator>
     );
   }
@@ -146,6 +161,11 @@ export default function AppNavigation() {
           name="Notifications"
           options={{ title: "", ...stil }}
           component={NotificationsPage}
+        />
+        <Stack.Screen
+          name="Chats"
+          options={{ title: "", ...stil }}
+          component={Chats}
         />
       </Stack.Navigator>
     );
