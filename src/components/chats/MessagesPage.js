@@ -8,6 +8,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { GET_CHATS, GET_MESSAGES } from './../../../graph/queries/messages';
 
 export const MessagesPage = ({ navigation, route }) => {
+    const { chatObj } = route.params;
 
     navigation.setOptions({
         headerStyle: {
@@ -89,21 +90,21 @@ export const MessagesPage = ({ navigation, route }) => {
         getData();
     }, []);
 
-    const [lastMsg, setLastMsg] = useState([])
+    const [msgs, setMsgs] = useState([])
 
-    // const { loading, error, data, refetch } = useQuery(GET_MESSAGES, {
-    //     variables: {
-    //         unionID: userData?.unionID,
-    //         chatID: chat?.id,
-    //     },
-    //     onCompleted: () => {
-    //         setLastMsg(data?.messages[data?.messages?.length - 1]);
-    //     },
-    //     notifyOnNetworkStatusChange: true,
-    //     pollInterval: 5000,
-    // });
+    const { loading, error, data, refetch } = useQuery(GET_MESSAGES, {
+        variables: {
+            unionID: userData?.unionID,
+            chatID: chatObj?.id,
+        },
+        onCompleted: () => {
+            setMsgs(data?.messages);
+            console.log(data?.messages);
+        },
+        notifyOnNetworkStatusChange: true,
+        pollInterval: 5000,
+    });
 
-    // console.log(chat);
     return (
         <TouchableOpacity activeOpacity={0.6} style={styles.wrapper}>
             <Text>Messages</Text>

@@ -124,7 +124,7 @@ export const Chat = ({ route, chat }) => {
     }, [lastMsg]);
 
     return (
-        <TouchableOpacity onPress={() => navigation.navigate('MessagesPage')} activeOpacity={0.6} style={styles.wrapper}>
+        <TouchableOpacity onPress={() => navigation.navigate('MessagesPage', { chatObj: chat })} activeOpacity={0.6} style={styles.wrapper}>
             {lastMsg?.sender?.profile?.imageURL !== '' ?
                 <Image style={{ width: 45, height: 45, borderRadius: 50 }} source={{ uri: lastMsg?.sender?.profile?.imageURL }} />
                 :
@@ -153,7 +153,9 @@ export const Chat = ({ route, chat }) => {
             <View style={{ marginLeft: 10 }}>
                 <Text style={{ color: '#242529', fontWeight: '600', fontSize: 16 }}>{lastMsg?.sender?.firstName} {lastMsg?.sender?.lastName}</Text>
                 <Text style={{ color: '#848587', fontSize: 14, fontWeight: '400', marginTop: 5 }}>
-                    {lastMsg?.content} •
+                    {lastMsg?.content?.length >= 25 ?
+                        lastMsg?.content?.slice(0, 25) + '...' : lastMsg?.content
+                    } •
                     <Text style={{ color: '#848587' }}> {postedTime}</Text>
                 </Text>
 
