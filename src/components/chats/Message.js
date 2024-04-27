@@ -20,7 +20,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useMutation, useQuery } from "@apollo/client";
 import { GET_CHATS, GET_MESSAGES } from './../../../graph/queries/messages';
 
-export const Message = ({ navigation, route, msg }) => {
+export const Message = ({ msg }) => {
 
 
     const [userData, setUserData] = useState(null);
