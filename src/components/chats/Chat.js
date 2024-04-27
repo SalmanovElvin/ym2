@@ -6,12 +6,10 @@ import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useMutation, useQuery } from "@apollo/client";
 import { GET_CHATS, GET_MESSAGES } from './../../../graph/queries/messages';
+import { useNavigation } from '@react-navigation/native';
 
-export const Chat = ({ navigation, route, chat }) => {
-
-
-
-
+export const Chat = ({ route, chat }) => {
+    const navigation = useNavigation();
 
     const [userData, setUserData] = useState(null);
 
@@ -51,7 +49,7 @@ export const Chat = ({ navigation, route, chat }) => {
 
 
 
-    const [postedTime, setPostedTime] = useState("");
+    const [postedTime, setPostedTime] = useState("loading ...");
 
     useEffect(() => {
         // First date: March 2, 2021, at 17:25:02 UTC
@@ -126,7 +124,7 @@ export const Chat = ({ navigation, route, chat }) => {
     }, [lastMsg]);
 
     return (
-        <TouchableOpacity activeOpacity={0.6} style={styles.wrapper}>
+        <TouchableOpacity onPress={() => navigation.navigate('MessagesPage')} activeOpacity={0.6} style={styles.wrapper}>
             {lastMsg?.sender?.profile?.imageURL !== '' ?
                 <Image style={{ width: 45, height: 45, borderRadius: 50 }} source={{ uri: lastMsg?.sender?.profile?.imageURL }} />
                 :

@@ -26,6 +26,7 @@ import { NewsFeed } from "../components/newsFeed/NewsFeed";
 import { Comments } from "../components/newsFeed/Comments";
 import { NotificationsPage } from "../components/notifications/NotificationsPage";
 import { Chats } from "../components/chats/Chats";
+import { MessagesPage } from "../components/chats/MessagesPage";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -60,6 +61,11 @@ export default function AppNavigation() {
           name="Chats"
           options={{ title: "", ...stil }}
           component={Chats}
+        />
+        <Stack.Screen
+          name="MessagesPage"
+          options={{ title: "", ...stil }}
+          component={MessagesPage}
         />
         {/* <Stack.Screen
           name="Services"
@@ -103,6 +109,11 @@ export default function AppNavigation() {
           options={{ title: "", ...stil }}
           component={Chats}
         />
+        <Stack.Screen
+          name="MessagesPage"
+          options={{ title: "", ...stil }}
+          component={MessagesPage}
+        />
       </Stack.Navigator>
     );
   }
@@ -145,6 +156,11 @@ export default function AppNavigation() {
           options={{ title: "", ...stil }}
           component={Chats}
         />
+        <Stack.Screen
+          name="MessagesPage"
+          options={{ title: "", ...stil }}
+          component={MessagesPage}
+        />
       </Stack.Navigator>
     );
   }
@@ -166,6 +182,11 @@ export default function AppNavigation() {
           name="Chats"
           options={{ title: "", ...stil }}
           component={Chats}
+        />
+        <Stack.Screen
+          name="MessagesPage"
+          options={{ title: "", ...stil }}
+          component={MessagesPage}
         />
       </Stack.Navigator>
     );
