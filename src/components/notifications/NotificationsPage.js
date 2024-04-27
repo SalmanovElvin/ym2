@@ -132,13 +132,7 @@ export const NotificationsPage = ({ navigation, route }) => {
         },
     });
 
-    if (notifications?.length === 0) {
-        return (
-            <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
-                <ActivityIndicator size="large" color="blue" />
-            </View>
-        )
-    }
+
 
     const sendDeletedItem = (notification) => {
         setNotifications([]);
@@ -147,6 +141,13 @@ export const NotificationsPage = ({ navigation, route }) => {
         }, 300);
     }
 
+    if (notifications?.length === 0) {
+        return (
+            <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+                <ActivityIndicator size="large" color="blue" />
+            </View>
+        )
+    }
 
     return (
         <ScrollView style={styles.wrapper}>

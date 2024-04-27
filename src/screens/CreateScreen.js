@@ -10,6 +10,7 @@ import {
 import { PhotoPicker } from "../components/PhotoPicker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 export const CreateScreen = ({ navigation, route }) => {
+  
   const { signOutUserAnsStr } = route.params;
 
   return (

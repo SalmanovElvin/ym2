@@ -15,6 +15,7 @@ import { useUnionState } from "../../store/union-context";
 import { useUserState } from "../../store/user-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Header } from "../components/header/Header";
+import { CreateScreen } from "./CreateScreen";
 
 export const SettingsScreen = ({ navigation, route }) => {
   const unionState = useUnionState();
@@ -132,7 +133,7 @@ export const SettingsScreen = ({ navigation, route }) => {
     <>
       <Header from={route.name} />
       <ScrollView>
-        <Text style={styles.title}>Settings</Text>
+        <Text onPress={() => navigation.navigate("Create")} style={styles.title}>Settings</Text>
       </ScrollView>
     </>
   );
@@ -140,6 +141,6 @@ export const SettingsScreen = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   title: {
-    padding: 10,
+    padding: 30,
   },
 });

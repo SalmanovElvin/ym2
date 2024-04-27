@@ -118,7 +118,7 @@ export const FeedScreen = ({ navigation, route }) => {
   }, []);
 
   const getNewsFunc = () => {
-    setNewsFeed([]);
+    // setNewsFeed([]);
     setTimeout(() => {
       refetch();
       setIsFetching(true);

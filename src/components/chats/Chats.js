@@ -5,9 +5,7 @@ import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useMutation, useQuery } from "@apollo/client";
-import { GET_NOTIFICATIONS } from "../../../graph/queries/notifications";
-import { READ_NOTIFICATION_ALL } from "../../../graph/mutations/notifications";
-
+import { GET_CHATS } from './../../../graph/queries/messages';
 
 export const Chats = ({ navigation, route }) => {
     const { fromScreen } = route.params;
@@ -93,8 +91,46 @@ export const Chats = ({ navigation, route }) => {
         getData();
     }, []);
 
+    const [chatsState, setChatsState] = useState([]);
+    //get data from backend using gql
+    const { loading, error, data, refetch } = useQuery(GET_CHATS, {
+        variables: {
+            unionID: userData?.unionID,
+            userID: userData?.id,
+        },
+        onCompleted: () => {
+            if (data.chats) {
+                setChatsState(data.chats);
+                console.log(data.chats.participants);
+            } else {
+                setChatsState(null);
+            }
+        },
+        onError: (err) => {
+            console.log(err);
+        },
+        notifyOnNetworkStatusChange: true,
+        pollInterval: 5000,
+    });
 
+    if (chatsState?.length == 0 && chatsState != null) {
+        return (
+            <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+                <ActivityIndicator size="large" color="blue" />
+            </View>
+        )
+    }
 
+    if (chatsState == null) {
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ fontSize: 16, fontWeight: '600' }}>
+                    You don't have any chats...
+                </Text>
+            </View>
+
+        )
+    }
 
     return (
         <ScrollView style={styles.wrapper}>
