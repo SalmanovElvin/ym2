@@ -118,11 +118,11 @@ export const FeedScreen = ({ navigation, route }) => {
   }, []);
 
   const getNewsFunc = () => {
-    // setNewsFeed([]);
+    setNewsFeed([]);
     setTimeout(() => {
       refetch();
       setIsFetching(true);
-    }, 500);
+    }, 300);
   };
 
   const showErr = () => {

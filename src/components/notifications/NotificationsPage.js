@@ -115,6 +115,8 @@ export const NotificationsPage = ({ navigation, route }) => {
         onError: (err) => {
             console.log(err);
         },
+        fetchPolicy: "cache-and-network",
+        notifyOnNetworkStatusChange: true,
     });
 
     const [readNotificationAll] = useMutation(READ_NOTIFICATION_ALL, {
@@ -138,7 +140,12 @@ export const NotificationsPage = ({ navigation, route }) => {
         )
     }
 
-
+    const sendDeletedItem = (notification) => {
+        setNotifications([]);
+        setTimeout(() => {
+            refetchNotifications();
+        }, 300);
+    }
 
 
     return (
@@ -148,6 +155,7 @@ export const NotificationsPage = ({ navigation, route }) => {
                 renderItem={({ item }) => (
                     <Notification
                         notification={item}
+                        sendDeletedItem={sendDeletedItem}
                     />
                 )}
                 keyExtractor={(item) => item?.id}
@@ -160,6 +168,6 @@ export const NotificationsPage = ({ navigation, route }) => {
 const styles = StyleSheet.create({
     wrapper: {
         padding: 10,
-        overflow:'scroll'
+        overflow: 'scroll'
     },
 });
