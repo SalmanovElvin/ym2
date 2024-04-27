@@ -5,35 +5,77 @@ import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useMutation, useQuery } from "@apollo/client";
-import { GET_CHATS } from './../../../graph/queries/messages';
+import { GET_CHATS, GET_MESSAGES } from './../../../graph/queries/messages';
 
 export const Chat = ({ navigation, route, chat }) => {
 
-    // First date: March 2, 2021, at 17:25:02 UTC
-    const firstDate = new Date(chat?.updatedAt);
 
-    // Current date
-    const currentDate = new Date();
 
-    // Calculate the difference in milliseconds
-    const difference = currentDate.getTime() - firstDate.getTime();
 
-    // Convert milliseconds to seconds, minutes, hours, weeks, months, and years
-    const secondsDifference = Math.floor(difference / 1000);
-    const minutesDifference = Math.floor(difference / (1000 * 60));
-    const hoursDifference = Math.floor(difference / (1000 * 60 * 60));
-    const weeksDifference = Math.floor(difference / (1000 * 60 * 60 * 24 * 7));
-    const monthsDifference = Math.floor(
-        currentDate.getMonth() -
-        firstDate.getMonth() +
-        12 * (currentDate.getFullYear() - firstDate.getFullYear())
-    );
-    const yearsDifference = Math.floor(
-        currentDate.getFullYear() - firstDate.getFullYear()
-    );
+
+    const [userData, setUserData] = useState(null);
+
+    useEffect(() => {
+        const getData = async () => {
+            try {
+                const userVal = await AsyncStorage.getItem("@USER"); // Replace 'key' with your actual key
+
+                if (userVal !== null && JSON.parse(userVal).username !== undefined) {
+                    setUserData(JSON.parse(userVal));
+                } else {
+                    console.log("No user data found");
+                }
+            } catch (error) {
+                console.error("Error retrieving data:", error);
+            }
+        };
+        getData();
+    }, []);
+
+    const [lastMsg, setLastMsg] = useState([])
+
+    const { loading, error, data, refetch } = useQuery(GET_MESSAGES, {
+        variables: {
+            unionID: userData?.unionID,
+            chatID: chat?.id,
+        },
+        onCompleted: () => {
+            setLastMsg(data?.messages[data?.messages?.length - 1]);
+        },
+        notifyOnNetworkStatusChange: true,
+        pollInterval: 5000,
+    });
+
+    // console.log(chat);
+
+
+
+
     const [postedTime, setPostedTime] = useState("");
 
     useEffect(() => {
+        // First date: March 2, 2021, at 17:25:02 UTC
+        const firstDate = new Date(lastMsg?.createdAt);
+
+        // Current date
+        const currentDate = new Date();
+
+        // Calculate the difference in milliseconds
+        const difference = currentDate.getTime() - firstDate.getTime();
+
+        // Convert milliseconds to seconds, minutes, hours, weeks, months, and years
+        const secondsDifference = Math.floor(difference / 1000);
+        const minutesDifference = Math.floor(difference / (1000 * 60));
+        const hoursDifference = Math.floor(difference / (1000 * 60 * 60));
+        const weeksDifference = Math.floor(difference / (1000 * 60 * 60 * 24 * 7));
+        const monthsDifference = Math.floor(
+            currentDate.getMonth() -
+            firstDate.getMonth() +
+            12 * (currentDate.getFullYear() - firstDate.getFullYear())
+        );
+        const yearsDifference = Math.floor(
+            currentDate.getFullYear() - firstDate.getFullYear()
+        );
         if (yearsDifference !== 0) {
             if (yearsDifference === 1) {
                 setPostedTime(`${yearsDifference} year`);
@@ -81,34 +123,12 @@ export const Chat = ({ navigation, route, chat }) => {
                 }
             }
         }
-    }, []);
+    }, [lastMsg]);
 
-
-
-    const [userData, setUserData] = useState(null);
-
-    useEffect(() => {
-        const getData = async () => {
-            try {
-                const userVal = await AsyncStorage.getItem("@USER"); // Replace 'key' with your actual key
-
-                if (userVal !== null && JSON.parse(userVal).username !== undefined) {
-                    setUserData(JSON.parse(userVal));
-                } else {
-                    console.log("No user data found");
-                }
-            } catch (error) {
-                console.error("Error retrieving data:", error);
-            }
-        };
-        getData();
-    }, []);
-
-    // console.log(chat);
     return (
         <TouchableOpacity activeOpacity={0.6} style={styles.wrapper}>
-            {chat?.participants[0]?.profile?.imageURL !== '' ?
-                <Image style={{ width: 45, height: 45, borderRadius: 50 }} source={{ uri: chat?.participants[0]?.profile?.imageURL }} />
+            {lastMsg?.sender?.profile?.imageURL !== '' ?
+                <Image style={{ width: 45, height: 45, borderRadius: 50 }} source={{ uri: lastMsg?.sender?.profile?.imageURL }} />
                 :
                 <Svg
                     style={{ width: 45, height: 45, borderRadius: 50 }}
@@ -133,9 +153,9 @@ export const Chat = ({ navigation, route, chat }) => {
             }
 
             <View style={{ marginLeft: 10 }}>
-                <Text style={{ color: '#242529', fontWeight: '600', fontSize: 16 }}>{chat?.participants[0]?.firstName} {chat?.participants[0]?.lastName}</Text>
+                <Text style={{ color: '#242529', fontWeight: '600', fontSize: 16 }}>{lastMsg?.sender?.firstName} {lastMsg?.sender?.lastName}</Text>
                 <Text style={{ color: '#848587', fontSize: 14, fontWeight: '400', marginTop: 5 }}>
-                    {chat?.lastMessage} •
+                    {lastMsg?.content} •
                     <Text style={{ color: '#848587' }}> {postedTime}</Text>
                 </Text>
 
