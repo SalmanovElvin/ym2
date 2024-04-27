@@ -142,6 +142,8 @@ export const NotificationsPage = ({ navigation, route }) => {
         return (
             <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
                 <ActivityIndicator size="large" color="blue" />
+                <Text style={{ marginTop: 10 }}>We trying to get notifications.</Text>
+                <Text>May be you don't have new notifications</Text>
             </View>
         )
     }

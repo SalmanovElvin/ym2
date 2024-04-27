@@ -155,7 +155,7 @@ export const MessagesPage = ({ navigation, route }) => {
         <KeyboardAvoidingView
             style={{ height: '100%' }}
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            keyboardVerticalOffset={Platform.OS === "ios" ? 110 : 147}
+            keyboardVerticalOffset={Platform.OS === "ios" ? 110 : 169}
         >
             {msgs.length === 0 ?
                 <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
@@ -165,7 +165,7 @@ export const MessagesPage = ({ navigation, route }) => {
                 <View style={styles.mainWrapper}>
                     <FlatList
                         inverted
-                        style={{ height: '91%' }}
+                        style={{ height: '90%' }}
                         data={[...msgs].reverse()}
                         renderItem={({ item }) =>
                             <Message msg={item} />
@@ -205,7 +205,7 @@ export const MessagesPage = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
     newCommentWrapper: {
-        height: 56,
+        height: 65,
         width: "100%",
         backgroundColor: "#fff",
         shadowColor: "#000",
@@ -231,7 +231,6 @@ const styles = StyleSheet.create({
     mainWrapper: {
         paddingTop: 20,
         paddingHorizontal: 7,
-        minHeight: "50%"
     },
     wrapper: {
         position: 'relative',

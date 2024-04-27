@@ -83,7 +83,7 @@ export const Message = ({ navigation, route, msg }) => {
                     />
                 </Svg>
             }
-            <View style={{ width: '70%', paddingBottom: 10 }}>
+            <View style={{ width: '70%', paddingBottom: 15 }}>
                 <View style={styles.wrapper}>
                     <Text style={{ fontSize: 16, fontWeight: '700', color: '#242529' }}>{msg?.sender?.firstName} {msg?.sender?.lastName}</Text>
                     <Text style={{ width: '85%', marginTop: 5, fontSize: 14, fontWeight: '400', color: '#242529' }}>{msg?.content}</Text>
