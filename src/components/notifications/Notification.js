@@ -186,6 +186,7 @@ const styles = StyleSheet.create({
         shadowRadius: 11.27,
         elevation: 5,
         borderRadius: 10,
+        overflow:'hidden',
         width: '90%'
         // borderLeftColor:'#4468C1',
         // borderLeftWidth:10

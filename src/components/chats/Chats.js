@@ -136,7 +136,7 @@ export const Chats = ({ navigation, route }) => {
     }
 
     return (
-        <ScrollView style={styles.mainWrapper}>
+        <View style={styles.mainWrapper}>
             <FlatList
                 data={chatsState}
                 renderItem={({ item }) => (
@@ -144,17 +144,15 @@ export const Chats = ({ navigation, route }) => {
                 )}
                 keyExtractor={(item) => item?.id}
             />
-
-
-
-        </ScrollView>
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
     mainWrapper: {
         paddingVertical: 20,
-        paddingHorizontal: 15
+        paddingHorizontal: 15,
+        minHeight: '100%'
     },
     wrapper: {
         position: 'relative',
