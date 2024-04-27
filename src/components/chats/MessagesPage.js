@@ -155,7 +155,7 @@ export const MessagesPage = ({ navigation, route }) => {
         <KeyboardAvoidingView
             style={{ height: '100%' }}
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            keyboardVerticalOffset={Platform.OS === "ios" ? 110 : 169}
+            keyboardVerticalOffset={Platform.OS === "ios" ? 110 : 130}
         >
             {msgs.length === 0 ?
                 <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
@@ -205,6 +205,10 @@ export const MessagesPage = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
     newCommentWrapper: {
+
+        position: Platform.OS === "ios" ? 'relative' : 'absolute',
+        bottom: 0,
+        left: 0,
         height: 65,
         width: "100%",
         backgroundColor: "#fff",
