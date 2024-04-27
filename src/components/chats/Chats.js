@@ -6,6 +6,7 @@ import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useMutation, useQuery } from "@apollo/client";
 import { GET_CHATS } from './../../../graph/queries/messages';
+import { Chat } from "./Chat";
 
 export const Chats = ({ navigation, route }) => {
     const { fromScreen } = route.params;
@@ -33,7 +34,6 @@ export const Chats = ({ navigation, route }) => {
             // </TouchableOpacity>
         ),
         headerLeft: () => (
-            // <Image style={{ width: 50, height: 35 }} source={logoURL} />
             <TouchableOpacity
                 onPress={() => navigation.navigate(fromScreen)}
                 activeOpacity={0.6}
@@ -100,8 +100,14 @@ export const Chats = ({ navigation, route }) => {
         },
         onCompleted: () => {
             if (data.chats) {
-                setChatsState(data.chats);
-                console.log(data.chats.participants);
+                const allChats = data.chats;
+                setChatsState(allChats);
+
+                // chatsState.forEach(chat => {
+                //     const participants = chat.participants;
+                //     console.log(participants);
+                // });
+
             } else {
                 setChatsState(null);
             }
@@ -133,15 +139,45 @@ export const Chats = ({ navigation, route }) => {
     }
 
     return (
-        <ScrollView style={styles.wrapper}>
-            <Text>Chats</Text>
+        <ScrollView style={styles.mainWrapper}>
+            <FlatList
+                data={chatsState}
+                renderItem={({ item }) => (
+                    <Chat chat={item} />
+                )}
+                keyExtractor={(item) => item?.id}
+            />
+
+
+
         </ScrollView>
     );
 };
 
 const styles = StyleSheet.create({
+    mainWrapper: {
+        paddingVertical: 20,
+        paddingHorizontal: 15
+    },
     wrapper: {
-        padding: 10,
-        overflow: 'scroll'
+        position: 'relative',
+        paddingVertical: 16,
+        paddingHorizontal: 24,
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: "#fff",
+        shadowColor: "#4468c1",
+        shadowOffset: {
+            width: 0,
+            height: 0,
+        },
+        shadowOpacity: 0.23,
+        shadowRadius: 11.27,
+        elevation: 5,
+        borderRadius: 10,
+        width: '100%',
+        marginBottom: 15
+        // borderLeftColor:'#4468C1',
+        // borderLeftWidth:10
     },
 });
