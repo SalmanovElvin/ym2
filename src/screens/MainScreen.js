@@ -79,7 +79,7 @@ export const MainScreen = ({ navigation, route }) => {
 
   return (
     <>
-      <Header from={route.name} />
+      <Header  />
       <SafeAreaView style={styles.wrapper}>
         <ScrollView style={styles.wrapper}
           refreshControl={

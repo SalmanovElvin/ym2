@@ -11,9 +11,6 @@ import { READ_NOTIFICATION_ALL } from "../../../graph/mutations/notifications";
 
 
 export const NotificationsPage = ({ navigation, route }) => {
-    const { fromScreen } = route.params;
-    // console.log(fromScreen);
-
     navigation.setOptions({
         headerStyle: {
             backgroundColor: "#fff", // Change the color here
@@ -36,7 +33,7 @@ export const NotificationsPage = ({ navigation, route }) => {
         headerLeft: () => (
             // <Image style={{ width: 50, height: 35 }} source={logoURL} />
             <TouchableOpacity
-                onPress={() => navigation.navigate(fromScreen)}
+                onPress={() => navigation.goBack()}
                 activeOpacity={0.6}
                 style={{
                     flexDirection: "row",

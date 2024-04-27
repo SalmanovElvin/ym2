@@ -9,9 +9,6 @@ import { GET_CHATS } from './../../../graph/queries/messages';
 import { Chat } from "./Chat";
 
 export const Chats = ({ navigation, route }) => {
-    const { fromScreen } = route.params;
-    // console.log(fromScreen);
-
     navigation.setOptions({
         headerStyle: {
             backgroundColor: "#fff", // Change the color here
@@ -35,7 +32,7 @@ export const Chats = ({ navigation, route }) => {
         ),
         headerLeft: () => (
             <TouchableOpacity
-                onPress={() => navigation.navigate(fromScreen)}
+                onPress={() => navigation.goBack()}
                 activeOpacity={0.6}
                 style={{
                     flexDirection: "row",

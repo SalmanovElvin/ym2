@@ -131,7 +131,7 @@ export const SettingsScreen = ({ navigation, route }) => {
 
   return (
     <>
-      <Header from={route.name} />
+      <Header />
       <ScrollView>
         <Text onPress={() => navigation.navigate("Create")} style={styles.title}>Settings</Text>
       </ScrollView>

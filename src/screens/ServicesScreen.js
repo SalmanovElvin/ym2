@@ -44,7 +44,7 @@ export const ServicesScreen = ({ navigation, route }) => {
 
   return (
     <>
-      <Header from={route.name} />
+      <Header />
       <View style={styles.center}>
         <Text>Services</Text>
       </View>

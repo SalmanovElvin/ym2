@@ -10,7 +10,7 @@ import { GET_NOTIFICATIONS } from "../../../graph/queries/notifications";
 import { useMutation, useQuery } from "@apollo/client";
 import { useNavigation } from '@react-navigation/native';
 
-export const Header = ({ from }) => {
+export const Header = () => {
     const navigation = useNavigation();
     const unionState = useUnionState();
 
@@ -113,7 +113,7 @@ export const Header = ({ from }) => {
                     </Svg>
                     :
                     <Svg
-                        onPress={() => navigation.navigate('Notifications', { fromScreen: from })}
+                        onPress={() => navigation.navigate('Notifications')}
                         style={{ marginRight: 15 }}
                         width="32"
                         height="32"
@@ -142,7 +142,7 @@ export const Header = ({ from }) => {
 
 
                 <Svg
-                    onPress={() => navigation.navigate('Chats', { fromScreen: from })}
+                    onPress={() => navigation.navigate('Chats')}
                     width="32"
                     height="32"
                     viewBox="0 0 32 32"
