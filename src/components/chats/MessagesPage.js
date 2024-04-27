@@ -115,7 +115,6 @@ export const MessagesPage = ({ navigation, route }) => {
         },
         onCompleted: () => {
             setMsgs(data?.messages);
-            setIsLoadingMsgs(false);
             // console.log(data?.messages);
         },
         notifyOnNetworkStatusChange: true,
@@ -147,13 +146,10 @@ export const MessagesPage = ({ navigation, route }) => {
         if (newMsgContent.trim().length !== 0) {
             sendMsg();
             setMsgs([]);
-            // setIsLoadingMsgs(true);
             setNewMsgContent('');
             Keyboard.dismiss();
         }
     }
-
-    const [isLoadingMsgs, setIsLoadingMsgs] = useState(false);
 
     return (
         <KeyboardAvoidingView

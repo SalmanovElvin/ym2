@@ -110,7 +110,7 @@ export const Notification = ({ navigation, notification, sendDeletedItem }) => {
             console.log('Deleted');
         },
         onError: (err) => {
-            console.error(err);
+            alert("You don't have permission for proceeding this operation...");
         }
     });
 
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
         shadowRadius: 11.27,
         elevation: 5,
         borderRadius: 10,
-        overflow:'hidden',
+        overflow: 'hidden',
         width: '90%'
         // borderLeftColor:'#4468C1',
         // borderLeftWidth:10
