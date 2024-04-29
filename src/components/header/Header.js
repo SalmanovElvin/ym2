@@ -43,6 +43,12 @@ export const Header = () => {
             }
         };
         getData();
+        
+        setInterval(() => {
+            getNotifications();
+            console.log('test');
+        }, 3000);
+
     }, []);
 
 

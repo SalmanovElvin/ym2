@@ -97,7 +97,7 @@ export const Notification = ({ navigation, notification, sendDeletedItem }) => {
         });
     }
 
-
+    const [isDeleted, setIsDeleted] = useState('relative');
 
 
     const [delNotification, { loading }] = useMutation(DELETE_NOTIFICATION, {
@@ -108,6 +108,7 @@ export const Notification = ({ navigation, notification, sendDeletedItem }) => {
         },
         onCompleted: () => {
             console.log('Deleted');
+            setIsDeleted('none');
         },
         onError: (err) => {
             alert("You don't have permission for proceeding this operation...");
@@ -124,7 +125,7 @@ export const Notification = ({ navigation, notification, sendDeletedItem }) => {
     }
 
     return (
-        <GestureHandlerRootView style={styles.container}>
+        <GestureHandlerRootView style={{ ...styles.container, display: isDeleted }}>
             <View onLayout={onLayout}>
                 <GestureDetector gesture={pan}>
                     <Animated.View style={[styles.box, animatedStyles]} >
@@ -161,7 +162,7 @@ const screenWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
     container: {
-        margin: 10
+        margin: 10,
     },
     wrapNot: {
         flexDirection: 'row',

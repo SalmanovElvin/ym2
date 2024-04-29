@@ -87,6 +87,7 @@ export const NotificationsPage = ({ navigation, route }) => {
             }
         };
         getData();
+        refetchNotifications();
     }, []);
 
 
@@ -132,7 +133,8 @@ export const NotificationsPage = ({ navigation, route }) => {
 
 
     const sendDeletedItem = (notification) => {
-        setNotifications([]);
+        // console.log(userData);
+        // setNotifications([]);
         setTimeout(() => {
             refetchNotifications();
         }, 300);
@@ -149,19 +151,18 @@ export const NotificationsPage = ({ navigation, route }) => {
     }
 
     return (
-        <ScrollView style={styles.wrapper}>
-            <FlatList
-                data={notifications}
-                renderItem={({ item }) => (
-                    <Notification
-                        notification={item}
-                        sendDeletedItem={sendDeletedItem}
-                    />
-                )}
-                keyExtractor={(item) => item?.id}
-            />
+        <FlatList
+        style={styles.wrapper}
+            data={notifications}
+            renderItem={({ item }) => (
+                <Notification
+                    notification={item}
+                    sendDeletedItem={sendDeletedItem}
+                />
+            )}
+            keyExtractor={(item) => item?.id}
+        />
 
-        </ScrollView>
     );
 };
 
