@@ -188,6 +188,11 @@ export default function AppNavigation() {
           options={{ title: "", ...stil }}
           component={MessagesPage}
         />
+        <Stack.Screen
+          initialParams={{ signOutUserAnsStr }}
+          name="Create"
+          component={CreateScreen}
+        />
       </Stack.Navigator>
     );
   }

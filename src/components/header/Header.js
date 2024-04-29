@@ -43,15 +43,11 @@ export const Header = () => {
             }
         };
         getData();
-        
-        setInterval(() => {
-            getNotifications();
-            console.log('test');
-        }, 3000);
-
     }, []);
 
-
+    setInterval(() => {
+        getNotifications();
+    }, 5000);
 
 
     const [isNotifications, setIsNotifications] = useState(false);
@@ -62,7 +58,7 @@ export const Header = () => {
             userID: userData?.id,
         },
         onCompleted: () => {
-            for (let i = 0; i < data.notifications.length; i++) {
+            for (let i = 0; i < data?.notifications?.length; i++) {
                 if (data.notifications[i].read == false) {
                     setIsNotifications(true);
                 }

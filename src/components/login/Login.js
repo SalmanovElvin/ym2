@@ -198,7 +198,7 @@ export const Login = ({ navigation, route }) => {
 
         const userVal = await AsyncStorage.getItem("@USER"); // Replace 'key' with your actual key
 
-        if (userVal !== null && JSON.parse(userVal).username !== undefined) {
+        if (userVal !== null && JSON.parse(userVal)?.username !== undefined) {
           setUserData(JSON.parse(userVal));
           // navigation.navigate('Home');
           // console.log(JSON.parse(userVal).username);
