@@ -24,6 +24,7 @@ import Svg, {
     Ellipse,
 } from "react-native-svg";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { MODIFY_USER } from "../../../graph/mutations/users";
 
 export const Profile = ({ navigation, route }) => {
 
@@ -110,6 +111,9 @@ export const Profile = ({ navigation, route }) => {
                     setUsername(JSON.parse(userVal)?.username);
                     setEmail(JSON.parse(userVal)?.profile?.email);
                     setPhone(JSON.parse(userVal)?.profile?.phone);
+                    setCity(JSON.parse(userVal)?.profile?.city);
+                    setProvince(JSON.parse(userVal)?.profile?.province);
+                    setPostalCode(JSON.parse(userVal)?.profile?.postalCode);
 
                 } else {
                     console.log("No user data found");
@@ -129,7 +133,46 @@ export const Profile = ({ navigation, route }) => {
         [lastName, setLastName] = useState(''),
         [username, setUsername] = useState(''),
         [email, setEmail] = useState(''),
-        [phone, setPhone] = useState('');
+        [phone, setPhone] = useState(''),
+        [city, setCity] = useState(''),
+        [postalCode, setPostalCode] = useState(''),
+        [province, setProvince] = useState(''),
+        [dateOfBirth, setDateOfBirth] = useState('');
+
+
+
+    const [modifyUserMutation, { loading }] = useMutation(MODIFY_USER, {
+        onCompleted: () => {
+            console.log('changed');
+        },
+        onError: (error) => {
+            console.error(error);
+        }
+    });
+
+    const modifyUser = (input) => {
+        modifyUserMutation({ variables: { unionID: userData?.unionID, userID: userData?.id, input } });
+    };
+
+    const edirData = () => {
+        let newObj = {
+            dateOfBirth: "1975-04-08T20:00:00Z",
+            firstName: "Elvin",
+            lastName: "Salmanov",
+            profile: {
+                address: "",
+                city: "",
+                email: "salmanov.elvin96@gmail.com",
+                imageURL: "",
+                phone: "",
+                postalCode: "",
+                province: ""
+            }
+        };
+
+        modifyUser(newObj);
+
+    }
 
     if (!userData) {
         return (
@@ -242,6 +285,24 @@ export const Profile = ({ navigation, route }) => {
                     style={styles.input}
                     keyboardType="phone-pad"
                     placeholder="Cell phone"
+                />
+                <TextInput
+                    onChangeText={setCity}
+                    value={city}
+                    style={styles.input}
+                    placeholder="City"
+                />
+                <TextInput
+                    onChangeText={setProvince}
+                    value={province}
+                    style={styles.input}
+                    placeholder="Province"
+                />
+                <TextInput
+                    onChangeText={setPostalCode}
+                    value={postalCode}
+                    style={styles.input}
+                    placeholder="Postal code"
                 />
             </View>
         </ScrollView>
