@@ -27,6 +27,7 @@ import { Comments } from "../components/newsFeed/Comments";
 import { NotificationsPage } from "../components/notifications/NotificationsPage";
 import { Chats } from "../components/chats/Chats";
 import { MessagesPage } from "../components/chats/MessagesPage";
+import { Profile } from "../components/profile/Profile";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -66,6 +67,11 @@ export default function AppNavigation() {
           name="MessagesPage"
           options={{ title: "", ...stil }}
           component={MessagesPage}
+        />
+        <Stack.Screen
+          name="Profile"
+          options={{ title: "", ...stil }}
+          component={Profile}
         />
         {/* <Stack.Screen
           name="Services"
