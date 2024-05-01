@@ -10,7 +10,6 @@ import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
 import { MainScreen } from "../screens/MainScreen";
 import { FeedScreen } from "../screens/FeedScreen";
 import { ServicesScreen } from "../screens/ServicesScreen";
-import { CreateScreen } from "../screens/CreateScreen";
 import { SettingsScreen } from "../screens/SettingsScreen";
 import { THEME } from "../theme";
 import { UnionForm } from "../components/unionSignIn/UnionForm";
@@ -45,6 +44,20 @@ const stil =
 
 export default function AppNavigation() {
   /////////////////////////////////////////////////////////////
+  const signOutUserAnsStr = async () => {
+    try {
+      // Set the value for the specified key
+      await AsyncStorage.setItem("@USER", "null");
+      setUserIN(false);
+      setAccessToken("");
+      console.log(`Value for key @USER changed successfully.`);
+      // NativeModules.DevSettings.reload();
+    } catch (error) {
+      console.error("Error while changing AsyncStorage value:", error);
+    }
+  };
+
+
   function HomeNav() {
     return (
       <Stack.Navigator>
@@ -70,6 +83,7 @@ export default function AppNavigation() {
         />
         <Stack.Screen
           name="Profile"
+          initialParams={{ signOutUserAnsStr }}
           options={{ title: "", ...stil }}
           component={Profile}
         />
@@ -126,18 +140,7 @@ export default function AppNavigation() {
 
   const [userIN, setUserIN] = useState(false);
 
-  const signOutUserAnsStr = async () => {
-    try {
-      // Set the value for the specified key
-      await AsyncStorage.setItem("@USER", "null");
-      setUserIN(false);
-      setAccessToken("");
-      console.log(`Value for key @USER changed successfully.`);
-      // NativeModules.DevSettings.reload();
-    } catch (error) {
-      console.error("Error while changing AsyncStorage value:", error);
-    }
-  };
+
 
   function ServicesNav() {
     return (
@@ -146,11 +149,6 @@ export default function AppNavigation() {
           name="ServicesScr"
           options={{ headerShown: false, title: "", ...stil }}
           component={ServicesScreen}
-        />
-        <Stack.Screen
-          initialParams={{ signOutUserAnsStr }}
-          name="Create"
-          component={CreateScreen}
         />
         <Stack.Screen
           name="Notifications"
@@ -193,11 +191,6 @@ export default function AppNavigation() {
           name="MessagesPage"
           options={{ title: "", ...stil }}
           component={MessagesPage}
-        />
-        <Stack.Screen
-          initialParams={{ signOutUserAnsStr }}
-          name="Create"
-          component={CreateScreen}
         />
       </Stack.Navigator>
     );
