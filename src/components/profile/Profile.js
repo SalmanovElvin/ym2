@@ -26,6 +26,7 @@ import Svg, {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MODIFY_USER } from "../../../graph/mutations/users";
 import AnimatedLoader from 'react-native-animated-loader';
+import * as ImagePicker from "expo-image-picker";
 
 export const Profile = ({ navigation, route }) => {
 
@@ -90,6 +91,33 @@ export const Profile = ({ navigation, route }) => {
     });
 
 
+    const [image, setImage] = useState(null);
+    const [text, setText] = useState("");
+
+    const openImagePicker = async () => {
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== "granted") {
+            alert("Sorry, we need camera roll permissions to make this work!");
+            return;
+        }
+
+        const result = await ImagePicker.launchImageLibraryAsync();
+        setProfileImg(result.assets[0].uri);
+        setIsPhoto(false);
+    };
+
+    const openCamera = async () => {
+        const { status } = await ImagePicker.requestCameraPermissionsAsync();
+        if (status !== "granted") {
+            alert("Sorry, we need camera permissions to make this work!");
+            return;
+        }
+
+        const result = await ImagePicker.launchCameraAsync();
+        setProfileImg(result.assets[0].uri);
+        setIsPhoto(false);
+    };
+
     const [userData, setUserData] = useState(null);
     const [unionData, setUnionData] = useState("");
     useEffect(() => {
@@ -111,6 +139,7 @@ export const Profile = ({ navigation, route }) => {
                     setLastName(JSON.parse(userVal)?.lastName);
                     setUsername(JSON.parse(userVal)?.username);
                     setEmail(JSON.parse(userVal)?.profile?.email);
+                    setOldEmail(JSON.parse(userVal)?.profile?.email);
                     setPhone(JSON.parse(userVal)?.profile?.phone);
                     setCity(JSON.parse(userVal)?.profile?.city);
                     setProvince(JSON.parse(userVal)?.profile?.province);
@@ -136,6 +165,7 @@ export const Profile = ({ navigation, route }) => {
         [lastName, setLastName] = useState(''),
         [username, setUsername] = useState(''),
         [email, setEmail] = useState(''),
+        [oldEmail, setOldEmail] = useState(''),
         [profileImg, setProfileImg] = useState(''),
         [phone, setPhone] = useState(''),
         [city, setCity] = useState(''),
@@ -156,7 +186,8 @@ export const Profile = ({ navigation, route }) => {
             console.log('changed');
         },
         onError: (error) => {
-            console.error(error);
+            setChanging(false);
+            alert(error.message);
         }
     });
 
@@ -166,8 +197,8 @@ export const Profile = ({ navigation, route }) => {
 
     const edirData = () => {
         setChanging(true);
-        let newObj = {
-            dateOfBirth: "1975-04-08T20:00:00Z",
+        let newObj = oldEmail !== email ? {
+            // dateOfBirth: "1975-04-08T20:00:00Z",
             firstName: name,
             lastName: lastName,
             username: username,
@@ -180,17 +211,31 @@ export const Profile = ({ navigation, route }) => {
                 postalCode: postalCode,
                 province: province
             }
-        };
+        }
+            :
+            {
+                // dateOfBirth: "1975-04-08T20:00:00Z",
+                firstName: name,
+                lastName: lastName,
+                username: username,
+                profile: {
+                    address: address,
+                    city: city,
+                    imageURL: profileImg,
+                    phone: phone,
+                    postalCode: postalCode,
+                    province: province
+                }
+            };
         AsyncStorage.setItem("@USER", JSON.stringify({ ...userData, ...newObj }));
-        // console.log({ ...userData, ...newObj });
-
+        setUserData({ ...userData, ...newObj });
         modifyUser(newObj);
 
     }
 
     const [changing, setChanging] = useState(false);
     const [success, setSuccess] = useState(false);
-
+    const [isPhoto, setIsPhoto] = useState(false);
 
     if (!userData) {
         return (
@@ -202,6 +247,26 @@ export const Profile = ({ navigation, route }) => {
 
     return (
         <>
+            {isPhoto ?
+                <View style={{ zIndex: 999, height: '100%', width: "100%", backgroundColor: 'rgba(0, 0, 50, 0.5)', justifyContent: 'center', alignItems: 'center', position: 'absolute' }}>
+                    <View style={styles.modal}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <TouchableOpacity onPress={openCamera} activeOpacity={0.7} style={styles.conf1}>
+                                <Text style={{ ...styles.btnConf, color: '#fff' }}>Take a photo.</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={openImagePicker} activeOpacity={0.7} style={styles.conf1}>
+                                <Text style={{ ...styles.btnConf, color: '#fff' }}>Select a photo from the library.</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <TouchableOpacity onPress={() => { setIsPhoto(false) }} activeOpacity={0.7} style={styles.conf}>
+                            <Text style={styles.btnConf}>Close</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                :
+                <></>
+            }
+
             <AnimatedLoader
                 visible={changing}
                 overlayColor="rgba(255,255,255,0.9)"
@@ -220,7 +285,7 @@ export const Profile = ({ navigation, route }) => {
                 <View style={styles.wrapper}>
                     <View style={{ marginBottom: 25, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                         <View style={styles.photo}>
-                            {userData?.profile?.imageURL == '' ?
+                            {profileImg == '' ?
                                 <View style={{ height: 120, width: 120, backgroundColor: '#EDEEF1', borderRadius: 100, alignItems: 'center', justifyContent: 'center' }}>
                                     <Svg
                                         style={{ width: 70, height: 70, borderRadius: 50 }}
@@ -245,12 +310,12 @@ export const Profile = ({ navigation, route }) => {
                                 </View>
                                 :
                                 <Image
-                                    source={{ uri: "https://imgv3.fotor.com/images/slider-image/Female-portrait-picture-enhanced-with-better-clarity-and-higher-quality-using-Fotors-free-online-AI-photo-enhancer.jpg" }}
+                                    source={{ uri: profileImg }}
                                     style={{ width: 120, height: 120, zIndex: 1, borderRadius: 100 }}
                                 />
                             }
 
-                            <TouchableOpacity activeOpacity={0.6} style={styles.photoIcon}>
+                            <TouchableOpacity onPress={() => { setIsPhoto(true) }} activeOpacity={0.6} style={styles.photoIcon}>
                                 <Svg width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <Rect x="0.429443" y="2.28943" width="21.1411" height="13.3523" rx="2" fill="white" />
                                     <Path d="M6.59779 0.838331C6.77917 0.539873 7.10311 0.357666 7.45236 0.357666H14.5477C14.8969 0.357666 15.2209 0.539873 15.4022 0.838331L16.2844 2.29002H5.71558L6.59779 0.838331Z" fill="white" />
@@ -293,13 +358,13 @@ export const Profile = ({ navigation, route }) => {
                         style={styles.input}
                         placeholder="Username"
                     />
-                    {/* <TextInput
+                    <TextInput
                         onChangeText={setEmail}
                         value={email}
                         style={styles.input}
                         keyboardType="email-address"
-                        placeholder="Personal email"
-                    /> */}
+                        placeholder="Email"
+                    />
                     <TextInput
                         onChangeText={setPhone}
                         value={phone}
@@ -353,6 +418,46 @@ export const Profile = ({ navigation, route }) => {
     );
 }
 const styles = StyleSheet.create({
+    modal: {
+        width: '80%',
+        borderRadius: 10,
+        backgroundColor: '#fff',
+        padding: 15,
+        justifyContent: 'space-between',
+        shadowColor: "#4468c1",
+        shadowOffset: {
+            width: 0,
+            height: 10,
+        },
+        shadowOpacity: 0.23,
+        shadowRadius: 11.27,
+    },
+    conf: {
+        width: "100%",
+        backgroundColor: "#fff",
+        borderColor: '#34519A',
+        borderStyle: 'solid',
+        borderWidth: 1,
+        height: 56,
+        justifyContent: "center",
+        alignItems: 'center',
+        marginVertical: 10,
+        borderRadius: 5,
+    },
+    conf1: {
+        width: "45%",
+        backgroundColor: "#34519A",
+        height: 65,
+        justifyContent: "center",
+        alignItems: 'center',
+        marginVertical: 10,
+        borderRadius: 5,
+    },
+    btnConf: {
+        color: '#34519A',
+        fontWeight: '700',
+        fontSize: 16
+    },
     lottie: {
         width: 80,
         height: 80,
