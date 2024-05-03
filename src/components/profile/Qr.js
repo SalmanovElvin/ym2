@@ -12,8 +12,10 @@ import {
     ActivityIndicator,
     Platform,
     TextInput,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    Share
 } from "react-native";
+import QRCode from 'react-native-qrcode-svg';
 import Svg, {
     G,
     Circle,
@@ -86,15 +88,69 @@ export const Qr = ({ navigation, route }) => {
     });
 
 
-   
+    const shareContent = async () => {
+        try {
+            const result = await Share.share({
+                message: 'We are waiting for you in our team.',
+                url: 'https://younified.ca/', // Optional URL to share
+                // You can also include other options such as title, subject, etc.
+            });
+            if (result.action === Share.sharedAction) {
+                if (result.activityType) {
+                    // Shared via activity type
+                    console.log(`Shared via ${result.activityType}`);
+                } else {
+                    // Shared
+                    console.log('Shared');
+                }
+            } else if (result.action === Share.dismissedAction) {
+                // Dismissed
+                console.log('Dismissed');
+            }
+        } catch (error) {
+            console.error('Error sharing:', error.message);
+        }
+    };
+
+
     return (
-        <>
-        <Text>
-            Qr
-        </Text>
-        </>
+        <View style={styles.wrapper}>
+            <View style={styles.header}>
+                <Text style={{ fontSize: 18, fontWeight: '700', color: '#242529' }}>
+                    Scan QR Code
+                </Text>
+            </View>
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <QRCode size={180} value="v7u4PoOd/LUbLbGWQcT0nuKtooWipr3/EaHThY0be1bkljsbjmsKrBW7F+h3BDvR49DkAA==" />
+            </View>
+            <TouchableOpacity onPress={shareContent} activeOpacity={0.6} style={styles.share}>
+                <Text style={{ color: '#34519A', fontSize: 16, fontWeight: '700' }}>
+                    Share as a link
+                </Text>
+            </TouchableOpacity>
+        </View>
     );
 }
 const styles = StyleSheet.create({
-    
+    wrapper: {
+        padding: 30,
+        flex: 1,
+        justifyContent: 'space-around'
+    },
+    header: {
+        borderRadius: 20,
+        backgroundColor: '#e3e3e6',
+        padding: 32,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    share: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderStyle: 'solid',
+        borderWidth: 1,
+        borderColor: '#34519A',
+        padding: 32,
+        borderRadius: 5
+    },
 });
