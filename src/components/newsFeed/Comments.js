@@ -645,7 +645,16 @@ export const Comments = React.memo(({ navigation, route }) => {
               ) : (
                 <>
                   <Text style={styles.commentHeader}>Recent comments</Text>
-                  <FlatList
+
+                  {comments.map((item) => (
+                    <Comment
+                      openDeleteModal={openDeleteModal}
+                      comment={item}
+                      key={item?.id}
+                    />
+                  ))}
+
+                  {/* <FlatList
                     data={comments}
                     renderItem={({ item }) => (
                       <Comment
@@ -654,7 +663,7 @@ export const Comments = React.memo(({ navigation, route }) => {
                       />
                     )}
                     keyExtractor={(item) => item?.id}
-                  />
+                  /> */}
                 </>
               )}
             </View>

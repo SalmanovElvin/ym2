@@ -168,24 +168,24 @@ export const SINGLE_USER = gql`
   }
 `;
 
-export const EXECUTIVES = gql`
-  query executives($unionID: UnifiedID!) {
-    executives(unionID: $unionID) {
+export const GET_EXECUTIVES = gql`
+  query executives($unionID: UnifiedID!, $category: String!) {
+    executives(unionID: $unionID, category: $category) {
       id
       executiveID
       position
       extension
       orderNumber
+      display {
+        mobile
+        extension
+        email
+      }
       memberData {
-        id
         firstName
         lastName
-        memberID
-        unionID
-        status
-        unit
-        preferredLanguage
         profile {
+          email
           unionMail
           imageURL
           phone
@@ -195,6 +195,7 @@ export const EXECUTIVES = gql`
     }
   }
 `;
+
 
 /* export const GET_USERS = gql`
   query GetUsers($unionID: UnifiedID!) {

@@ -102,7 +102,7 @@ export const MainScreen = ({ navigation, route }) => {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity activeOpacity={0.6} style={styles.block}>
+          <TouchableOpacity onPress={() => navigation.navigate('Executives')} activeOpacity={0.6} style={styles.block}>
             <Text style={styles.firstTxt}>EXECUTIVES</Text>
             <Text style={styles.txt}>Find executives</Text>
             <Text style={styles.txt}>here.</Text>
@@ -116,7 +116,7 @@ export const MainScreen = ({ navigation, route }) => {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={()=>navigation.navigate('Profile')} activeOpacity={0.6} style={styles.block}>
+          <TouchableOpacity onPress={() => navigation.navigate('Profile')} activeOpacity={0.6} style={styles.block}>
             <Text style={styles.firstTxt}>PROFILE</Text>
             <Text style={styles.txt}>Manage your </Text>
             <Text style={styles.txt}>profile from here.</Text>

@@ -1,18 +1,9 @@
-import React, { useEffect, useState, useRef } from "react";
+import React from "react";
 import {
     View,
     Text,
     StyleSheet,
-    ScrollView,
-    Button,
-    FlatList,
-    Image,
     TouchableOpacity,
-    TouchableWithoutFeedback,
-    ActivityIndicator,
-    Platform,
-    TextInput,
-    KeyboardAvoidingView,
     Share
 } from "react-native";
 import QRCode from 'react-native-qrcode-svg';
@@ -121,7 +112,7 @@ export const Qr = ({ navigation, route }) => {
                 </Text>
             </View>
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                <QRCode size={180} value="v7u4PoOd/LUbLbGWQcT0nuKtooWipr3/EaHThY0be1bkljsbjmsKrBW7F+h3BDvR49DkAA==" />
+                <QRCode size={180} value={user?.barcode} />
             </View>
             <TouchableOpacity onPress={shareContent} activeOpacity={0.6} style={styles.share}>
                 <Text style={{ color: '#34519A', fontSize: 16, fontWeight: '700' }}>

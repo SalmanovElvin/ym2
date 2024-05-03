@@ -28,6 +28,7 @@ import { Chats } from "../components/chats/Chats";
 import { MessagesPage } from "../components/chats/MessagesPage";
 import { Profile } from "../components/profile/Profile";
 import { Qr } from "../components/profile/Qr";
+import { Executives } from "../components/executives/Executives";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -90,9 +91,13 @@ export default function AppNavigation() {
         />
         <Stack.Screen
           name="QrPage"
-          initialParams={{ signOutUserAnsStr }}
           options={{ title: "", ...stil }}
           component={Qr}
+        />
+        <Stack.Screen
+          name="Executives"
+          options={{ title: "", ...stil }}
+          component={Executives}
         />
         {/* <Stack.Screen
           name="Services"

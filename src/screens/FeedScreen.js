@@ -197,7 +197,18 @@ export const FeedScreen = ({ navigation, route }) => {
               </View>
             ) : (
               <>
-                <FlatList
+                {newsFeed.map((item) => (
+                  <NewsFeed
+                    openComments={openComments}
+                    showErr={showErr}
+                    getNews={getNewsFunc}
+                    key={item?.id}
+                    news={item}
+                  />
+                ))}
+
+
+                {/* <FlatList
                   data={newsFeed}
                   renderItem={({ item }) => (
                     <NewsFeed
@@ -209,7 +220,7 @@ export const FeedScreen = ({ navigation, route }) => {
                     />
                   )}
                   keyExtractor={(item) => item?.id}
-                />
+                /> */}
               </>
             )
           }
