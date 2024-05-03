@@ -174,7 +174,7 @@ export const Profile = ({ navigation, route }) => {
             profile: {
                 address: address,
                 city: city,
-                // email: email,
+                email: email,
                 imageURL: profileImg,
                 phone: phone,
                 postalCode: postalCode,
@@ -293,25 +293,13 @@ export const Profile = ({ navigation, route }) => {
                         style={styles.input}
                         placeholder="Username"
                     />
-                    <TextInput
-                        editable={false}
-                        value={userData?.status}
-                        style={styles.input}
-                        placeholder="Status"
-                    />
-                    <TextInput
-                        editable={false}
-                        value={userData?.unit}
-                        style={styles.input}
-                        placeholder="Unit"
-                    />
-                    <TextInput
+                    {/* <TextInput
                         onChangeText={setEmail}
                         value={email}
                         style={styles.input}
                         keyboardType="email-address"
                         placeholder="Personal email"
-                    />
+                    /> */}
                     <TextInput
                         onChangeText={setPhone}
                         value={phone}
@@ -342,6 +330,22 @@ export const Profile = ({ navigation, route }) => {
                         value={postalCode}
                         style={styles.input}
                         placeholder="Postal code"
+                    />
+                    <Text style={{ fontSize: 10, textAlign: 'center', color: 'grey' }}>You can change the fields below in the web version of the portal.</Text>
+                    <View style={{ height: 1, backgroundColor: 'grey', marginBottom: 10 }}>
+
+                    </View>
+                    <TextInput
+                        editable={false}
+                        value={userData?.status}
+                        style={styles.input}
+                        placeholder="Status"
+                    />
+                    <TextInput
+                        editable={false}
+                        value={userData?.unit}
+                        style={styles.input}
+                        placeholder="Unit"
                     />
                 </View>
             </ScrollView>
