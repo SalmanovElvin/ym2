@@ -27,6 +27,7 @@ import { NotificationsPage } from "../components/notifications/NotificationsPage
 import { Chats } from "../components/chats/Chats";
 import { MessagesPage } from "../components/chats/MessagesPage";
 import { Profile } from "../components/profile/Profile";
+import { Qr } from "../components/profile/Qr";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -86,6 +87,12 @@ export default function AppNavigation() {
           initialParams={{ signOutUserAnsStr }}
           options={{ title: "", ...stil }}
           component={Profile}
+        />
+        <Stack.Screen
+          name="QrPage"
+          initialParams={{ signOutUserAnsStr }}
+          options={{ title: "", ...stil }}
+          component={Qr}
         />
         {/* <Stack.Screen
           name="Services"
