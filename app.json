@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "rn-self-post",
-    "slug": "rn-self-post",
+    "name": "younified-app",
+    "slug": "younified-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -27,7 +27,8 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-secure-store"
+      "expo-secure-store",
+      "expo-font"
     ]
   }
 }
