@@ -90,7 +90,7 @@ export const MainScreen = ({ navigation, route }) => {
         // <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         // }
         >
-          <TouchableOpacity activeOpacity={0.6} style={styles.block}>
+          <TouchableOpacity onPress={() => navigation.navigate('Documents')} activeOpacity={0.6} style={styles.block}>
             <Text style={styles.firstTxt}>DOCUMENTS</Text>
             <Text style={styles.txt}>See your</Text>
             <Text style={styles.txt}>Documents here.</Text>

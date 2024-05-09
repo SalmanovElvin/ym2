@@ -29,6 +29,7 @@ import { MessagesPage } from "../components/chats/MessagesPage";
 import { Profile } from "../components/profile/Profile";
 import { Qr } from "../components/profile/Qr";
 import { Executives } from "../components/executives/Executives";
+import { Documents } from "../components/documents/Documents";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -98,6 +99,11 @@ export default function AppNavigation() {
           name="Executives"
           options={{ title: "", ...stil }}
           component={Executives}
+        />
+        <Stack.Screen
+          name="Documents"
+          options={{ title: "", ...stil }}
+          component={Documents}
         />
         {/* <Stack.Screen
           name="Services"

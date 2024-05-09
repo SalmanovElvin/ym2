@@ -47,7 +47,7 @@ export const Header = () => {
 
     setInterval(() => {
         getNotifications();
-    }, 5000);
+    }, 1000);
 
 
     const [isNotifications, setIsNotifications] = useState(false);
