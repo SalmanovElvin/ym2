@@ -28,6 +28,7 @@ import Svg, {
 } from "react-native-svg";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { DOCUMENTS } from "../../../graph/queries/documents";
+import Carousel, { Pagination } from 'react-native-snap-carousel';
 
 export const Documents = ({ navigation, route }) => {
 
@@ -126,7 +127,7 @@ export const Documents = ({ navigation, route }) => {
 
 
     const width = Dimensions.get('window').width;
-    console.log(docTypes);
+    // console.log(docTypes);
 
     const { data, loading, refetch } = useQuery(DOCUMENTS, {
         variables: {
@@ -154,16 +155,30 @@ export const Documents = ({ navigation, route }) => {
             console.error('Query Error', error); // eslint-disable-line
         }
     });
-    return (
-        <ScrollView style={styles.wrapper}>
 
-        </ScrollView>
+    const [selectedDoc, setSelectedDoc] = useState("YOUnified Tutorials");
+    return (
+        <View>
+            <View style={styles.wrapper}>
+                <Carousel
+                    data={docTypes}
+                    renderItem={({ item }) => (
+                        <>
+                            <Text onPress={() => setSelectedDoc(item)} style={{ ...{ textAlign: 'center', paddingVertical: 24, paddingHorizontal: 10, fontSize: 16, fontWeight: '500', color: '#696666' }, ...item === selectedDoc ? { borderBottomColor: '#34519A', borderBottomWidth: 3, borderStyle: "solid" } : {} }}>{item === "" ? "General" : item}</Text>
+                        </>
+                    )}
+                    sliderWidth={width}
+                    itemWidth={width / 2.2}
+                // onSnapToItem={index => onTabPress(docTypes[index].id)}
+                />
+            </View>
+        </View>
     );
 }
 const styles = StyleSheet.create({
     wrapper: {
-        paddingVertical: 10,
-        paddingHorizontal: 24
+        paddingHorizontal: 24,
+        backgroundColor: '#EBECF0'
     },
 
 });
