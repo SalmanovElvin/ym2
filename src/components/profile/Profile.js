@@ -98,7 +98,7 @@ export const Profile = ({ navigation, route }) => {
     ),
   });
 
-  const [image, setImage] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
   const [text, setText] = useState("");
 
   const openImagePicker = async () => {
@@ -110,6 +110,47 @@ export const Profile = ({ navigation, route }) => {
 
     const result = await ImagePicker.launchImageLibraryAsync();
     setProfileImg(result.assets[0].uri);
+
+    //
+    // Fetch the file
+    fetch(result.assets[0].uri)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.blob();
+      })
+      .then((blob) => {
+        // Convert the blob to a base64 string
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        });
+      })
+      .then((base64) => {
+        // Create a ReactNativeFile instance
+        const file = new ReactNativeFile({
+          uri: result.assets[0].uri,
+          type: result.assets[0].mimeType,
+          name: result.assets[0].fileName,
+          // Data should be provided as a Blob or base64 string
+          // For base64, we already read the file in base64 format
+          // So we can directly assign the base64 string to the "data" property
+          data: base64.split(",")[1], // Remove the prefix before base64 content
+        });
+
+        setImageFile(file);
+
+        // Now you can use the ReactNativeFile instance for uploading or any other purposes
+      })
+      .catch((error) => {
+        console.error("Error fetching file:", error);
+      });
+
+    //
+
     setIsPhoto(false);
   };
 
@@ -122,7 +163,45 @@ export const Profile = ({ navigation, route }) => {
 
     const result = await ImagePicker.launchCameraAsync();
     setProfileImg(result.assets[0].uri);
-    console.log(result.assets[0].uri);
+    //
+    // Fetch the file
+    fetch(result.assets[0].uri)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.blob();
+      })
+      .then((blob) => {
+        // Convert the blob to a base64 string
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        });
+      })
+      .then((base64) => {
+        // Create a ReactNativeFile instance
+        const file = new ReactNativeFile({
+          uri: result.assets[0].uri,
+          type: result.assets[0].mimeType,
+          name: result.assets[0].fileName,
+          // Data should be provided as a Blob or base64 string
+          // For base64, we already read the file in base64 format
+          // So we can directly assign the base64 string to the "data" property
+          data: base64.split(",")[1], // Remove the prefix before base64 content
+        });
+
+        setImageFile(file);
+
+        // Now you can use the ReactNativeFile instance for uploading or any other purposes
+      })
+      .catch((error) => {
+        console.error("Error fetching file:", error);
+      });
+
+    //
     setIsPhoto(false);
   };
 
@@ -130,6 +209,7 @@ export const Profile = ({ navigation, route }) => {
   const [userProfile, setUserProfile] = useState(null);
 
   const [unionData, setUnionData] = useState("");
+
   useEffect(() => {
     const getData = async () => {
       try {
@@ -146,6 +226,7 @@ export const Profile = ({ navigation, route }) => {
         if (userVal !== null && JSON.parse(userVal).username !== undefined) {
           setUserData(JSON.parse(userVal));
           setUserProfile({ ...JSON.parse(userVal).profile });
+          console.log(JSON.parse(userVal).profile);
           setName(JSON.parse(userVal)?.firstName);
           setLastName(JSON.parse(userVal)?.lastName);
           setUsername(JSON.parse(userVal)?.username);
@@ -164,6 +245,7 @@ export const Profile = ({ navigation, route }) => {
         console.error("Error retrieving data:", error);
       }
     };
+
     getData();
   }, []);
 
@@ -241,7 +323,6 @@ export const Profile = ({ navigation, route }) => {
               province: province,
             },
           };
-    uploadAvatar();
     AsyncStorage.setItem(
       "@USER",
       JSON.stringify({
@@ -256,6 +337,7 @@ export const Profile = ({ navigation, route }) => {
       profile: { ...userData.profile, ...newObj.profile },
     });
     modifyUser(newObj);
+    uploadAvatar();
   };
 
   const [changing, setChanging] = useState(false);
@@ -266,14 +348,18 @@ export const Profile = ({ navigation, route }) => {
     variables: {
       unionID: userData?.unionID,
       userID: userData?.id,
-      file: new ReactNativeFile({
-        uri: profileImg,
-        type: "image",
-        name: profileImg,
-      }),
+      file: imageFile,
     },
     onCompleted: (data) => {
-      console.log(data);
+      console.log(data?.uploadAvatar);
+
+      AsyncStorage.setItem(
+        "@USER",
+        JSON.stringify({
+          ...userData,
+          profile: { ...userData.profile, imageURL: data?.uploadAvatar },
+        })
+      );
     },
     onError: (err) => {
       console.log(err);
