@@ -147,6 +147,14 @@ export const Documents = ({ navigation, route }) => {
   });
   const [selectedDoc, setSelectedDoc] = useState("YOUnified Tutorials");
 
+  if (docTypes.length === 0) {
+    return (
+      <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+        <ActivityIndicator size="large" color="blue" />
+      </View>
+    );
+  }
+
   return (
     <View>
       <View style={styles.wrapper}>
@@ -198,7 +206,7 @@ export const Documents = ({ navigation, route }) => {
           // onSnapToItem={index => onTabPress(docTypes[index].id)}
         />
       </View>
-      <ScrollView style={{ padding:24 }}></ScrollView>
+      <ScrollView style={{ padding: 24 }}></ScrollView>
     </View>
   );
 };

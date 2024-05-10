@@ -50,7 +50,7 @@ export const Profile = ({ navigation, route }) => {
     },
     headerRight: () => (
       <TouchableOpacity
-        onPress={edirData}
+        onPress={editData}
         activeOpacity={0.6}
         style={{ flexDirection: "row", marginRight: 10 }}
       >
@@ -127,6 +127,8 @@ export const Profile = ({ navigation, route }) => {
   };
 
   const [userData, setUserData] = useState(null);
+  const [userProfile, setUserProfile] = useState(null);
+
   const [unionData, setUnionData] = useState("");
   useEffect(() => {
     const getData = async () => {
@@ -143,6 +145,7 @@ export const Profile = ({ navigation, route }) => {
 
         if (userVal !== null && JSON.parse(userVal).username !== undefined) {
           setUserData(JSON.parse(userVal));
+          setUserProfile({ ...JSON.parse(userVal).profile });
           setName(JSON.parse(userVal)?.firstName);
           setLastName(JSON.parse(userVal)?.lastName);
           setUsername(JSON.parse(userVal)?.username);
@@ -188,7 +191,9 @@ export const Profile = ({ navigation, route }) => {
     },
     onError: (error) => {
       setChanging(false);
-      alert(error.message);
+      alert(
+        "Something gone wrong when we try change data. Please try again later."
+      );
     },
   });
 
@@ -198,42 +203,58 @@ export const Profile = ({ navigation, route }) => {
     });
   };
 
-  const edirData = () => {
+  const editData = () => {
     setChanging(true);
     let newObj =
       oldEmail !== email
         ? {
             // dateOfBirth: "1975-04-08T20:00:00Z",
+            // ...userData,
             firstName: name,
             lastName: lastName,
             username: username,
             profile: {
+              // ...userProfile,
               address: address,
               city: city,
               email: email,
-              imageURL: profileImg,
-              phone: phone,
+              // imageURL: profileImg,
+              // phone: phone,
               postalCode: postalCode,
               province: province,
             },
           }
         : {
             // dateOfBirth: "1975-04-08T20:00:00Z",
+            // ...userData,
             firstName: name,
             lastName: lastName,
             username: username,
             profile: {
+              // ...userProfile,
               address: address,
               city: city,
-              imageURL: profileImg,
+              // email: email + " ",
+              // imageURL: profileImg,
               phone: phone,
               postalCode: postalCode,
               province: province,
             },
           };
     uploadAvatar();
-    AsyncStorage.setItem("@USER", JSON.stringify({ ...userData, ...newObj }));
-    setUserData({ ...userData, ...newObj });
+    AsyncStorage.setItem(
+      "@USER",
+      JSON.stringify({
+        ...userData,
+        ...newObj,
+        profile: { ...userData.profile, ...newObj.profile },
+      })
+    );
+    setUserData({
+      ...userData,
+      ...newObj,
+      profile: { ...userData.profile, ...newObj.profile },
+    });
     modifyUser(newObj);
   };
 
