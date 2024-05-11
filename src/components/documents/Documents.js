@@ -29,6 +29,8 @@ import Svg, {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { DOCUMENTS } from "../../../graph/queries/documents";
 import Carousel, { Pagination } from "react-native-snap-carousel";
+import { WebView } from 'react-native-webview';
+
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -154,6 +156,13 @@ export const Documents = ({ navigation, route }) => {
       console.error("Query Error", error); // eslint-disable-line
     },
   });
+
+
+  const [openDoc, setOpenDoc] = useState(false);
+  const [openedFile, setOpenedFile] = useState(null);
+
+
+
   if (docTypes.length === 0) {
     return (
       <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
@@ -198,7 +207,7 @@ export const Documents = ({ navigation, route }) => {
       <ScrollView style={{ paddingVertical: 10, paddingHorizontal: 14 }}>
 
         {filteredDocuments.map((item) => (
-          <TouchableOpacity key={item.id} activeOpacity={0.6} style={styles.block}>
+          <TouchableOpacity onPress={() => { setOpenedFile(item); setOpenDoc(true); }} key={item.id} activeOpacity={0.6} style={styles.block}>
 
             {item.url.split('.').pop().toLowerCase() === "jpeg" ?
               <Svg width="26" height="32" viewBox="0 0 26 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -280,6 +289,26 @@ export const Documents = ({ navigation, route }) => {
         ))}
 
       </ScrollView>
+      {openDoc ?
+        <View style={styles.modalBack}>
+          <View style={styles.modal}>
+            <View style={{ height: screenHeight * 0.5 }}>
+              {/* {openedFile &&
+        <WebView source={{ uri: openedFile }} style={{ flex: 1 }} />
+      } */}
+              {/* <WebView source={{ uri: openedFile }} style={{ flex: 1 }} /> */}
+            </View>
+            <TouchableOpacity onPress={async () => await Linking.openURL(openedFile.url)} activeOpacity={0.7} style={{ ...styles.conf, backgroundColor: 'green' }}>
+              <Text style={styles.btnConf}>Download</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setOpenDoc(false)} activeOpacity={0.7} style={styles.conf}>
+              <Text style={styles.btnConf}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        :
+        <></>
+      }
     </View>
   );
 };
@@ -306,5 +335,56 @@ const styles = StyleSheet.create({
     elevation: 5,
     flexDirection: 'row',
     alignItems: 'center'
-  }
+  },
+  modalBack: {
+    zIndex: 999,
+    width: '100%',
+    position: 'absolute',
+    backgroundColor: 'rgba(0, 0, 50, 0.5)',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  modal: {
+    width: '90%',
+    borderRadius: 10,
+    backgroundColor: '#fff',
+    padding: 15,
+    justifyContent: 'space-between',
+    shadowColor: "#4468c1",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 11.27,
+  },
+  errMsg: {
+    fontSize: 16,
+    fontWeight: '500',
+    lineHeight: 22,
+  },
+  tip: {
+    fontSize: 16,
+    fontWeight: '500',
+    lineHeight: 22,
+    fontStyle: 'italic',
+    color: 'green',
+    marginBottom: 15,
+  },
+  conf: {
+    width: "100%",
+    backgroundColor: "#34519A",
+    height: 56,
+    justifyContent: "center",
+    alignItems: 'center',
+    marginVertical: 10,
+    borderRadius: 5,
+  },
+  btnConf: {
+    color: '#fff',
+    fontWeight: '700',
+    fontSize: 16
+
+  },
 });
