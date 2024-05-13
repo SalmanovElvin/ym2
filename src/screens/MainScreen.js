@@ -10,6 +10,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { GET_NOTIFICATIONS } from "../../graph/queries/notifications";
 import { useMutation, useQuery } from "@apollo/client";
 import { Header } from "../components/header/Header";
+import { GET_GRIEVANCES } from "../../graph/queries/grievances";
 // import { useRoute } from '@react-navigation/native';
 
 export const MainScreen = ({ navigation, route }) => {
@@ -49,7 +50,23 @@ export const MainScreen = ({ navigation, route }) => {
 
 
 
-  const [isNotifications, setIsNotifications] = useState(false);
+  const [grievances, setGrievances] = useState(false);
+
+
+  //query
+  const { data, loading, error, refetch } = useQuery(GET_GRIEVANCES, {
+    variables: {
+      unionID: userData?.unionID,
+    },
+    onCompleted: (data) => {
+      setGrievances(true);
+    },
+    onError: (err) => {
+      setGrievances(false);
+    },
+    fetchPolicy: "cache-and-network",
+    notifyOnNetworkStatusChange: true,
+  });
 
   // const { loading, error, data, refetch: getNotifications } = useQuery(GET_NOTIFICATIONS, {
   //   variables: {
@@ -128,21 +145,26 @@ export const MainScreen = ({ navigation, route }) => {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity activeOpacity={0.6} style={styles.block}>
-            <Text style={styles.firstTxt}>GRIEVANCES</Text>
-            <Text style={styles.txt}>See grievances </Text>
-            <Text style={styles.txt}>here..</Text>
-            <View style={styles.iconWrapper}>
-              <Svg width="46" height="39" viewBox="0 0 46 39" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <Path d="M12.1216 37.6261C11.7227 38.088 11.0068 38.088 10.6079 37.6261L6.09815 32.4043L16.6313 32.4043L12.1216 37.6261Z" fill="#34519A" />
-                <Rect y="7.45679" width="38.8065" height="26.0558" rx="4" fill="#5783EF" />
-                <Line x1="7.09814" y1="15.1536" x2="19.512" y2="15.1536" stroke="#F8F8F8" strokeWidth="2" strokeLinecap="round" />
-                <Line x1="7.09814" y1="20.4653" x2="16.7401" y2="20.4653" stroke="#F8F8F8" strokeWidth="2" strokeLinecap="round" />
-                <Line x1="7.09814" y1="25.7773" x2="23.947" y2="25.7773" stroke="#F8F8F8" strokeWidth="2" strokeLinecap="round" />
-                <Path d="M43.4325 2.4044C41.7858 0.757653 39.1158 0.757657 37.4691 2.40441L27.3238 12.5497C27.1184 12.7552 27.0029 13.0338 27.0029 13.3243C27.0029 13.3244 27.0029 13.3244 27.0029 13.3244L27.0029 16.834C27.0029 17.9386 27.8983 18.834 29.0029 18.834L32.5125 18.834C32.5125 18.834 32.5126 18.834 32.5126 18.834C32.8031 18.834 33.0818 18.7186 33.2872 18.5131L43.4325 8.36781C45.0793 6.72106 45.0793 4.05115 43.4325 2.4044Z" fill="#34519A" stroke="#F8F8F8" stroke-width="2" />
-              </Svg>
-            </View>
-          </TouchableOpacity>
+          {grievances ?
+            <TouchableOpacity onPress={() => navigation.navigate('Grievances')} activeOpacity={0.6} style={styles.block}>
+              <Text style={styles.firstTxt}>GRIEVANCES</Text>
+              <Text style={styles.txt}>See grievances </Text>
+              <Text style={styles.txt}>here..</Text>
+              <View style={styles.iconWrapper}>
+                <Svg width="46" height="39" viewBox="0 0 46 39" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <Path d="M12.1216 37.6261C11.7227 38.088 11.0068 38.088 10.6079 37.6261L6.09815 32.4043L16.6313 32.4043L12.1216 37.6261Z" fill="#34519A" />
+                  <Rect y="7.45679" width="38.8065" height="26.0558" rx="4" fill="#5783EF" />
+                  <Line x1="7.09814" y1="15.1536" x2="19.512" y2="15.1536" stroke="#F8F8F8" strokeWidth="2" strokeLinecap="round" />
+                  <Line x1="7.09814" y1="20.4653" x2="16.7401" y2="20.4653" stroke="#F8F8F8" strokeWidth="2" strokeLinecap="round" />
+                  <Line x1="7.09814" y1="25.7773" x2="23.947" y2="25.7773" stroke="#F8F8F8" strokeWidth="2" strokeLinecap="round" />
+                  <Path d="M43.4325 2.4044C41.7858 0.757653 39.1158 0.757657 37.4691 2.40441L27.3238 12.5497C27.1184 12.7552 27.0029 13.0338 27.0029 13.3243C27.0029 13.3244 27.0029 13.3244 27.0029 13.3244L27.0029 16.834C27.0029 17.9386 27.8983 18.834 29.0029 18.834L32.5125 18.834C32.5125 18.834 32.5126 18.834 32.5126 18.834C32.8031 18.834 33.0818 18.7186 33.2872 18.5131L43.4325 8.36781C45.0793 6.72106 45.0793 4.05115 43.4325 2.4044Z" fill="#34519A" stroke="#F8F8F8" stroke-width="2" />
+                </Svg>
+              </View>
+            </TouchableOpacity>
+            :
+            <></>
+          }
+
 
           <TouchableOpacity activeOpacity={0.6} style={styles.block}>
             <Text style={styles.firstTxt}>PERKS</Text>
