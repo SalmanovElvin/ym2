@@ -136,6 +136,7 @@ export const Documents = ({ navigation, route }) => {
     },
     onCompleted: () => {
       setDocs(data?.documents);
+      // console.log(data?.documents);
       const arr = [];
       for (let i = 0; i < data?.documents?.length; i++) {
         let isUnique = true;
@@ -160,7 +161,9 @@ export const Documents = ({ navigation, route }) => {
 
   const [openDoc, setOpenDoc] = useState(false);
   const [openedFile, setOpenedFile] = useState(null);
-
+  const isFile = (url) => {
+    return /\.(pdf|doc|docx|xls|xlsx|ppt|pptx)$/i.test(url);
+  };
 
 
   if (docTypes.length === 0) {
@@ -293,10 +296,13 @@ export const Documents = ({ navigation, route }) => {
         <View style={styles.modalBack}>
           <View style={styles.modal}>
             <View style={{ height: screenHeight * 0.5 }}>
-              {/* {openedFile &&
-        <WebView source={{ uri: openedFile }} style={{ flex: 1 }} />
-      } */}
-              {/* <WebView source={{ uri: openedFile }} style={{ flex: 1 }} /> */}
+              {openedFile.url.split('.').pop() === 'jpeg' || openedFile.url.split('.').pop() === "png" ?
+                <Image style={{ height: "100%", width: '100%' }} source={{ uri: openedFile.url }} />
+                :
+                <WebView
+                  source={{ uri: `https://docs.google.com/viewer?url=${encodeURIComponent(openedFile.url)}` }}
+                />
+              }
             </View>
             <TouchableOpacity onPress={async () => await Linking.openURL(openedFile.url)} activeOpacity={0.7} style={{ ...styles.conf, backgroundColor: 'green' }}>
               <Text style={styles.btnConf}>Download</Text>
