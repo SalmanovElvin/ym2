@@ -152,32 +152,35 @@ export const Grievances = ({ navigation, route }) => {
 
     return (
         <View style={styles.wrapper}>
-            <View style={styles.chooseBar}>
-                <TouchableOpacity activeOpacity={0.6} onPress={() => setIsOpenCategory(true)} style={isOpenCategory ? { ...styles.choosElement, backgroundColor: '#fff' } : { ...styles.choosElement, }}>
-                    <Text style={{ color: '#242529', fontSize: 16, fontWeight: '400' }}>
-                        Open grievances
-                    </Text>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.6} onPress={() => setIsOpenCategory(false)} style={!isOpenCategory ? { ...styles.choosElement, backgroundColor: '#fff' } : { ...styles.choosElement, }}>
-                    <Text style={{ color: '#242529', fontSize: 16, fontWeight: '400' }}>Closed grievances</Text>
-                </TouchableOpacity>
+            <View style={{ paddingHorizontal: 14 }}>
+                <View style={styles.chooseBar}>
+                    <TouchableOpacity activeOpacity={0.6} onPress={() => setIsOpenCategory(true)} style={isOpenCategory ? { ...styles.choosElement, backgroundColor: '#fff' } : { ...styles.choosElement, }}>
+                        <Text style={{ color: '#242529', fontSize: 16, fontWeight: '400' }}>
+                            Open grievances
+                        </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={0.6} onPress={() => setIsOpenCategory(false)} style={!isOpenCategory ? { ...styles.choosElement, backgroundColor: '#fff' } : { ...styles.choosElement, }}>
+                        <Text style={{ color: '#242529', fontSize: 16, fontWeight: '400' }}>Closed grievances</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
-            <ScrollView>
+
+            <ScrollView style={{ padding: 10 }}>
                 {isOpenCategory ?
                     openGrievances.map((item) => (
                         <TouchableOpacity TouchableOpacity activeOpacity={0.6} style={styles.block}>
                             <View style={styles.rows}>
                                 <View style={{ width: '45%' }}>
                                     <Text style={{ color: '#696666', fontSize: 12, fontWeight: '600', marginBottom: 2 }}>
-                                        23/2/2023-131-CO
+                                        {item.caseNumber}
                                     </Text>
                                     <Text style={{ color: '#242529', fontSize: 16, fontWeight: '600' }}>
-                                        Grievance topic
+                                        {item.title}
                                     </Text>
                                 </View>
                                 <View style={{ width: '45%', backgroundColor: '#EEF164', alignItems: 'center', justifyContent: 'center', borderRadius: 16, width: 90 }}>
                                     <Text style={{ color: '#8B8E05', fontSize: 16, fontWeight: '600', padding: 10, }}>
-                                        Stage 2
+                                        {item.status}
                                     </Text>
                                 </View>
                             </View>
@@ -210,15 +213,15 @@ export const Grievances = ({ navigation, route }) => {
                             <View style={styles.rows}>
                                 <View style={{ width: '45%' }}>
                                     <Text style={{ color: '#696666', fontSize: 12, fontWeight: '600', marginBottom: 2 }}>
-                                        23/2/2023-131-CO
+                                        {item.caseNumber}
                                     </Text>
                                     <Text style={{ color: '#242529', fontSize: 16, fontWeight: '600' }}>
-                                        Grievance topic
+                                        {item.title}
                                     </Text>
                                 </View>
                                 <View style={{ width: '45%', backgroundColor: '#5BD476', alignItems: 'center', justifyContent: 'center', borderRadius: 16, width: 90 }}>
                                     <Text style={{ color: '#F9FAFC', fontSize: 16, fontWeight: '600', padding: 10, }}>
-                                        Closed
+                                        {item.status}
                                     </Text>
                                 </View>
                             </View>
@@ -251,7 +254,8 @@ export const Grievances = ({ navigation, route }) => {
 const styles = StyleSheet.create({
     wrapper: {
         paddingVertical: 24,
-        paddingHorizontal: 18
+
+        flex: 1
     },
     chooseBar: {
         backgroundColor: '#E4E5EB',

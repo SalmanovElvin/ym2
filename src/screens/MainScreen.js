@@ -50,7 +50,7 @@ export const MainScreen = ({ navigation, route }) => {
 
 
 
-  const [grievances, setGrievances] = useState(false);
+  const [grievances, setGrievances] = useState(null);
 
 
   //query
@@ -97,6 +97,14 @@ export const MainScreen = ({ navigation, route }) => {
   //   }, 1000);
   //   // getNotifications();
   // }, []);
+
+  if (grievances === null) {
+    return (
+      <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+        <ActivityIndicator size="large" color="blue" />
+      </View>
+    );
+  }
 
   return (
     <>
