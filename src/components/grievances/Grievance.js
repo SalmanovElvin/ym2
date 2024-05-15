@@ -51,7 +51,7 @@ export const Grievance = ({ navigation, route }) => {
 
                 if (value !== null) {
                     setUnionData(JSON.parse(value));
-                    console.log(JSON.parse(value));
+                    // console.log(JSON.parse(value));
                 } else {
                     console.log("No union data found");
                 }
@@ -80,7 +80,7 @@ export const Grievance = ({ navigation, route }) => {
         },
         onCompleted: (data) => {
             setSingleGrievanceData(data?.singleGrievance);
-            // console.log(data?.singleGrievance);
+            // console.log(data?.singleGrievance?.steward);
 
         },
         onError: (err) => {
@@ -144,15 +144,14 @@ export const Grievance = ({ navigation, route }) => {
                                 </Text>
                             </View>
                         </View>
-                        {singleGrievanceData?.steward?.length !== 0 ?
+                        {singleGrievanceData.steward ?
                             <View style={styles.rows}>
                                 <View style={{ width: '45%' }}>
                                     <Text style={{ color: '#A6A9B4', fontSize: 14, fontWeight: '400', marginBottom: 2 }}>
                                         Steward:
                                     </Text>
                                     <Text style={{ color: '#696666', fontSize: 14, fontWeight: '600' }}>
-                                        Fred Vecchio
-                                        {/* {singleGrievanceData.steward} */}
+                                        {singleGrievanceData?.steward?.firstName} {singleGrievanceData?.steward?.lastName}
                                     </Text>
                                 </View>
                                 <View style={{ width: '45%' }}>
@@ -160,8 +159,7 @@ export const Grievance = ({ navigation, route }) => {
                                         SubSteward:
                                     </Text>
                                     <Text style={{ color: '#696666', fontSize: 14, fontWeight: '600' }}>
-                                        Lina Vecchio
-                                        {/* {singleGrievanceData.subSteward} */}
+                                        {singleGrievanceData?.subSteward?.firstName} {singleGrievanceData?.subSteward?.lastName}
                                     </Text>
                                 </View>
                             </View>
