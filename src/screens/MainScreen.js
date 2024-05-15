@@ -60,9 +60,13 @@ export const MainScreen = ({ navigation, route }) => {
     },
     onCompleted: (data) => {
       setGrievances(true);
+      setRefreshing(false);
     },
     onError: (err) => {
       setGrievances(false);
+      setRefreshing(false);
+      refetch();
+
     },
     fetchPolicy: "cache-and-network",
     notifyOnNetworkStatusChange: true,
@@ -89,14 +93,16 @@ export const MainScreen = ({ navigation, route }) => {
   // });
 
 
-  // const [refreshing, setRefreshing] = React.useState(false);
-  // const onRefresh = React.useCallback(() => {
-  //   setRefreshing(true);
-  //   setTimeout(() => {
-  //   setRefreshing(false); 
-  //   }, 1000);
-  //   // getNotifications();
-  // }, []);
+  const [refreshing, setRefreshing] = React.useState(false);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    refetch();
+    // setTimeout(() => {
+    // setRefreshing(false); 
+    // }, 1000);
+
+    // getNotifications();
+  }, []);
 
   if (grievances === null) {
     return (
@@ -111,9 +117,9 @@ export const MainScreen = ({ navigation, route }) => {
       <Header />
       <SafeAreaView style={styles.wrapper}>
         <ScrollView style={styles.wrapper}
-        // refreshControl={
-        // <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        // }
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
         >
           <TouchableOpacity onPress={() => navigation.navigate('Documents')} activeOpacity={0.6} style={styles.block}>
             <Text style={styles.firstTxt}>DOCUMENTS</Text>

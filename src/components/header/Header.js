@@ -47,7 +47,7 @@ export const Header = () => {
 
     setInterval(() => {
         getNotifications();
-    }, 1000);
+    }, 3000);
 
 
     const [isNotifications, setIsNotifications] = useState(false);
@@ -63,10 +63,9 @@ export const Header = () => {
                     setIsNotifications(true);
                 }
             }
-            // console.log(data.notifications);
         },
         onError: (err) => {
-            console.log(err);
+            console.log("Error, notification in header");
         },
         fetchPolicy: "cache-and-network",
         notifyOnNetworkStatusChange: true,

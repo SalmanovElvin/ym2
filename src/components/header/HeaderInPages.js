@@ -10,7 +10,7 @@ import { GET_NOTIFICATIONS } from "../../../graph/queries/notifications";
 import { useMutation, useQuery } from "@apollo/client";
 import { useNavigation } from '@react-navigation/native';
 
-export const HeaderInPages = ({title}) => {
+export const HeaderInPages = ({ title }) => {
     const navigation = useNavigation();
     const unionState = useUnionState();
 
@@ -47,7 +47,7 @@ export const HeaderInPages = ({title}) => {
 
     setInterval(() => {
         getNotifications();
-    }, 1000);
+    }, 3000);
 
 
     const [isNotifications, setIsNotifications] = useState(false);
@@ -66,7 +66,7 @@ export const HeaderInPages = ({title}) => {
             // console.log(data.notifications);
         },
         onError: (err) => {
-            console.log(err);
+            console.log("Error, notification in headerInPage");
         },
         fetchPolicy: "cache-and-network",
         notifyOnNetworkStatusChange: true,

@@ -81,10 +81,11 @@ export const Grievances = ({ navigation, route }) => {
             setGrievances(data?.grievances);
             setClosedGrievances(data?.grievances.filter(grievance => grievance.status === "closed"));
             setOpenGrievances(data?.grievances.filter(grievance => grievance.status != "closed"));
-            console.log(data?.grievances.filter(grievance => grievance.status != "closed"));
+            // console.log(data?.grievances.filter(grievance => grievance.status != "closed"));
         },
         onError: (err) => {
-            console.log(err);
+            console.log("Error with getting grievances");
+            refetch();
         },
         fetchPolicy: "cache-and-network",
         notifyOnNetworkStatusChange: true,
@@ -116,7 +117,7 @@ export const Grievances = ({ navigation, route }) => {
                     <ScrollView style={{ padding: 10 }}>
                         {isOpenCategory ?
                             openGrievances.map((item) => (
-                                <TouchableOpacity key={item.id} onPress={() => navigation.navigate('Grievance', { data: item })} activeOpacity={0.6} style={styles.block}>
+                                <TouchableOpacity key={item.id} onPress={() => navigation.navigate('Grievance', { grievanceData: item })} activeOpacity={0.6} style={styles.block}>
                                     <View style={styles.rows}>
                                         <View style={{ width: '45%' }}>
                                             <Text style={{ color: '#696666', fontSize: 12, fontWeight: '600', marginBottom: 2 }}>

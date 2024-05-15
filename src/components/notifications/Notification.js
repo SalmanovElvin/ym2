@@ -31,7 +31,7 @@ export const Notification = ({ navigation, notification, sendDeletedItem }) => {
         })
         .onFinalize((event) => {
             offset.value = withDecay({
-                velocity: event.velocityX,
+                // velocity: event.velocityX,
                 rubberBandEffect: true,
                 clamp: [-(width.value) + screenWidth - 150, 0],
             });
