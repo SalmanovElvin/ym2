@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Button, FlatList, Image, SafeAreaView, ScrollView, RefreshControl } from "react-native";
+import { View, Text, StyleSheet, Button, FlatList, Image, SafeAreaView, ScrollView, RefreshControl, TouchableOpacity } from "react-native";
 
 import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
 import { useUnionState } from "../../../store/union-context";
@@ -10,7 +10,7 @@ import { GET_NOTIFICATIONS } from "../../../graph/queries/notifications";
 import { useMutation, useQuery } from "@apollo/client";
 import { useNavigation } from '@react-navigation/native';
 
-export const Header = () => {
+export const HeaderInPages = ({title}) => {
     const navigation = useNavigation();
     const unionState = useUnionState();
 
@@ -77,7 +77,40 @@ export const Header = () => {
 
     return (
         <View style={styles.wrapper}>
-            <Image style={{ width: 55, height: 40 }} source={logoURL} />
+            <TouchableOpacity
+                onPress={() => navigation.goBack()}
+                activeOpacity={0.6}
+                style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "center",
+                }}
+            >
+                <Svg
+                    width="8"
+                    height="12"
+                    viewBox="0 0 8 12"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <Path
+                        d="M6.5 1L1.5 6L6.5 11"
+                        stroke="#242529"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                    />
+                </Svg>
+                <Text
+                    style={{
+                        marginLeft: 15,
+                        fontWeight: "700",
+                        fontSize: 16,
+                        color: "#242529",
+                    }}
+                >
+                    {title}
+                </Text>
+            </TouchableOpacity>
             <View style={{ flexDirection: "row" }}>
                 {isNotifications ?
                     <Svg

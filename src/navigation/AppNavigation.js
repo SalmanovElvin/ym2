@@ -99,22 +99,22 @@ export default function AppNavigation() {
         />
         <Stack.Screen
           name="Executives"
-          options={{ title: "", ...stil }}
+          options={{ headerShown: false, title: "", ...stil }}
           component={Executives}
         />
         <Stack.Screen
           name="Documents"
-          options={{ title: "", ...stil }}
+          options={{ headerShown: false, title: "", ...stil }}
           component={Documents}
         />
         <Stack.Screen
           name="Grievances"
-          options={{ title: "", ...stil }}
+          options={{ headerShown: false, title: "", ...stil }}
           component={Grievances}
         />
         <Stack.Screen
           name="Grievance"
-          options={{ title: "", ...stil }}
+          options={{ headerShown: false, title: "", ...stil }}
           component={Grievance}
         />
         {/* <Stack.Screen

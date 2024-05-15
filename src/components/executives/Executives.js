@@ -27,66 +27,9 @@ import Svg, {
 } from "react-native-svg";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { GET_EXECUTIVES } from "../../../graph/queries/users";
+import { HeaderInPages } from "../header/HeaderInPages";
 
 export const Executives = ({ navigation, route }) => {
-
-    navigation.setOptions({
-        headerStyle: {
-            backgroundColor: "#fff", // Change the color here
-            shadowColor: "#000", // Shadow color
-            shadowOffset: {
-                width: 0,
-                height: 2, // Shadow height
-            },
-            shadowOpacity: 0.25, // Shadow opacity
-            shadowRadius: 3.84, // Shadow radius
-            elevation: 5, // Elevation (for Android) // Change the color here
-            alignItems: 'center',
-            justifyContent: 'center'
-        },
-        headerRight: () => (
-            <></>
-        ),
-        headerLeft: () => (
-            // <Image style={{ width: 50, height: 35 }} source={logoURL} />
-            <TouchableOpacity
-                onPress={() => navigation.goBack()}
-                activeOpacity={0.6}
-                style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "center",
-                }}
-            >
-                <Svg
-                    width="8"
-                    height="12"
-                    viewBox="0 0 8 12"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <Path
-                        d="M6.5 1L1.5 6L6.5 11"
-                        stroke="#242529"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                    />
-                </Svg>
-                <Text
-                    style={{
-                        marginLeft: 15,
-                        fontWeight: "700",
-                        fontSize: 16,
-                        color: "#242529",
-                    }}
-                >
-                    Executives
-                </Text>
-            </TouchableOpacity>
-        ),
-    });
-
-
 
     const [userData, setUserData] = useState(null);
     const [unionData, setUnionData] = useState("");
@@ -140,97 +83,98 @@ export const Executives = ({ navigation, route }) => {
     // }
 
 
-    if (executives.length === 0) {
-        return (
-            <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
-                <ActivityIndicator size="large" color="blue" />
-            </View>
-        )
-    }
+
 
     return (
-        <ScrollView style={styles.wrapper}>
-            {executives.map((item) => (
-                <View key={item?.id} style={styles.block}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        {item?.memberData?.profile?.imageURL !== "" ?
-                            <View>
-                                <Image
-                                    source={{ uri: item?.memberData?.profile?.imageURL }}
-                                    style={{ width: 80, height: 80, zIndex: 1, borderRadius: 100 }}
-                                />
-                            </View> :
-                            <View style={{ height: 80, width: 80, backgroundColor: '#EDEEF1', borderRadius: 100, alignItems: 'center', justifyContent: 'center' }}>
-                                <Svg
-                                    style={{ width: 40, height: 40, borderRadius: 50 }}
-                                    viewBox="0 0 1024 1024"
-                                    class="icon"
-                                    version="1.1"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <Path
-                                        d="M691.573 338.89c-1.282 109.275-89.055 197.047-198.33 198.331-109.292 1.282-197.065-90.984-198.325-198.331-0.809-68.918-107.758-68.998-106.948 0 1.968 167.591 137.681 303.31 305.272 305.278C660.85 646.136 796.587 503.52 798.521 338.89c0.811-68.998-106.136-68.918-106.948 0z"
-                                        fill="#4A5699"
-                                    />
-                                    <Path
-                                        d="M294.918 325.158c1.283-109.272 89.051-197.047 198.325-198.33 109.292-1.283 197.068 90.983 198.33 198.33 0.812 68.919 107.759 68.998 106.948 0C796.555 157.567 660.839 21.842 493.243 19.88c-167.604-1.963-303.341 140.65-305.272 305.278-0.811 68.998 106.139 68.919 106.947 0z"
-                                        fill="#C45FA0"
-                                    />
-                                    <Path
-                                        d="M222.324 959.994c0.65-74.688 29.145-144.534 80.868-197.979 53.219-54.995 126.117-84.134 201.904-84.794 74.199-0.646 145.202 29.791 197.979 80.867 54.995 53.219 84.13 126.119 84.79 201.905 0.603 68.932 107.549 68.99 106.947 0-1.857-213.527-176.184-387.865-389.716-389.721-213.551-1.854-387.885 178.986-389.721 389.721-0.601 68.991 106.349 68.933 106.949 0.001z"
-                                        fill="#E5594F"
-                                    />
-                                </Svg>
-                            </View>
-                        }
-
-                        <View style={{ marginLeft: 17 }}>
-                            <Text style={{ marginBottom: 8, fontWeight: '600', fontSize: 18, color: "#000" }}>
-                                {item?.memberData?.firstName} {item?.memberData?.lastName}
-                            </Text>
-                            <Text style={{ fontWeight: '300', fontSize: 16, color: "#000" }}>
-                                {item?.position}
-                            </Text>
-                        </View>
-                    </View>
-
-
-
-                    {item?.memberData?.profile?.email ?
-                        <>
-                            <View style={{ height: 2, backgroundColor: '#F4F4F4', marginVertical: 15 }}></View>
-                            <TouchableOpacity onPress={() => Linking.openURL(item?.memberData?.profile?.email)}>
-                                <Text style={{ color: '#0A93E1', fontWeight: '400', fontSize: 16 }}>{item?.memberData?.profile?.email}</Text>
-                            </TouchableOpacity>
-                        </>
-                        :
-                        <></>
-                    }
-
-                    {!item?.memberData?.profile?.phone && !item?.extension ?
-                        <></>
-                        :
-                        <>
-                            <View style={{ height: 2, backgroundColor: '#F4F4F4', marginVertical: 15 }}></View>
-
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                <Text style={{ color: '#242529', fontWeight: '700', fontSize: 16 }}>
-                                    Office:
-                                </Text>
-                                <Text style={{ color: '#242529', fontSize: 16, fontWeight: '400' }}>
-                                    {item?.memberData?.profile?.phone} {item?.extension ? `EXT.${item?.extension}` : ''}
-                                </Text>
-                            </View>
-
-                            <View style={{ height: 2, backgroundColor: '#F4F4F4', marginTop: 15 }}></View>
-                        </>
-                    }
-
-
+        <>
+            <HeaderInPages title="Executives" />
+            {executives.length === 0 ?
+                <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+                    <ActivityIndicator size="large" color="blue" />
                 </View>
-            ))}
+                :
+                <ScrollView style={styles.wrapper}>
+                    {executives.map((item) => (
+                        <View key={item?.id} style={styles.block}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                {item?.memberData?.profile?.imageURL !== "" ?
+                                    <View>
+                                        <Image
+                                            source={{ uri: item?.memberData?.profile?.imageURL }}
+                                            style={{ width: 80, height: 80, zIndex: 1, borderRadius: 100 }}
+                                        />
+                                    </View> :
+                                    <View style={{ height: 80, width: 80, backgroundColor: '#EDEEF1', borderRadius: 100, alignItems: 'center', justifyContent: 'center' }}>
+                                        <Svg
+                                            style={{ width: 40, height: 40, borderRadius: 50 }}
+                                            viewBox="0 0 1024 1024"
+                                            class="icon"
+                                            version="1.1"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <Path
+                                                d="M691.573 338.89c-1.282 109.275-89.055 197.047-198.33 198.331-109.292 1.282-197.065-90.984-198.325-198.331-0.809-68.918-107.758-68.998-106.948 0 1.968 167.591 137.681 303.31 305.272 305.278C660.85 646.136 796.587 503.52 798.521 338.89c0.811-68.998-106.136-68.918-106.948 0z"
+                                                fill="#4A5699"
+                                            />
+                                            <Path
+                                                d="M294.918 325.158c1.283-109.272 89.051-197.047 198.325-198.33 109.292-1.283 197.068 90.983 198.33 198.33 0.812 68.919 107.759 68.998 106.948 0C796.555 157.567 660.839 21.842 493.243 19.88c-167.604-1.963-303.341 140.65-305.272 305.278-0.811 68.998 106.139 68.919 106.947 0z"
+                                                fill="#C45FA0"
+                                            />
+                                            <Path
+                                                d="M222.324 959.994c0.65-74.688 29.145-144.534 80.868-197.979 53.219-54.995 126.117-84.134 201.904-84.794 74.199-0.646 145.202 29.791 197.979 80.867 54.995 53.219 84.13 126.119 84.79 201.905 0.603 68.932 107.549 68.99 106.947 0-1.857-213.527-176.184-387.865-389.716-389.721-213.551-1.854-387.885 178.986-389.721 389.721-0.601 68.991 106.349 68.933 106.949 0.001z"
+                                                fill="#E5594F"
+                                            />
+                                        </Svg>
+                                    </View>
+                                }
+                                <View style={{ marginLeft: 17 }}>
+                                    <Text style={{ marginBottom: 8, fontWeight: '600', fontSize: 18, color: "#000" }}>
+                                        {item?.memberData?.firstName} {item?.memberData?.lastName}
+                                    </Text>
+                                    <Text style={{ fontWeight: '300', fontSize: 16, color: "#000" }}>
+                                        {item?.position}
+                                    </Text>
+                                </View>
+                            </View>
 
-        </ScrollView>
+
+
+                            {item?.memberData?.profile?.email ?
+                                <>
+                                    <View style={{ height: 2, backgroundColor: '#F4F4F4', marginVertical: 15 }}></View>
+                                    <TouchableOpacity onPress={() => Linking.openURL(item?.memberData?.profile?.email)}>
+                                        <Text style={{ color: '#0A93E1', fontWeight: '400', fontSize: 16 }}>{item?.memberData?.profile?.email}</Text>
+                                    </TouchableOpacity>
+                                </>
+                                :
+                                <></>
+                            }
+
+                            {!item?.memberData?.profile?.phone && !item?.extension ?
+                                <></>
+                                :
+                                <>
+                                    <View style={{ height: 2, backgroundColor: '#F4F4F4', marginVertical: 15 }}></View>
+
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <Text style={{ color: '#242529', fontWeight: '700', fontSize: 16 }}>
+                                            Office:
+                                        </Text>
+                                        <Text style={{ color: '#242529', fontSize: 16, fontWeight: '400' }}>
+                                            {item?.memberData?.profile?.phone} {item?.extension ? `EXT.${item?.extension}` : ''}
+                                        </Text>
+                                    </View>
+
+                                    <View style={{ height: 2, backgroundColor: '#F4F4F4', marginTop: 15 }}></View>
+                                </>
+                            }
+
+
+                        </View>
+                    ))}
+                </ScrollView>
+            }
+        </>
     );
 }
 const styles = StyleSheet.create({

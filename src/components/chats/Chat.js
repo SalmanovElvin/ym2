@@ -8,9 +8,8 @@ import { useMutation, useQuery } from "@apollo/client";
 import { GET_CHATS, GET_MESSAGES } from './../../../graph/queries/messages';
 import { useNavigation } from '@react-navigation/native';
 
-export const Chat = ({ route, chat }) => {
+export const Chat = ({ route, chat, participants }) => {
     const navigation = useNavigation();
-
     const [userData, setUserData] = useState(null);
 
     useEffect(() => {
@@ -39,6 +38,7 @@ export const Chat = ({ route, chat }) => {
         },
         onCompleted: () => {
             setLastMsg(data?.messages[data?.messages?.length - 1]);
+            // console.log(data?.messages);
         },
         notifyOnNetworkStatusChange: true,
         pollInterval: 5000,
@@ -46,8 +46,17 @@ export const Chat = ({ route, chat }) => {
 
     // console.log(chat);
 
+    const paparticipantsrArr = participants.filter((item) => { return item.firstName.toLowerCase() !== userData?.firstName.toLowerCase() && item.lastName.toLowerCase() !== userData?.lastName.toLowerCase() });
+    let participantsString = "";
+    for (let i = 0; i < paparticipantsrArr.length; i++) {
+        if (i == 0) {
+            participantsString = participantsString + paparticipantsrArr[paparticipantsrArr.length - i - 1].firstName + " " + paparticipantsrArr[paparticipantsrArr.length - i - 1].lastName;
+        } else {
+            participantsString = participantsString + ", " + paparticipantsrArr[paparticipantsrArr.length - i - 1].firstName + " " + paparticipantsrArr[paparticipantsrArr.length - i - 1].lastName;
 
-
+        }
+        // console.log(participantsString);
+    }
 
     const [postedTime, setPostedTime] = useState("loading ...");
 
@@ -151,7 +160,10 @@ export const Chat = ({ route, chat }) => {
             }
 
             <View style={{ marginLeft: 10 }}>
-                <Text style={{ color: '#242529', fontWeight: '600', fontSize: 16 }}>{lastMsg?.sender?.firstName} {lastMsg?.sender?.lastName}</Text>
+                <Text style={{ color: '#242529', fontWeight: '600', fontSize: 16 }}>
+                    {/* {lastMsg?.sender?.firstName} {lastMsg?.sender?.lastName} */}
+                    {participantsString}
+                </Text>
                 <Text style={{ color: '#848587', fontSize: 14, fontWeight: '400', marginTop: 5 }}>
                     {lastMsg?.content?.length >= 25 ?
                         lastMsg?.content?.slice(0, 25) + '...' : lastMsg?.content

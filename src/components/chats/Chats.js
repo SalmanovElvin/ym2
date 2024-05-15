@@ -100,10 +100,6 @@ export const Chats = ({ navigation, route }) => {
                 const allChats = data.chats;
                 setChatsState(allChats);
 
-                // chatsState.forEach(chat => {
-                //     const participants = chat.participants;
-                //     console.log(participants);
-                // });
 
             } else {
                 setChatsState(null);
@@ -140,7 +136,7 @@ export const Chats = ({ navigation, route }) => {
             <FlatList
                 data={chatsState}
                 renderItem={({ item }) => (
-                    <Chat chat={item} />
+                    <Chat chat={item} participants={item.participants} />
                 )}
                 keyExtractor={(item) => item?.id}
             />

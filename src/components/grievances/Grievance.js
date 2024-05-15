@@ -27,6 +27,7 @@ import Svg, {
     Ellipse,
 } from "react-native-svg";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { HeaderInPages } from "../header/HeaderInPages";
 
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
@@ -35,59 +36,6 @@ export const Grievance = ({ navigation, route }) => {
 
     const { data } = route.params;
 
-
-    navigation.setOptions({
-        headerStyle: {
-            backgroundColor: "#fff", // Change the color here
-            shadowColor: "#000", // Shadow color
-            shadowOffset: {
-                width: 0,
-                height: 2, // Shadow height
-            },
-            shadowOpacity: 0.25, // Shadow opacity
-            shadowRadius: 3.84, // Shadow radius
-            elevation: 5, // Elevation (for Android) // Change the color here
-            alignItems: "center",
-            justifyContent: "center",
-        },
-        headerRight: () => <></>,
-        headerLeft: () => (
-            <TouchableOpacity
-                onPress={() => navigation.goBack()}
-                activeOpacity={0.6}
-                style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "center",
-                }}
-            >
-                <Svg
-                    width="8"
-                    height="12"
-                    viewBox="0 0 8 12"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <Path
-                        d="M6.5 1L1.5 6L6.5 11"
-                        stroke="#242529"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                    />
-                </Svg>
-                <Text
-                    style={{
-                        marginLeft: 15,
-                        fontWeight: "700",
-                        fontSize: 16,
-                        color: "#242529",
-                    }}
-                >
-                    Grievances
-                </Text>
-            </TouchableOpacity>
-        ),
-    });
 
 
     const [userData, setUserData] = useState(null);
@@ -131,9 +79,12 @@ export const Grievance = ({ navigation, route }) => {
     // }
 
     return (
-        <View style={styles.wrapper}>
-            <Text>{data.title}</Text>
-        </View >
+        <>
+            <HeaderInPages title="Grievance topic" />
+            <View style={styles.wrapper}>
+                <Text>{data.title}</Text>
+            </View >
+        </>
     );
 };
 const styles = StyleSheet.create({

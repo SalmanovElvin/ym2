@@ -28,63 +28,12 @@ import Svg, {
 } from "react-native-svg";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { GET_GRIEVANCES } from './../../../graph/queries/grievances';
+import { HeaderInPages } from "../header/HeaderInPages";
 
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
 export const Grievances = ({ navigation, route }) => {
-    navigation.setOptions({
-        headerStyle: {
-            backgroundColor: "#fff", // Change the color here
-            shadowColor: "#000", // Shadow color
-            shadowOffset: {
-                width: 0,
-                height: 2, // Shadow height
-            },
-            shadowOpacity: 0.25, // Shadow opacity
-            shadowRadius: 3.84, // Shadow radius
-            elevation: 5, // Elevation (for Android) // Change the color here
-            alignItems: "center",
-            justifyContent: "center",
-        },
-        headerRight: () => <></>,
-        headerLeft: () => (
-            <TouchableOpacity
-                onPress={() => navigation.goBack()}
-                activeOpacity={0.6}
-                style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "center",
-                }}
-            >
-                <Svg
-                    width="8"
-                    height="12"
-                    viewBox="0 0 8 12"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <Path
-                        d="M6.5 1L1.5 6L6.5 11"
-                        stroke="#242529"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                    />
-                </Svg>
-                <Text
-                    style={{
-                        marginLeft: 15,
-                        fontWeight: "700",
-                        fontSize: 16,
-                        color: "#242529",
-                    }}
-                >
-                    Grievances
-                </Text>
-            </TouchableOpacity>
-        ),
-    });
 
 
     const [userData, setUserData] = useState(null);
@@ -142,113 +91,114 @@ export const Grievances = ({ navigation, route }) => {
     });
 
 
-    if (openGrievances.length === 0) {
-        return (
-            <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
-                <ActivityIndicator size="large" color="blue" />
-            </View>
-        );
-    }
-
     return (
-        <View style={styles.wrapper}>
-            <View style={{ paddingHorizontal: 14 }}>
-                <View style={styles.chooseBar}>
-                    <TouchableOpacity activeOpacity={0.6} onPress={() => setIsOpenCategory(true)} style={isOpenCategory ? { ...styles.choosElement, backgroundColor: '#fff' } : { ...styles.choosElement, }}>
-                        <Text style={{ color: '#242529', fontSize: 16, fontWeight: '400' }}>
-                            Open grievances
-                        </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity activeOpacity={0.6} onPress={() => setIsOpenCategory(false)} style={!isOpenCategory ? { ...styles.choosElement, backgroundColor: '#fff' } : { ...styles.choosElement, }}>
-                        <Text style={{ color: '#242529', fontSize: 16, fontWeight: '400' }}>Closed grievances</Text>
-                    </TouchableOpacity>
+        <>
+            <HeaderInPages title="Grievances" />
+            {openGrievances.length === 0 ?
+                <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+                    <ActivityIndicator size="large" color="blue" />
                 </View>
-            </View>
-
-            <ScrollView style={{ padding: 10 }}>
-                {isOpenCategory ?
-                    openGrievances.map((item) => (
-                        <TouchableOpacity onPress={() => navigation.navigate('Grievance', { data: item })} TouchableOpacity activeOpacity={0.6} style={styles.block}>
-                            <View style={styles.rows}>
-                                <View style={{ width: '45%' }}>
-                                    <Text style={{ color: '#696666', fontSize: 12, fontWeight: '600', marginBottom: 2 }}>
-                                        {item.caseNumber}
-                                    </Text>
-                                    <Text style={{ color: '#242529', fontSize: 16, fontWeight: '600' }}>
-                                        {item.title}
-                                    </Text>
-                                </View>
-                                <View style={{ width: '45%', backgroundColor: '#EEF164', alignItems: 'center', justifyContent: 'center', borderRadius: 16, width: 90 }}>
-                                    <Text style={{ color: '#8B8E05', fontSize: 16, fontWeight: '600', padding: 10, }}>
-                                        {item.status}
-                                    </Text>
-                                </View>
-                            </View>
-
-                            <View style={styles.rows}>
-                                <View style={{ width: '45%' }}>
-                                    <Text style={{ color: '#A6A9B4', fontSize: 14, fontWeight: '400', marginBottom: 2 }}>
-                                        Submitted on
-                                    </Text>
-                                    <Text style={{ color: '#696666', fontSize: 14, fontWeight: '400' }}>
-                                        {new Date(item.createdAt).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
-                                    </Text>
-                                </View>
-                                <View style={{ width: '45%' }}>
-                                    <Text style={{ color: '#A6A9B4', fontSize: 14, fontWeight: '400', marginBottom: 2 }}>
-                                        Last updated on:
-                                    </Text>
-                                    <Text style={{ color: '#696666', fontSize: 14, fontWeight: '400' }}>
-                                        {new Date(item.lastUpdatedAt).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
-                                    </Text>
-                                </View>
-                            </View>
-                        </TouchableOpacity>
-                    ))
-
-
-                    :
-                    closedGrievances.map((item) => (
-                        <View style={styles.block}>
-                            <View style={styles.rows}>
-                                <View style={{ width: '45%' }}>
-                                    <Text style={{ color: '#696666', fontSize: 12, fontWeight: '600', marginBottom: 2 }}>
-                                        {item.caseNumber}
-                                    </Text>
-                                    <Text style={{ color: '#242529', fontSize: 16, fontWeight: '600' }}>
-                                        {item.title}
-                                    </Text>
-                                </View>
-                                <View style={{ width: '45%', backgroundColor: '#5BD476', alignItems: 'center', justifyContent: 'center', borderRadius: 16, width: 90 }}>
-                                    <Text style={{ color: '#F9FAFC', fontSize: 16, fontWeight: '600', padding: 10, }}>
-                                        {item.status}
-                                    </Text>
-                                </View>
-                            </View>
-
-                            <View style={styles.rows}>
-                                <View style={{ width: '45%' }}>
-                                    <Text style={{ color: '#A6A9B4', fontSize: 14, fontWeight: '400', marginBottom: 2 }}>
-                                        Submitted on
-                                    </Text>
-                                    <Text style={{ color: '#696666', fontSize: 14, fontWeight: '400' }}>
-                                        {new Date(item.createdAt).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
-                                    </Text>
-                                </View>
-                                <View style={{ width: '45%' }}>
-                                    <Text style={{ color: '#A6A9B4', fontSize: 14, fontWeight: '400', marginBottom: 2 }}>
-                                        Last updated on:
-                                    </Text>
-                                    <Text style={{ color: '#696666', fontSize: 14, fontWeight: '400' }}>
-                                        {new Date(item.lastUpdatedAt).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
-                                    </Text>
-                                </View>
-                            </View>
+                :
+                <View style={styles.wrapper}>
+                    <View style={{ paddingHorizontal: 14 }}>
+                        <View style={styles.chooseBar}>
+                            <TouchableOpacity activeOpacity={0.6} onPress={() => setIsOpenCategory(true)} style={isOpenCategory ? { ...styles.choosElement, backgroundColor: '#fff' } : { ...styles.choosElement, }}>
+                                <Text style={{ color: '#242529', fontSize: 16, fontWeight: '400' }}>
+                                    Open grievances
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity activeOpacity={0.6} onPress={() => setIsOpenCategory(false)} style={!isOpenCategory ? { ...styles.choosElement, backgroundColor: '#fff' } : { ...styles.choosElement, }}>
+                                <Text style={{ color: '#242529', fontSize: 16, fontWeight: '400' }}>Closed grievances</Text>
+                            </TouchableOpacity>
                         </View>
-                    ))
-                }
-            </ScrollView>
-        </View >
+                    </View>
+
+                    <ScrollView style={{ padding: 10 }}>
+                        {isOpenCategory ?
+                            openGrievances.map((item) => (
+                                <TouchableOpacity key={item.id} onPress={() => navigation.navigate('Grievance', { data: item })} activeOpacity={0.6} style={styles.block}>
+                                    <View style={styles.rows}>
+                                        <View style={{ width: '45%' }}>
+                                            <Text style={{ color: '#696666', fontSize: 12, fontWeight: '600', marginBottom: 2 }}>
+                                                {item.caseNumber}
+                                            </Text>
+                                            <Text style={{ color: '#242529', fontSize: 16, fontWeight: '600' }}>
+                                                {item.title}
+                                            </Text>
+                                        </View>
+                                        <View style={{ backgroundColor: '#EEF164', alignItems: 'center', justifyContent: 'center', borderRadius: 16, width: 100 }}>
+                                            <Text style={{ color: '#8B8E05', fontSize: 16, fontWeight: '600', padding: 10, }}>
+                                                {item.status}
+                                            </Text>
+                                        </View>
+                                    </View>
+
+                                    <View style={styles.rows}>
+                                        <View style={{ width: '45%' }}>
+                                            <Text style={{ color: '#A6A9B4', fontSize: 14, fontWeight: '400', marginBottom: 2 }}>
+                                                Submitted on
+                                            </Text>
+                                            <Text style={{ color: '#696666', fontSize: 14, fontWeight: '400' }}>
+                                                {new Date(item.createdAt).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
+                                            </Text>
+                                        </View>
+                                        <View style={{ width: '45%' }}>
+                                            <Text style={{ color: '#A6A9B4', fontSize: 14, fontWeight: '400', marginBottom: 2 }}>
+                                                Last updated on:
+                                            </Text>
+                                            <Text style={{ color: '#696666', fontSize: 14, fontWeight: '400' }}>
+                                                {new Date(item.lastUpdatedAt).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
+                                            </Text>
+                                        </View>
+                                    </View>
+                                </TouchableOpacity>
+                            ))
+
+
+                            :
+                            closedGrievances.map((item) => (
+                                <View key={item.id} style={styles.block}>
+                                    <View style={styles.rows}>
+                                        <View style={{ width: '45%' }}>
+                                            <Text style={{ color: '#696666', fontSize: 12, fontWeight: '600', marginBottom: 2 }}>
+                                                {item.caseNumber}
+                                            </Text>
+                                            <Text style={{ color: '#242529', fontSize: 16, fontWeight: '600' }}>
+                                                {item.title}
+                                            </Text>
+                                        </View>
+                                        <View style={{ width: '45%', backgroundColor: '#5BD476', alignItems: 'center', justifyContent: 'center', borderRadius: 16, width: 90 }}>
+                                            <Text style={{ color: '#F9FAFC', fontSize: 16, fontWeight: '600', padding: 10, }}>
+                                                {item.status}
+                                            </Text>
+                                        </View>
+                                    </View>
+
+                                    <View style={styles.rows}>
+                                        <View style={{ width: '45%' }}>
+                                            <Text style={{ color: '#A6A9B4', fontSize: 14, fontWeight: '400', marginBottom: 2 }}>
+                                                Submitted on
+                                            </Text>
+                                            <Text style={{ color: '#696666', fontSize: 14, fontWeight: '400' }}>
+                                                {new Date(item.createdAt).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
+                                            </Text>
+                                        </View>
+                                        <View style={{ width: '45%' }}>
+                                            <Text style={{ color: '#A6A9B4', fontSize: 14, fontWeight: '400', marginBottom: 2 }}>
+                                                Last updated on:
+                                            </Text>
+                                            <Text style={{ color: '#696666', fontSize: 14, fontWeight: '400' }}>
+                                                {new Date(item.lastUpdatedAt).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
+                                            </Text>
+                                        </View>
+                                    </View>
+                                </View>
+                            ))
+                        }
+                    </ScrollView>
+                </View >
+            }
+        </>
     );
 };
 const styles = StyleSheet.create({
