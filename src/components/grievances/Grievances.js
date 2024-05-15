@@ -168,7 +168,7 @@ export const Grievances = ({ navigation, route }) => {
             <ScrollView style={{ padding: 10 }}>
                 {isOpenCategory ?
                     openGrievances.map((item) => (
-                        <TouchableOpacity TouchableOpacity activeOpacity={0.6} style={styles.block}>
+                        <TouchableOpacity onPress={() => navigation.navigate('Grievance', { data: item })} TouchableOpacity activeOpacity={0.6} style={styles.block}>
                             <View style={styles.rows}>
                                 <View style={{ width: '45%' }}>
                                     <Text style={{ color: '#696666', fontSize: 12, fontWeight: '600', marginBottom: 2 }}>
@@ -191,7 +191,7 @@ export const Grievances = ({ navigation, route }) => {
                                         Submitted on
                                     </Text>
                                     <Text style={{ color: '#696666', fontSize: 14, fontWeight: '400' }}>
-                                        Jul 10, 2023
+                                        {new Date(item.createdAt).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
                                     </Text>
                                 </View>
                                 <View style={{ width: '45%' }}>
@@ -199,7 +199,7 @@ export const Grievances = ({ navigation, route }) => {
                                         Last updated on:
                                     </Text>
                                     <Text style={{ color: '#696666', fontSize: 14, fontWeight: '400' }}>
-                                        Jul 15, 2023
+                                        {new Date(item.lastUpdatedAt).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
                                     </Text>
                                 </View>
                             </View>
@@ -232,7 +232,7 @@ export const Grievances = ({ navigation, route }) => {
                                         Submitted on
                                     </Text>
                                     <Text style={{ color: '#696666', fontSize: 14, fontWeight: '400' }}>
-                                        Jul 10, 2023
+                                        {new Date(item.createdAt).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
                                     </Text>
                                 </View>
                                 <View style={{ width: '45%' }}>
@@ -240,7 +240,7 @@ export const Grievances = ({ navigation, route }) => {
                                         Last updated on:
                                     </Text>
                                     <Text style={{ color: '#696666', fontSize: 14, fontWeight: '400' }}>
-                                        Jul 15, 2023
+                                        {new Date(item.lastUpdatedAt).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
                                     </Text>
                                 </View>
                             </View>
@@ -254,7 +254,6 @@ export const Grievances = ({ navigation, route }) => {
 const styles = StyleSheet.create({
     wrapper: {
         paddingVertical: 24,
-
         flex: 1
     },
     chooseBar: {

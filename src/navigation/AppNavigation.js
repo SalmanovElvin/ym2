@@ -31,6 +31,7 @@ import { Qr } from "../components/profile/Qr";
 import { Executives } from "../components/executives/Executives";
 import { Documents } from "../components/documents/Documents";
 import { Grievances } from "../components/grievances/Grievances";
+import { Grievance } from "../components/grievances/Grievance";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -110,6 +111,11 @@ export default function AppNavigation() {
           name="Grievances"
           options={{ title: "", ...stil }}
           component={Grievances}
+        />
+        <Stack.Screen
+          name="Grievance"
+          options={{ title: "", ...stil }}
+          component={Grievance}
         />
         {/* <Stack.Screen
           name="Services"
