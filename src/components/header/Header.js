@@ -58,6 +58,7 @@ export const Header = () => {
             userID: userData?.id,
         },
         onCompleted: () => {
+            setIsNotifications(false);
             for (let i = 0; i < data?.notifications?.length; i++) {
                 if (data.notifications[i].read == false) {
                     setIsNotifications(true);
