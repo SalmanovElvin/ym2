@@ -79,7 +79,7 @@ export const Grievance = ({ navigation, route }) => {
         },
         onCompleted: (data) => {
             setSingleGrievanceData(data?.singleGrievance);
-            // console.log(data?.singleGrievance.employer);
+            console.log(data?.singleGrievance.updates);
 
         },
         onError: (err) => {
@@ -338,6 +338,50 @@ export const Grievance = ({ navigation, route }) => {
                             }
 
                         </View>
+
+
+                        <View style={{ marginVertical: 8, flexDirection: 'column', marginBottom: 8 }}>
+                            <Text style={{ color: '#000000', fontSize: 16, fontWeight: '600' }}>
+                                Updates
+                            </Text>
+                        </View>
+
+                        <View style={{ marginVertical: 12 }} >
+                            <View style={{
+                                width: '100%', borderLeftColor: '#5884F0', borderLeftWidth: 1, borderStyle: 'solid', position: 'relative', paddingHorizontal: 14,
+                                paddingBottom: 10
+                            }}>
+
+                                <Svg style={{ position: 'absolute', left: -10, top: -5 }} width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <Circle cx="10" cy="10" r="10" fill="#5783EF" fillOpacity="0.4" />
+                                    <Circle cx="10" cy="10" r="5" fill="#5884F0" />
+                                </Svg>
+
+                                <Text style={{ color: '#242529', fontSize: 16, fontWeight: '500', marginVertical: 2 }}>Name Surname</Text>
+                                <Text style={{ color: '#848587', fontSize: 14, fontWeight: '200', marginBottom: 10 }}>Jul 21, 2023, 12:26 AM</Text>
+                                <Text style={{ color: '#242529', fontSize: 14, fontWeight: '400', }}>Lorem ipsum dolor sit amet consectetur adipiscin elit</Text>
+
+                            </View>
+
+                            <View style={{
+                                width: '100%', position: 'relative', paddingHorizontal: 14,
+                                paddingBottom: 10
+                            }}>
+
+                                <Svg style={{ position: 'absolute', left: -10, top: -5 }} width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <Circle cx="10" cy="10" r="10" fill="#5783EF" fillOpacity="0.4" />
+                                    <Circle cx="10" cy="10" r="5" fill="#5884F0" />
+                                </Svg>
+
+                                <Text style={{ color: '#242529', fontSize: 16, fontWeight: '500', marginVertical: 2 }}>Name Surname</Text>
+                                <Text style={{ color: '#848587', fontSize: 14, fontWeight: '200', marginBottom: 10 }}>Jul 21, 2023, 12:26 AM</Text>
+                                <Text style={{ color: '#242529', fontSize: 14, fontWeight: '400', }}>Lorem ipsum dolor sit amet consectetur adipiscin elit</Text>
+
+                            </View>
+
+
+                        </View>
+
 
 
 
