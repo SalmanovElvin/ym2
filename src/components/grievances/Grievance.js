@@ -347,9 +347,9 @@ export const Grievance = ({ navigation, route }) => {
                         </View>
 
                         <View style={{ marginVertical: 12 }} >
-                            {data?.singleGrievance?.updates && data?.singleGrievance?.updates.length !== 0 ?
-                                data?.singleGrievance.updates.map((item, index) =>
-                                    data?.singleGrievance.updates.length - 1 === index ?
+                            {singleGrievanceData?.updates && singleGrievanceData?.updates.length !== 0 ?
+                                singleGrievanceData?.updates.map((item, index) =>
+                                    singleGrievanceData?.updates.length - 1 === index ?
                                         <View key={index} style={{
                                             width: '100%', position: 'relative', paddingHorizontal: 14,
                                             paddingBottom: 10
