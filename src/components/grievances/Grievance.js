@@ -130,7 +130,7 @@ export const Grievance = ({ navigation, route }) => {
                                 <Text style={{ color: '#A6A9B4', fontSize: 14, fontWeight: '400', marginBottom: 2 }}>
                                     Submitted on
                                 </Text>
-                                <Text style={{ color: '#696666', fontSize: 14, fontWeight: '600' }}>
+                                <Text style={{ color: '#242529', fontSize: 14, fontWeight: '600' }}>
                                     {new Date(grievanceData?.createdAt).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
                                 </Text>
                             </View>
@@ -138,7 +138,7 @@ export const Grievance = ({ navigation, route }) => {
                                 <Text style={{ color: '#A6A9B4', fontSize: 14, fontWeight: '400', marginBottom: 2 }}>
                                     Last updated on:
                                 </Text>
-                                <Text style={{ color: '#696666', fontSize: 14, fontWeight: '600' }}>
+                                <Text style={{ color: '#242529', fontSize: 14, fontWeight: '600' }}>
                                     {new Date(grievanceData?.lastUpdatedAt).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
                                 </Text>
                             </View>
@@ -149,7 +149,7 @@ export const Grievance = ({ navigation, route }) => {
                                     <Text style={{ color: '#A6A9B4', fontSize: 14, fontWeight: '400', marginBottom: 2 }}>
                                         Steward:
                                     </Text>
-                                    <Text style={{ color: '#696666', fontSize: 14, fontWeight: '600' }}>
+                                    <Text style={{ color: '#242529', fontSize: 14, fontWeight: '600' }}>
                                         {singleGrievanceData?.steward?.firstName} {singleGrievanceData?.steward?.lastName}
                                     </Text>
                                 </View>
@@ -157,7 +157,7 @@ export const Grievance = ({ navigation, route }) => {
                                     <Text style={{ color: '#A6A9B4', fontSize: 14, fontWeight: '400', marginBottom: 2 }}>
                                         SubSteward:
                                     </Text>
-                                    <Text style={{ color: '#696666', fontSize: 14, fontWeight: '600' }}>
+                                    <Text style={{ color: '#242529', fontSize: 14, fontWeight: '600' }}>
                                         {singleGrievanceData?.subSteward?.firstName} {singleGrievanceData?.subSteward?.lastName}
                                     </Text>
                                 </View>
@@ -169,7 +169,7 @@ export const Grievance = ({ navigation, route }) => {
                                 <Text style={{ color: '#A6A9B4', fontSize: 14, fontWeight: '400', marginBottom: 2 }}>
                                     Members:
                                 </Text>
-                                <Text style={{ color: '#696666', fontSize: 14, fontWeight: '600' }}>
+                                <Text style={{ color: '#242529', fontSize: 14, fontWeight: '600' }}>
                                     {data?.singleGrievance?.members.length === 0 ?
                                         <Text>No one</Text>
                                         :
@@ -184,7 +184,7 @@ export const Grievance = ({ navigation, route }) => {
                                 <Text style={{ color: '#A6A9B4', fontSize: 14, fontWeight: '400', marginBottom: 2 }}>
                                     Union:
                                 </Text>
-                                <Text style={{ color: '#696666', fontSize: 14, fontWeight: '600' }}>
+                                <Text style={{ color: '#242529', fontSize: 14, fontWeight: '600' }}>
                                     {singleGrievanceData?.employer?.length === 0 || !singleGrievanceData?.employer ?
                                         <Text>The field was not filled in</Text>
                                         :
@@ -202,7 +202,7 @@ export const Grievance = ({ navigation, route }) => {
                                     <Text style={{ color: '#A6A9B4', fontSize: 14, fontWeight: '400', marginBottom: 2 }}>
                                         Result:
                                     </Text>
-                                    <Text style={{ color: '#696666', fontSize: 14, fontWeight: '600' }}>
+                                    <Text style={{ color: '#242529', fontSize: 14, fontWeight: '600' }}>
                                         {singleGrievanceData?.details}
                                     </Text>
                                 </View>
@@ -218,7 +218,7 @@ export const Grievance = ({ navigation, route }) => {
                                     <Text style={{ color: '#A6A9B4', fontSize: 14, fontWeight: '400', marginBottom: 2 }}>
                                         Request:
                                     </Text>
-                                    <Text style={{ color: '#696666', fontSize: 14, fontWeight: '600' }}>
+                                    <Text style={{ color: '#242529', fontSize: 14, fontWeight: '600' }}>
                                         {singleGrievanceData?.request}
                                     </Text>
                                 </View>
@@ -231,7 +231,7 @@ export const Grievance = ({ navigation, route }) => {
                                 <Text style={{ color: '#A6A9B4', fontSize: 14, fontWeight: '400', marginBottom: 2 }}>
                                     Favour of Employee:
                                 </Text>
-                                <Text style={{ color: '#696666', fontSize: 14, fontWeight: '600' }}>
+                                <Text style={{ color: '#242529', fontSize: 14, fontWeight: '600' }}>
                                     {singleGrievanceData?.favourOfEmployee ?
                                         <Text>Yes</Text>
                                         :
@@ -333,54 +333,59 @@ export const Grievance = ({ navigation, route }) => {
 
                                 :
                                 <View>
-                                    <Text style={{ color: '#696666', fontSize: 14, marginTop: 8 }}>No documents</Text>
+                                    <Text style={{ color: '#696666', fontSize: 14, marginTop: 12 }}>No documents</Text>
                                 </View>
                             }
 
                         </View>
 
 
-                        <View style={{ marginVertical: 8, flexDirection: 'column', marginBottom: 8 }}>
+                        <View style={{ marginTop: 8 }}>
                             <Text style={{ color: '#000000', fontSize: 16, fontWeight: '600' }}>
                                 Updates
                             </Text>
                         </View>
 
                         <View style={{ marginVertical: 12 }} >
-                            {data?.singleGrievance.updates.map((item, index) =>
-                                data?.singleGrievance.updates.length - 1 === index ?
-                                    <View key={index} style={{
-                                        width: '100%', position: 'relative', paddingHorizontal: 14,
-                                        paddingBottom: 10
-                                    }}>
+                            {data?.singleGrievance?.updates && data?.singleGrievance?.updates.length !== 0 ?
+                                data?.singleGrievance.updates.map((item, index) =>
+                                    data?.singleGrievance.updates.length - 1 === index ?
+                                        <View key={index} style={{
+                                            width: '100%', position: 'relative', paddingHorizontal: 14,
+                                            paddingBottom: 10
+                                        }}>
 
-                                        <Svg style={{ position: 'absolute', left: -10, top: -5 }} width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <Circle cx="10" cy="10" r="10" fill="#5783EF" fillOpacity="0.4" />
-                                            <Circle cx="10" cy="10" r="5" fill="#5884F0" />
-                                        </Svg>
+                                            <Svg style={{ position: 'absolute', left: -10, top: -5 }} width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <Circle cx="10" cy="10" r="10" fill="#5783EF" fillOpacity="0.4" />
+                                                <Circle cx="10" cy="10" r="5" fill="#5884F0" />
+                                            </Svg>
 
-                                        <Text style={{ color: '#242529', fontSize: 16, fontWeight: '500', marginVertical: 2 }}>{item.updatedBy.firstName} {item.updatedBy.lastName}</Text>
-                                        <Text style={{ color: '#848587', fontSize: 14, fontWeight: '200', marginBottom: 10 }}>{new Date(item.updatedAt).toLocaleString('en-US', { month: 'short', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true })}</Text>
-                                        <Text style={{ color: '#242529', fontSize: 14, fontWeight: '400', }}>{item.content}</Text>
+                                            <Text style={{ color: '#242529', fontSize: 16, fontWeight: '500', marginVertical: 2 }}>{item.updatedBy.firstName} {item.updatedBy.lastName}</Text>
+                                            <Text style={{ color: '#848587', fontSize: 14, fontWeight: '200', marginBottom: 10 }}>{new Date(item.updatedAt).toLocaleString('en-US', { month: 'short', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true })}</Text>
+                                            <Text style={{ color: '#242529', fontSize: 14, fontWeight: '400', }}>{item.content}</Text>
 
-                                    </View>
-                                    :
-                                    <View key={index} style={{
-                                        width: '100%', borderLeftColor: '#5884F0', borderLeftWidth: 1, borderStyle: 'solid', position: 'relative', paddingHorizontal: 14,
-                                        paddingBottom: 10
-                                    }}>
+                                        </View>
+                                        :
+                                        <View key={index} style={{
+                                            width: '100%', borderLeftColor: '#5884F0', borderLeftWidth: 1, borderStyle: 'solid', position: 'relative', paddingHorizontal: 14,
+                                            paddingBottom: 10
+                                        }}>
 
-                                        <Svg style={{ position: 'absolute', left: -10, top: -5 }} width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <Circle cx="10" cy="10" r="10" fill="#5783EF" fillOpacity="0.4" />
-                                            <Circle cx="10" cy="10" r="5" fill="#5884F0" />
-                                        </Svg>
+                                            <Svg style={{ position: 'absolute', left: -10, top: -5 }} width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <Circle cx="10" cy="10" r="10" fill="#5783EF" fillOpacity="0.4" />
+                                                <Circle cx="10" cy="10" r="5" fill="#5884F0" />
+                                            </Svg>
 
-                                        <Text style={{ color: '#242529', fontSize: 16, fontWeight: '500', marginVertical: 2 }}>{item.updatedBy.firstName} {item.updatedBy.lastName}</Text>
-                                        <Text style={{ color: '#848587', fontSize: 14, fontWeight: '200', marginBottom: 10 }}>{new Date(item.updatedAt).toLocaleString('en-US', { month: 'short', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true })}</Text>
-                                        <Text style={{ color: '#242529', fontSize: 14, fontWeight: '400', }}>{item.content}</Text>
+                                            <Text style={{ color: '#242529', fontSize: 16, fontWeight: '500', marginVertical: 2 }}>{item.updatedBy.firstName} {item.updatedBy.lastName}</Text>
+                                            <Text style={{ color: '#848587', fontSize: 14, fontWeight: '200', marginBottom: 10 }}>{new Date(item.updatedAt).toLocaleString('en-US', { month: 'short', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true })}</Text>
+                                            <Text style={{ color: '#242529', fontSize: 14, fontWeight: '400', }}>{item.content}</Text>
 
-                                    </View>
-                            )}
+                                        </View>
+                                )
+                                :
+                                <Text style={{ color: '#696666', fontSize: 14, marginTop: 8 }}>No updates</Text>
+                            }
+
 
 
 
