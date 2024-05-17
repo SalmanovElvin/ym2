@@ -79,7 +79,7 @@ export const Grievance = ({ navigation, route }) => {
         },
         onCompleted: (data) => {
             setSingleGrievanceData(data?.singleGrievance);
-            // console.log(data?.singleGrievance.updates);
+            // console.log(data?.singleGrievance.unionOfficer);
 
         },
         onError: (err) => {
@@ -385,15 +385,52 @@ export const Grievance = ({ navigation, route }) => {
                                 :
                                 <Text style={{ color: '#696666', fontSize: 14, marginTop: 8 }}>No updates</Text>
                             }
-
-
-
-
-
                         </View>
 
+                        {singleGrievanceData?.grievor?.sign.length === 0 ?
+                            <></>
+                            :
+                            <View style={{ marginVertical: 8 }}>
+                                <Text style={{ color: '#000000', fontSize: 16, fontWeight: '600', marginBottom: 8 }}>
+                                    Grievor signature
+                                </Text>
+                                <View style={{ flexDirection: 'row', height: 60, alignItems: 'center', paddingVertical: 10, paddingHorizontal: 16, backgroundColor: '#F3F4F8', borderRadius: 15 }}>
+                                    <Image
+                                        height={40} width={140}
+                                        source={{ uri: singleGrievanceData?.grievor?.sign }} />
+                                </View>
+                            </View>
+                        }
 
+                        {singleGrievanceData?.unionRep?.sign.length === 0 ?
+                            <></>
+                            :
+                            <View style={{ marginVertical: 8 }}>
+                                <Text style={{ color: '#000000', fontSize: 16, fontWeight: '600', marginBottom: 8 }}>
+                                    Signature of union representative
+                                </Text>
+                                <View style={{ flexDirection: 'row', height: 60, alignItems: 'center', paddingVertical: 10, paddingHorizontal: 16, backgroundColor: '#F3F4F8', borderRadius: 15 }}>
+                                    <Image
+                                        height={40} width={140}
+                                        source={{ uri: singleGrievanceData?.unionRep?.sign }} />
+                                </View>
+                            </View>
+                        }
 
+                        {singleGrievanceData?.unionOfficer?.sign.length === 0 ?
+                            <></>
+                            :
+                            <View style={{ marginVertical: 8 }}>
+                                <Text style={{ color: '#000000', fontSize: 16, fontWeight: '600', marginBottom: 8 }}>
+                                    Union officer signature
+                                </Text>
+                                <View style={{ flexDirection: 'row', height: 60, alignItems: 'center', paddingVertical: 10, paddingHorizontal: 16, backgroundColor: '#F3F4F8', borderRadius: 15 }}>
+                                    <Image
+                                        height={40} width={140}
+                                        source={{ uri: singleGrievanceData?.unionOfficer?.sign }} />
+                                </View>
+                            </View>
+                        }
 
                     </View>
                 </ScrollView >
@@ -404,7 +441,7 @@ export const Grievance = ({ navigation, route }) => {
 };
 const styles = StyleSheet.create({
     wrapper: {
-        paddingVertical: 30,
+        paddingVertical: 15,
         paddingHorizontal: 20,
         flex: 1
     },
