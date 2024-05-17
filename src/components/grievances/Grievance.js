@@ -79,8 +79,7 @@ export const Grievance = ({ navigation, route }) => {
         },
         onCompleted: (data) => {
             setSingleGrievanceData(data?.singleGrievance);
-            // console.log(data?.singleGrievance.documents);
-
+            // console.log(data?.singleGrievance.updates[2].documents);
         },
         onError: (err) => {
             console.log("Error with getting signle grievance");
@@ -170,11 +169,11 @@ export const Grievance = ({ navigation, route }) => {
                                     Members:
                                 </Text>
                                 <Text style={{ color: '#242529', fontSize: 14, fontWeight: '600' }}>
-                                    {data?.singleGrievance?.members.length === 0 ?
+                                    {singleGrievanceData?.members.length === 0 ?
                                         <Text>No one</Text>
                                         :
-                                        data?.singleGrievance?.members?.map((item, index) =>
-                                            index == data?.singleGrievance?.members?.length - 1 ? <Text key={index}>{item.firstName}  {item.lastName}</Text> : <Text key={index}>{item.firstName}  {item.lastName}, </Text>
+                                        singleGrievanceData?.members?.map((item, index) =>
+                                            index == singleGrievanceData?.members?.length - 1 ? <Text key={index}>{item.firstName}  {item.lastName}</Text> : <Text key={index}>{item.firstName}  {item.lastName}, </Text>
                                         )
                                     }
 
@@ -352,7 +351,7 @@ export const Grievance = ({ navigation, route }) => {
                                     singleGrievanceData?.updates.length - 1 === index ?
                                         <View key={index} style={{
                                             width: '100%', position: 'relative', paddingHorizontal: 14,
-                                            paddingBottom: 10
+                                            paddingBottom: 15
                                         }}>
 
                                             <Svg style={{ position: 'absolute', left: -10, top: -5 }} width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -363,12 +362,17 @@ export const Grievance = ({ navigation, route }) => {
                                             <Text style={{ color: '#242529', fontSize: 16, fontWeight: '500', marginVertical: 2 }}>{item.updatedBy.firstName} {item.updatedBy.lastName}</Text>
                                             <Text style={{ color: '#848587', fontSize: 14, fontWeight: '200', marginBottom: 10 }}>{new Date(item.updatedAt).toLocaleString('en-US', { month: 'short', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true })}</Text>
                                             <Text style={{ color: '#242529', fontSize: 14, fontWeight: '400', }}>{item.content}</Text>
+
+
+                                            {/* <View>
+                                                <Text>{item.documents?.name}</Text>
+                                            </View> */}
 
                                         </View>
                                         :
                                         <View key={index} style={{
                                             width: '100%', borderLeftColor: '#5884F0', borderLeftWidth: 1, borderStyle: 'solid', position: 'relative', paddingHorizontal: 14,
-                                            paddingBottom: 10
+                                            paddingBottom: 15
                                         }}>
 
                                             <Svg style={{ position: 'absolute', left: -10, top: -5 }} width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -379,6 +383,11 @@ export const Grievance = ({ navigation, route }) => {
                                             <Text style={{ color: '#242529', fontSize: 16, fontWeight: '500', marginVertical: 2 }}>{item.updatedBy.firstName} {item.updatedBy.lastName}</Text>
                                             <Text style={{ color: '#848587', fontSize: 14, fontWeight: '200', marginBottom: 10 }}>{new Date(item.updatedAt).toLocaleString('en-US', { month: 'short', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true })}</Text>
                                             <Text style={{ color: '#242529', fontSize: 14, fontWeight: '400', }}>{item.content}</Text>
+
+
+                                            {/* <View>
+                                                <Text>{item.documents?.name}</Text>
+                                            </View> */}
 
                                         </View>
                                 )
