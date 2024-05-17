@@ -204,7 +204,7 @@ export const Grievances = ({ navigation, route }) => {
 };
 const styles = StyleSheet.create({
     wrapper: {
-        paddingVertical: 24,
+        paddingVertical: 10,
         flex: 1
     },
     chooseBar: {
