@@ -79,7 +79,7 @@ export const Grievance = ({ navigation, route }) => {
         },
         onCompleted: (data) => {
             setSingleGrievanceData(data?.singleGrievance);
-            // console.log(data?.singleGrievance.unionOfficer);
+            // console.log(data?.singleGrievance.documents);
 
         },
         onError: (err) => {
@@ -252,7 +252,7 @@ export const Grievance = ({ navigation, route }) => {
                             </View>
                             {singleGrievanceData?.documents?.length !== 0 && singleGrievanceData?.documents ?
                                 singleGrievanceData?.documents?.map((item, index) =>
-                                    <TouchableOpacity key={index} activeOpacity={0.6} style={{ marginTop: 8, borderRadius: 15, borderWidth: 1, borderColor: '#A6A9B4', borderStyle: 'solid', padding: 10, flexDirection: 'row', alignItems: 'center' }}>
+                                    <TouchableOpacity onPress={async () => await Linking.openURL(item.url)} key={index} activeOpacity={0.6} style={{ marginTop: 8, borderRadius: 15, borderWidth: 1, borderColor: '#A6A9B4', borderStyle: 'solid', padding: 10, flexDirection: 'row', alignItems: 'center' }}>
                                         {item.url.split('.').pop().toLowerCase() === "jpeg" ?
                                             <Svg width="26" height="32" viewBox="0 0 26 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <Path d="M18.1344 0H1.55036C1.08864 0 0.714355 0.374286 0.714355 1.10057V31.0859C0.714355 31.2831 1.08864 32 1.55036 32H24.4498C24.9115 32 25.2858 31.2479 25.2858 31.0508V7.416C25.2858 7.01829 25.2326 6.89029 25.1389 6.796L18.4898 0.146857C18.3955 0.0531429 18.2675 0 18.1344 0Z" fill="#E9E9E0" />
@@ -276,7 +276,7 @@ export const Grievance = ({ navigation, route }) => {
                                                     <Path d="M17.7234 25.2388V27.0514H20.1297V27.692H17.7234V30.2857H16.7703V24.528H20.3714V25.2388H17.7234Z" fill="white" />
                                                 </Svg>
                                                 :
-                                                "https://younified.s3.ca-central-1.amazonaws.com/5ffdac93b8f60d4d001babe1/grievance/4fedee49-da36-4c74-a8c7-eb644a8d7f10.png".split('.').pop().toLowerCase() === "png" ?
+                                                item.url.split('.').pop().toLowerCase() === "png" ?
                                                     <Svg width="26" height="32" viewBox="0 0 26 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <Path d="M18.1344 0H1.55036C1.08864 0 0.714355 0.374286 0.714355 1.10057V31.4286C0.714355 31.6257 1.08864 32 1.55036 32H24.4498C24.9115 32 25.2858 31.6257 25.2858 31.4286V7.416C25.2858 7.01829 25.2326 6.89029 25.1389 6.796L18.4898 0.146857C18.3955 0.0531429 18.2675 0 18.1344 0Z" fill="#E9E9E0" />
                                                         <Path d="M24.4498 31.9997H1.55036C1.08864 31.9997 0.714355 31.6254 0.714355 31.1637V22.2854H25.2858V31.1637C25.2858 31.6254 24.9115 31.9997 24.4498 31.9997Z" fill="#659C35" />
