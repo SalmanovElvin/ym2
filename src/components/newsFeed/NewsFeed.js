@@ -28,7 +28,7 @@ import AnimatedLoader from "react-native-animated-loader";
 import LottieView from "lottie-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const NewsFeed = ({ navigation, news, getNews, showErr, openComments }) => {
+export const NewsFeed = ({ navigation, setNewsArrToNull, news, getNews, showErr, openComments }) => {
   // console.log(news.likes);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const toggleCollapsible = () => {
@@ -182,6 +182,7 @@ export const NewsFeed = ({ navigation, news, getNews, showErr, openComments }) =
     },
     onCompleted: () => {
       console.log('pinned or unpinned');
+      setNewsArrToNull();
       getNews();
     }
   });

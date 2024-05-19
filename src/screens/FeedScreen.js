@@ -117,6 +117,10 @@ export const FeedScreen = ({ navigation, route }) => {
     setIsFetching(true);
   }, []);
 
+  const arrToNull = () => {
+    setNewsFeed([]);
+  }
+
   const getNewsFunc = () => {
     // setNewsFeed([]);
     setTimeout(() => {
@@ -202,6 +206,7 @@ export const FeedScreen = ({ navigation, route }) => {
                     openComments={openComments}
                     showErr={showErr}
                     getNews={getNewsFunc}
+                    setNewsArrToNull={arrToNull}
                     key={item?.id}
                     news={item}
                   />
