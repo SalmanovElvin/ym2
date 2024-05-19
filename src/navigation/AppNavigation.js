@@ -32,6 +32,7 @@ import { Executives } from "../components/executives/Executives";
 import { Documents } from "../components/documents/Documents";
 import { Grievances } from "../components/grievances/Grievances";
 import { Grievance } from "../components/grievances/Grievance";
+import { Perks } from "../components/perks/Perks";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -117,6 +118,12 @@ export default function AppNavigation() {
           options={{ headerShown: false, title: "", ...stil }}
           component={Grievance}
         />
+        <Stack.Screen
+          name="Perks"
+          options={{ headerShown: false, title: "", ...stil }}
+          component={Perks}
+        />
+        
         {/* <Stack.Screen
           name="Services"
           options={{ title: "", ...stil }}

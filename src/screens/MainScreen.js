@@ -180,7 +180,7 @@ export const MainScreen = ({ navigation, route }) => {
           }
 
 
-          <TouchableOpacity activeOpacity={0.6} style={styles.block}>
+          <TouchableOpacity onPress={() => navigation.navigate('Perks')} activeOpacity={0.6} style={styles.block}>
             <Text style={styles.firstTxt}>PERKS</Text>
             <Text style={styles.txt}>Check out the </Text>
             <Text style={styles.txt}>available perks..</Text>
