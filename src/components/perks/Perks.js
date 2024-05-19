@@ -119,10 +119,24 @@ export const Perks = ({ navigation, route }) => {
 
     useEffect(() => {
         setBusinesses([]);
+        setAfterSearchOffers();
+        setSearchTxt('');
         refetch();
     }, [selectedCategory])
 
 
+    const [afterSearchOffers, setAfterSearchOffers] = useState([]);
+    useEffect(() => {
+        let arr = [];
+        for (let i = 0; i < businesses.length; i++) {
+            businesses[i].offers.forEach(offer => {
+                if (offer.headline.toLowerCase().includes(searchTxt.toLowerCase()) || offer.subhead.toLowerCase().includes(searchTxt.toLowerCase())) {
+                    arr.push(offer);
+                }
+            });
+        }
+        setAfterSearchOffers(arr);
+    }, [searchTxt])
 
     return (
         <>
@@ -197,8 +211,43 @@ export const Perks = ({ navigation, route }) => {
                                 <ActivityIndicator size="large" color="blue" />
                             </View>
                             :
-                            businesses.map((item) =>
-                                item.offers.map((businessesItem) =>
+                            searchTxt.trim().length === 0 ?
+                                businesses.map((item) =>
+                                    item.offers.map((businessesItem) =>
+                                        <View key={businessesItem.id} style={styles.block}>
+                                            <Image
+                                                style={{ width: "24%", height: 86, borderRadius: 10 }}
+                                                source={{ uri: businessesItem.heroImages[0].url }}
+                                            />
+                                            <View style={{ marginLeft: 10, width: '51%' }}>
+                                                <Text style={{ color: '#242529', fontWeight: '600', fontSize: 16, marginBottom: 5, width: '100%' }}>{businessesItem.headline}</Text>
+                                                <Text style={{ color: '#848587', fontWeight: '400', fontSize: 14, width: '65%' }}>{businessesItem.subhead}</Text>
+                                            </View>
+                                            <View style={{ width: '23%' }}>
+                                                {businessesItem.flags.map((flagsItem, idx) =>
+                                                    <Text key={idx + '' + businessesItem.id}
+                                                        style={flagsItem.toLowerCase() === 'limited' ?
+                                                            { textTransform: 'capitalize', width: "100%", backgroundColor: '#D94D2E', borderRadius: 10, color: '#fff', paddingVertical: 8, textAlign: 'center', marginBottom: 8 }
+                                                            :
+                                                            flagsItem.toLowerCase() === 'exclusive' ?
+                                                                { textTransform: 'capitalize', width: "100%", backgroundColor: '#46e695', borderRadius: 10, color: '#fff', paddingVertical: 8, textAlign: 'center', marginBottom: 8 }
+                                                                :
+                                                                flagsItem.toLowerCase() === 'featured' ?
+                                                                    { textTransform: 'capitalize', width: "100%", backgroundColor: '#9b59b6', borderRadius: 10, color: '#fff', paddingVertical: 8, textAlign: 'center', marginBottom: 8 }
+                                                                    :
+                                                                    { textTransform: 'capitalize', width: "100%", backgroundColor: '#f1c40f', borderRadius: 10, color: '#fff', paddingVertical: 8, textAlign: 'center', marginBottom: 8 }
+                                                        }>
+                                                        {flagsItem}
+                                                    </Text>
+                                                )
+
+                                                }
+                                            </View>
+                                        </View>
+                                    )
+                                )
+                                :
+                                afterSearchOffers?.map((businessesItem) =>
                                     <View key={businessesItem.id} style={styles.block}>
                                         <Image
                                             style={{ width: "24%", height: 86, borderRadius: 10 }}
@@ -230,7 +279,6 @@ export const Perks = ({ navigation, route }) => {
                                         </View>
                                     </View>
                                 )
-                            )
                         }
                     </View>
                 </ScrollView>
