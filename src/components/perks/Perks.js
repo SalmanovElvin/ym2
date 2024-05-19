@@ -103,7 +103,7 @@ export const Perks = ({ navigation, route }) => {
     const { loading, refetch } = useQuery(GET_COLLECTION_BUSINESS_LIST, {
         context: { clientName: 'gitl' },
         variables: {
-            id: "875615a9-f0a8-4505-a225-65ea48882ef4",
+            id: selectedCategory?.id,
             limit: 10
         },
         onCompleted: (data) => {
@@ -117,7 +117,10 @@ export const Perks = ({ navigation, route }) => {
         notifyOnNetworkStatusChange: true,
     });
 
-
+    useEffect(() => {
+        setBusinesses([]);
+        refetch();
+    }, [selectedCategory])
 
 
 
@@ -189,40 +192,46 @@ export const Perks = ({ navigation, route }) => {
                     <View style={{ height: 1, width: '100%', backgroundColor: '#D9D9D9', marginVertical: 15 }}></View>
 
                     <View style={{ paddingHorizontal: 20, paddingVertical: 26 }}>
-                        {businesses.map((item) =>
-                            item.offers.map((businessesItem) =>
-                                <View key={businessesItem.id} style={styles.block}>
-                                    <Image
-                                        style={{ width: "24%", height: 86, borderRadius: 10 }}
-                                        source={{ uri: businessesItem.heroImages[0].url }}
-                                    />
-                                    <View style={{ marginLeft: 10, width: '51%' }}>
-                                        <Text style={{ color: '#242529', fontWeight: '600', fontSize: 16, marginBottom: 5, width: '100%' }}>{businessesItem.headline}</Text>
-                                        <Text style={{ color: '#848587', fontWeight: '400', fontSize: 14, width: '65%' }}>{businessesItem.subhead}</Text>
-                                    </View>
-                                    <View style={{ width: '23%' }}>
-                                        {businessesItem.flags.map((flagsItem, idx) =>
-                                            <Text key={idx + '' + businessesItem.id}
-                                                style={flagsItem.toLowerCase() === 'limited' ?
-                                                    { textTransform: 'capitalize', width: "100%", backgroundColor: '#D94D2E', borderRadius: 10, color: '#fff', paddingVertical: 8, textAlign: 'center', marginBottom: 8 }
-                                                    :
-                                                    flagsItem.toLowerCase() === 'exclusive' ?
-                                                        { textTransform: 'capitalize', width: "100%", backgroundColor: '#46e695', borderRadius: 10, color: '#fff', paddingVertical: 8, textAlign: 'center', marginBottom: 8 }
+                        {businesses.length === 0 ?
+                            <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+                                <ActivityIndicator size="large" color="blue" />
+                            </View>
+                            :
+                            businesses.map((item) =>
+                                item.offers.map((businessesItem) =>
+                                    <View key={businessesItem.id} style={styles.block}>
+                                        <Image
+                                            style={{ width: "24%", height: 86, borderRadius: 10 }}
+                                            source={{ uri: businessesItem.heroImages[0].url }}
+                                        />
+                                        <View style={{ marginLeft: 10, width: '51%' }}>
+                                            <Text style={{ color: '#242529', fontWeight: '600', fontSize: 16, marginBottom: 5, width: '100%' }}>{businessesItem.headline}</Text>
+                                            <Text style={{ color: '#848587', fontWeight: '400', fontSize: 14, width: '65%' }}>{businessesItem.subhead}</Text>
+                                        </View>
+                                        <View style={{ width: '23%' }}>
+                                            {businessesItem.flags.map((flagsItem, idx) =>
+                                                <Text key={idx + '' + businessesItem.id}
+                                                    style={flagsItem.toLowerCase() === 'limited' ?
+                                                        { textTransform: 'capitalize', width: "100%", backgroundColor: '#D94D2E', borderRadius: 10, color: '#fff', paddingVertical: 8, textAlign: 'center', marginBottom: 8 }
                                                         :
-                                                        flagsItem.toLowerCase() === 'featured' ?
-                                                            { textTransform: 'capitalize', width: "100%", backgroundColor: '#9b59b6', borderRadius: 10, color: '#fff', paddingVertical: 8, textAlign: 'center', marginBottom: 8 }
+                                                        flagsItem.toLowerCase() === 'exclusive' ?
+                                                            { textTransform: 'capitalize', width: "100%", backgroundColor: '#46e695', borderRadius: 10, color: '#fff', paddingVertical: 8, textAlign: 'center', marginBottom: 8 }
                                                             :
-                                                            { textTransform: 'capitalize', width: "100%", backgroundColor: '#f1c40f', borderRadius: 10, color: '#fff', paddingVertical: 8, textAlign: 'center', marginBottom: 8 }
-                                                }>
-                                                {flagsItem}
-                                            </Text>
-                                        )
+                                                            flagsItem.toLowerCase() === 'featured' ?
+                                                                { textTransform: 'capitalize', width: "100%", backgroundColor: '#9b59b6', borderRadius: 10, color: '#fff', paddingVertical: 8, textAlign: 'center', marginBottom: 8 }
+                                                                :
+                                                                { textTransform: 'capitalize', width: "100%", backgroundColor: '#f1c40f', borderRadius: 10, color: '#fff', paddingVertical: 8, textAlign: 'center', marginBottom: 8 }
+                                                    }>
+                                                    {flagsItem}
+                                                </Text>
+                                            )
 
-                                        }
+                                            }
+                                        </View>
                                     </View>
-                                </View>
+                                )
                             )
-                        )}
+                        }
                     </View>
                 </ScrollView>
             }
