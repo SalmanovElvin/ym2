@@ -33,20 +33,22 @@ import { Documents } from "../components/documents/Documents";
 import { Grievances } from "../components/grievances/Grievances";
 import { Grievance } from "../components/grievances/Grievance";
 import { Perks } from "../components/perks/Perks";
+import { Voting } from "../components/voting/Voting";
+import { Calls } from "../components/calls/Calls";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const stil =
-  Platform.OS === "android"
-    ? {
-      headerStyle: { backgroundColor: THEME.MAIN_COLOR },
-      headerTintColor: "#fff",
-    }
-    : {
-      headerStyle: { backgroundColor: "#fff" },
-      headerTintColor: THEME.MAIN_COLOR,
-    };
+// const stil =
+//   Platform.OS === "android"
+//     ? {
+//       headerStyle: { backgroundColor: THEME.MAIN_COLOR },
+//       headerTintColor: "#fff",
+//     }
+//     : {
+//       headerStyle: { backgroundColor: "#fff" },
+//       headerTintColor: THEME.MAIN_COLOR,
+//     };
 
 export default function AppNavigation() {
   /////////////////////////////////////////////////////////////
@@ -69,69 +71,69 @@ export default function AppNavigation() {
       <Stack.Navigator>
         <Stack.Screen
           name="Main"
-          options={{ headerShown: false, title: "", ...stil }}
+          options={{ headerShown: false, title: "",  }}
           component={MainScreen}
         />
         <Stack.Screen
           name="Notifications"
-          options={{ title: "", ...stil }}
+          options={{ title: "",  }}
           component={NotificationsPage}
         />
         <Stack.Screen
           name="Chats"
-          options={{ title: "", ...stil }}
+          options={{ title: "",  }}
           component={Chats}
         />
         <Stack.Screen
           name="MessagesPage"
-          options={{ title: "", ...stil }}
+          options={{ title: "",  }}
           component={MessagesPage}
         />
         <Stack.Screen
           name="Profile"
           initialParams={{ signOutUserAnsStr }}
-          options={{ title: "", ...stil }}
+          options={{ title: "",  }}
           component={Profile}
         />
         <Stack.Screen
           name="QrPage"
-          options={{ title: "", ...stil }}
+          options={{ title: "",  }}
           component={Qr}
         />
         <Stack.Screen
           name="Executives"
-          options={{ headerShown: false, title: "", ...stil }}
+          options={{ headerShown: false, title: "",  }}
           component={Executives}
         />
         <Stack.Screen
           name="Documents"
-          options={{ headerShown: false, title: "", ...stil }}
+          options={{ headerShown: false, title: "",  }}
           component={Documents}
         />
         <Stack.Screen
           name="Grievances"
-          options={{ headerShown: false, title: "", ...stil }}
+          options={{ headerShown: false, title: "",  }}
           component={Grievances}
         />
         <Stack.Screen
           name="Grievance"
-          options={{ headerShown: false, title: "", ...stil }}
+          options={{ headerShown: false, title: "",  }}
           component={Grievance}
         />
         <Stack.Screen
           name="Perks"
-          options={{ headerShown: false, title: "", ...stil }}
+          options={{ headerShown: false, title: "",  }}
           component={Perks}
         />
-        
+
         {/* <Stack.Screen
           name="Services"
-          options={{ title: "", ...stil }}
+          options={{ title: "",  }}
           component={ServicesScreen}
         />
         <Stack.Screen
           name="Settings"
-          options={{ title: "", ...stil }}
+          options={{ title: "", ...still }}
           component={SettingsScreen}
         /> */}
       </Stack.Navigator>
@@ -143,32 +145,32 @@ export default function AppNavigation() {
       <Stack.Navigator>
         <Stack.Screen
           name="FeedsScr"
-          options={{ headerShown: false, title: "", ...stil }}
+          options={{ headerShown: false, title: "",  }}
           component={FeedScreen}
         />
         <Stack.Screen
           name="NewsFeed"
-          options={{ title: "", ...stil }}
+          options={{ title: "",  }}
           component={NewsFeed}
         />
         <Stack.Screen
           name="Comment"
-          options={{ title: "", tabBarVisible: false, ...stil }}
+          options={{ title: "", tabBarVisible: false,  }}
           component={Comments}
         />
         <Stack.Screen
           name="Notifications"
-          options={{ title: "", ...stil }}
+          options={{ title: "",  }}
           component={NotificationsPage}
         />
         <Stack.Screen
           name="Chats"
-          options={{ title: "", ...stil }}
+          options={{ title: "",  }}
           component={Chats}
         />
         <Stack.Screen
           name="MessagesPage"
-          options={{ title: "", ...stil }}
+          options={{ title: "",  }}
           component={MessagesPage}
         />
       </Stack.Navigator>
@@ -184,23 +186,33 @@ export default function AppNavigation() {
       <Stack.Navigator>
         <Stack.Screen
           name="ServicesScr"
-          options={{ headerShown: false, title: "", ...stil }}
+          options={{ headerShown: false, title: "",  }}
           component={ServicesScreen}
         />
         <Stack.Screen
           name="Notifications"
-          options={{ title: "", ...stil }}
+          options={{ title: "",}}
           component={NotificationsPage}
         />
         <Stack.Screen
           name="Chats"
-          options={{ title: "", ...stil }}
+          options={{ title: "",}}
           component={Chats}
         />
         <Stack.Screen
           name="MessagesPage"
-          options={{ title: "", ...stil }}
+          options={{ title: "",}}
           component={MessagesPage}
+        />
+        <Stack.Screen
+          name="Voting"
+          options={{ headerShown: false, title: "",}}
+          component={Voting}
+        />
+        <Stack.Screen
+          name="Calls"
+          options={{ headerShown: false, title: "",}}
+          component={Calls}
         />
       </Stack.Navigator>
     );
@@ -211,22 +223,22 @@ export default function AppNavigation() {
       <Stack.Navigator>
         <Stack.Screen
           name="SettingsScr"
-          options={{ headerShown: false, title: "", ...stil }}
+          options={{ headerShown: false, title: "",  }}
           component={SettingsScreen}
         />
         <Stack.Screen
           name="Notifications"
-          options={{ title: "", ...stil }}
+          options={{ title: "",  }}
           component={NotificationsPage}
         />
         <Stack.Screen
           name="Chats"
-          options={{ title: "", ...stil }}
+          options={{ title: "",  }}
           component={Chats}
         />
         <Stack.Screen
           name="MessagesPage"
-          options={{ title: "", ...stil }}
+          options={{ title: "",  }}
           component={MessagesPage}
         />
       </Stack.Navigator>
@@ -265,28 +277,28 @@ export default function AppNavigation() {
         <Stack.Navigator initialRouteName="unionSignIn">
           <Stack.Screen
             name="unionSignIn"
-            options={{ title: "", headerShown: false, ...stil }}
+            options={{ title: "", headerShown: false,  }}
             component={UnionForm}
           />
           <Stack.Screen
             name="login"
-            options={{ title: "", headerShown: false, ...stil }}
+            options={{ title: "", headerShown: false,  }}
             component={Login}
             initialParams={{ getAccess }}
           />
           <Stack.Screen
             name="signUp"
-            options={{ title: "", headerShown: false, ...stil }}
+            options={{ title: "", headerShown: false,  }}
             component={SignUp}
           />
           <Stack.Screen
             name="forgot"
-            options={{ title: "", headerShown: false, ...stil }}
+            options={{ title: "", headerShown: false,  }}
             component={EnterEmail}
           />
           <Stack.Screen
             name="newPassword"
-            options={{ title: "", headerShown: false, ...stil }}
+            options={{ title: "", headerShown: false,  }}
             component={ChangePassword}
           />
         </Stack.Navigator>
@@ -325,7 +337,7 @@ export default function AppNavigation() {
             options={{
               title: "Feed",
               headerShown: false,
-              ...stil,
+              
               tabBarIcon: (info) => (
                 <Svg
                   width="20"
@@ -351,7 +363,7 @@ export default function AppNavigation() {
             options={{
               title: "Services",
               headerShown: false,
-              ...stil,
+              
               tabBarIcon: (info) => (
                 <Svg
                   width="25"
@@ -392,7 +404,7 @@ export default function AppNavigation() {
             options={{
               title: "Settings",
               headerShown: false,
-              ...stil,
+              
               tabBarIcon: (info) => (
                 <Svg
                   width="25"
