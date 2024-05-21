@@ -76,13 +76,15 @@ export const Calls = ({ navigation, route }) => {
             console.log(err);
             refetch();
         },
+        fetchPolicy: 'cache-and-network',
+        notifyOnNetworkStatusChange: true,
     });
 
 
     return (
         <>
             <HeaderInPages title="Click to call" />
-            {callsArr?.data?.length === 0 ?
+            {callsArr.length === 0 ?
                 <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
                     <ActivityIndicator size="large" color="blue" />
                 </View>
