@@ -100,22 +100,26 @@ export const Voting = ({ navigation, route }) => {
             <HeaderInPages title="Voting" />
             <ScrollView style={styles.wrapper}>
 
-                {actualElections.length === 0 ?
+                {electionsLoading ?
                     <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
                         <ActivityIndicator size="large" color="blue" />
                     </View>
                     :
-                    actualElections.map((item) =>
-                        <View key={item.id} style={styles.block}>
-                            <Text style={{ textAlign: 'center', marginBottom: 10, color: '#242529', fontSizeL: 16, fontWeight: '600' }}>{item.title}</Text>
-                            <Text style={{ textAlign: 'center', marginBottom: 10, color: '#4A4A4A', fontSizeL: 14, fontWeight: '400' }}>
-                                Ends in {Math.floor(Math.abs(new Date(item.endDate) - new Date(item.startDate)) / (1000 * 60 * 60 * 24))} day(s) | {new Date(item.startDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).replace(/(\d{1,2})(st|nd|rd|th)/, "$1$2")}
-                            </Text>
-                            <TouchableOpacity onPress={() => navigation.navigate('electionPage', { electionId: item.id })} style={{ justifyContent: 'center', alignItems: 'center', borderRadius: 5, backgroundColor: '#34519A', paddingVertical: 16, paddingHorizontal: 24 }} activeOpacity={0.6}>
-                                <Text style={{ color: '#fff', fontWeight: '700', fontSize: 16 }}>Vote</Text>
-                            </TouchableOpacity>
-                        </View>
-                    )
+                    actualElections.length !== 0 ?
+                        actualElections.map((item) =>
+                            <View key={item.id} style={styles.block}>
+                                <Text style={{ textAlign: 'center', marginBottom: 10, color: '#242529', fontSizeL: 16, fontWeight: '600' }}>{item.title}</Text>
+                                <Text style={{ textAlign: 'center', marginBottom: 10, color: '#4A4A4A', fontSizeL: 14, fontWeight: '400' }}>
+                                    Ends in {Math.floor(Math.abs(new Date(item.endDate) - new Date(item.startDate)) / (1000 * 60 * 60 * 24))} day(s) | {new Date(item.startDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).replace(/(\d{1,2})(st|nd|rd|th)/, "$1$2")}
+                                </Text>
+                                <TouchableOpacity onPress={() => navigation.navigate('electionPage', { electionId: item.id })} style={{ justifyContent: 'center', alignItems: 'center', borderRadius: 5, backgroundColor: '#34519A', paddingVertical: 16, paddingHorizontal: 24 }} activeOpacity={0.6}>
+                                    <Text style={{ color: '#fff', fontWeight: '700', fontSize: 16 }}>Vote</Text>
+                                </TouchableOpacity>
+                            </View>
+                        )
+                        :
+                        <Text style={{ padding: 15, textAlign: 'center', fontWeight: '700', fontSize: 16, color: '#696666' }}>There are no any actual votings.</Text>
+
                 }
 
                 {expiredElections.length === 0 ?
