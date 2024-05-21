@@ -84,44 +84,48 @@ export const Calls = ({ navigation, route }) => {
     return (
         <>
             <HeaderInPages title="Click to call" />
-            {callsArr.length === 0 ?
+            {loading ?
                 <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
                     <ActivityIndicator size="large" color="blue" />
                 </View>
                 :
-                <ScrollView style={styles.wrapper}>
-                    {callsArr?.data?.map((item) =>
-                        <View key={item.id} style={styles.block}>
-                            <Text style={{ textTransform: 'uppercase', fontWeight: '600', fontSize: 16, color: '#242529' }}>
-                                {item.title}
-                            </Text>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginVertical: 10, }}>
-                                <View style={{ width: '45%' }}>
-                                    <Text style={{ color: '#A6A9B4', fontWeight: '300', fontSize: 14 }}>
-                                        Starts on:
-                                    </Text>
-                                    <Text style={{ color: '#696666', fontWeight: '400', fontSize: 14 }}>
-                                        {new Date(item?.startDate).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
-                                    </Text>
+                callsArr.length !== 0 ?
+                    <ScrollView style={styles.wrapper}>
+                        {callsArr?.data?.map((item) =>
+                            <View key={item.id} style={styles.block}>
+                                <Text style={{ textTransform: 'uppercase', fontWeight: '600', fontSize: 16, color: '#242529' }}>
+                                    {item.title}
+                                </Text>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginVertical: 10, }}>
+                                    <View style={{ width: '45%' }}>
+                                        <Text style={{ color: '#A6A9B4', fontWeight: '300', fontSize: 14 }}>
+                                            Starts on:
+                                        </Text>
+                                        <Text style={{ color: '#696666', fontWeight: '400', fontSize: 14 }}>
+                                            {new Date(item?.startDate).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
+                                        </Text>
+                                    </View>
+
+                                    <View style={{ marginLeft: 10, width: '45%' }}>
+                                        <Text style={{ color: '#A6A9B4', fontWeight: '300', fontSize: 14 }}>
+                                            Ends on:
+                                        </Text>
+                                        <Text style={{ color: '#696666', fontWeight: '400', fontSize: 14 }}>
+                                            {new Date(item?.endDate).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
+                                        </Text>
+                                    </View>
                                 </View>
 
-                                <View style={{ marginLeft: 10, width: '45%' }}>
-                                    <Text style={{ color: '#A6A9B4', fontWeight: '300', fontSize: 14 }}>
-                                        Ends on:
-                                    </Text>
-                                    <Text style={{ color: '#696666', fontWeight: '400', fontSize: 14 }}>
-                                        {new Date(item?.endDate).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
-                                    </Text>
-                                </View>
+                                <TouchableOpacity onPress={() => Linking.openURL(`tel:${item.phone}`)} style={{ paddingVertical: 16, paddingHorizontal: 32, backgroundColor: '#34519A', alignItems: 'center', justifyContent: 'center', borderRadius: 5 }} activeOpacity={0.6}>
+                                    <Text style={{ fontWeight: '700', fontSize: 16, color: '#FFFFFF' }}>Call:  {item.phone}</Text>
+                                </TouchableOpacity>
                             </View>
+                        )}
 
-                            <TouchableOpacity onPress={() => Linking.openURL(`tel:${item.phone}`)} style={{ paddingVertical: 16, paddingHorizontal: 32, backgroundColor: '#34519A', alignItems: 'center', justifyContent: 'center', borderRadius: 5 }} activeOpacity={0.6}>
-                                <Text style={{ fontWeight: '700', fontSize: 16, color: '#FFFFFF' }}>Call:  {item.phone}</Text>
-                            </TouchableOpacity>
-                        </View>
-                    )}
+                    </ScrollView>
+                    :
+                    <Text style={{ padding: 15, textAlign: 'center', fontWeight: '700', fontSize: 16, color: '#696666' }}>You don't have any calls.</Text>
 
-                </ScrollView>
             }
 
         </>

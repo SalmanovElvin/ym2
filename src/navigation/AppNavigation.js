@@ -35,6 +35,7 @@ import { Grievance } from "../components/grievances/Grievance";
 import { Perks } from "../components/perks/Perks";
 import { Voting } from "../components/voting/Voting";
 import { Calls } from "../components/calls/Calls";
+import { ElectionPage } from "../components/voting/ElectionPage";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -213,6 +214,11 @@ export default function AppNavigation() {
           name="Calls"
           options={{ headerShown: false, title: "",}}
           component={Calls}
+        />
+        <Stack.Screen
+          name="electionPage"
+          options={{ headerShown: false, title: "",}}
+          component={ElectionPage}
         />
       </Stack.Navigator>
     );
