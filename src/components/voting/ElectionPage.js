@@ -68,7 +68,6 @@ export const ElectionPage = ({ navigation, route }) => {
     const [pageById, setPageById] = useState('');
     const [pageNum, setPageNum] = useState(1);
 
-
     const {
         data,
         loading,
@@ -91,7 +90,6 @@ export const ElectionPage = ({ navigation, route }) => {
         notifyOnNetworkStatusChange: true,
     });
 
-
     const next = () => {
         setPageById(data.ballots[pageNum]?.id)
         setPageNum(pageNum + 1);
@@ -107,9 +105,21 @@ export const ElectionPage = ({ navigation, route }) => {
                 :
                 elections.length !== 0 ?
                     <ScrollView style={styles.wrapper}>
-                        {pageNum+1 !== elections.length ?
+                        {pageNum !== elections.length ?
                             elections.filter(item => item?.id === pageById).map((item) =>
-                                <Text onPress={next}>Salam {pageById}</Text>
+                                <View key={item.id}>
+                                    <View style={{ marginVertical: 15 }}>
+                                        <Text style={{ color: '#242529', fontSize: 16, fontWeight: '400' }}>
+                                            <Text style={{ fontWeight: '600' }}>{pageNum}/{elections.length}</Text> Questions
+                                        </Text>
+                                        <View style={{ height: 12, width: '100%', borderRadius: 8, backgroundColor: '#DFDFDF', marginTop: 8, marginBottom: 4 }}>
+                                            <View style={{ height: 12, width: `${(pageNum / elections.length) * 100}%`, borderRadius: 8, backgroundColor: '#5BD476' }}></View>
+                                        </View>
+                                        <Text>{elections.length - pageNum} more to complete</Text>
+                                    </View>
+
+                                    <Text onPress={next}>Next</Text>
+                                </View>
                             )
                             :
                             <Text>End of elections</Text>
@@ -118,7 +128,6 @@ export const ElectionPage = ({ navigation, route }) => {
                     </ScrollView>
                     :
                     <Text style={{ padding: 15, textAlign: 'center', fontWeight: '700', fontSize: 16, color: '#696666' }}>Something gone wrong.</Text>
-
             }
         </>
     );
