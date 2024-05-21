@@ -29,6 +29,7 @@ import Svg, {
 } from "react-native-svg";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { HeaderInPages } from './../header/HeaderInPages';
+import { GET_CLICK_TO_CALLS } from "../../../graph/queries/clickToCall";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -62,56 +63,79 @@ export const Calls = ({ navigation, route }) => {
         getData();
     }, []);
 
+    const [callsArr, setCallsArr] = useState([]);
 
+    const { data, error, loading, refetch } = useQuery(GET_CLICK_TO_CALLS, {
+        variables: {
+            unionID: userData?.unionID,
+        },
+        onCompleted: () => {
+            setCallsArr(data.getClickToCalls);
+        },
+        onError: (err) => {
+            console.log(err);
+            refetch();
+        },
+    });
 
 
     return (
         <>
             <HeaderInPages title="Click to call" />
+            {callsArr?.data?.length === 0 ?
+                <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+                    <ActivityIndicator size="large" color="blue" />
+                </View>
+                :
+                <ScrollView style={styles.wrapper}>
+                    {callsArr?.data?.map((item) =>
+                        <View key={item.id} style={styles.block}>
+                            <Text style={{ textTransform: 'uppercase', fontWeight: '600', fontSize: 16, color: '#242529' }}>
+                                {item.title}
+                            </Text>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginVertical: 10, }}>
+                                <View style={{ width: '45%' }}>
+                                    <Text style={{ color: '#A6A9B4', fontWeight: '300', fontSize: 14 }}>
+                                        Starts on:
+                                    </Text>
+                                    <Text style={{ color: '#696666', fontWeight: '400', fontSize: 14 }}>
+                                        {new Date(item?.startDate).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
+                                    </Text>
+                                </View>
+
+                                <View style={{ marginLeft: 10, width: '45%' }}>
+                                    <Text style={{ color: '#A6A9B4', fontWeight: '300', fontSize: 14 }}>
+                                        Ends on:
+                                    </Text>
+                                    <Text style={{ color: '#696666', fontWeight: '400', fontSize: 14 }}>
+                                        {new Date(item?.endDate).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
+                                    </Text>
+                                </View>
+                            </View>
+
+                            <TouchableOpacity onPress={() => Linking.openURL(`tel:${item.phone}`)} style={{ paddingVertical: 16, paddingHorizontal: 32, backgroundColor: '#34519A', alignItems: 'center', justifyContent: 'center', borderRadius: 5 }} activeOpacity={0.6}>
+                                <Text style={{ fontWeight: '700', fontSize: 16, color: '#FFFFFF' }}>Call:  {item.phone}</Text>
+                            </TouchableOpacity>
+                        </View>
+                    )}
+
+                </ScrollView>
+            }
 
         </>
     );
 };
 const styles = StyleSheet.create({
     wrapper: {
-        paddingVertical: 10,
+        paddingVertical: 28,
+        paddingHorizontal: 14,
         flex: 1
     },
-    searchInput: {
-        height: '100%',
-        width: '85%',
-        paddingVertical: 16,
-        fontSize: 16,
-        color: '#A8A8AA',
-        fontWeight: '500'
-    },
-    searchInputWrapper: {
-        flexDirection: 'row', alignItems: 'center',
-        marginBottom: 15,
-        backgroundColor: '#FFFFFF',
-        shadowColor: "#4468C1", // Shadow color
-        shadowOffset: {
-            width: 0,
-            height: 2, // Shadow height
-        },
-        shadowOpacity: 0.25, // Shadow opacity
-        shadowRadius: 3.84, // Shadow radius
-        elevation: 5,
-
-        paddingHorizontal: 24,
-        borderRadius: 5,
-        justifyContent: 'space-between',
-        alignItems: 'center'
-    },
-
-
     block: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
         marginBottom: 20,
-        borderRadius: 15,
+        borderRadius: 20,
         backgroundColor: '#fff',
-        paddingVertical: 10,
+        paddingVertical: 16,
         paddingHorizontal: 16,
         shadowColor: "#4468C1",
         shadowOffset: {
@@ -122,63 +146,5 @@ const styles = StyleSheet.create({
         shadowRadius: 7,
         elevation: 5,
     },
-    rows: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginVertical: 8
-    },
 
-
-    modalBack: {
-        zIndex: 999,
-        width: '100%',
-        position: 'absolute',
-        backgroundColor: 'rgba(0, 0, 50, 0.5)',
-        height: '100%',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    modal: {
-        width: '90%',
-        borderRadius: 10,
-        backgroundColor: '#fff',
-        padding: 15,
-        justifyContent: 'space-between',
-        shadowColor: "#4468c1",
-        shadowOffset: {
-            width: 0,
-            height: 10,
-        },
-        shadowOpacity: 0.23,
-        shadowRadius: 11.27,
-    },
-    errMsg: {
-        fontSize: 16,
-        fontWeight: '500',
-        lineHeight: 22,
-    },
-    tip: {
-        fontSize: 16,
-        fontWeight: '500',
-        lineHeight: 22,
-        fontStyle: 'italic',
-        color: 'green',
-        marginBottom: 15,
-    },
-    conf: {
-        width: "100%",
-        backgroundColor: "#34519A",
-        height: 56,
-        justifyContent: "center",
-        alignItems: 'center',
-        marginVertical: 10,
-        borderRadius: 5,
-    },
-    btnConf: {
-        color: '#fff',
-        fontWeight: '700',
-        fontSize: 16
-
-    },
 });
