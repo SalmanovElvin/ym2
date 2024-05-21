@@ -72,6 +72,7 @@ export const Voting = ({ navigation, route }) => {
         data: electionsData,
         loading: electionsLoading,
         error: electionsError,
+        refetch
     } = useQuery(GET_ELECTIONS, {
         variables: {
             unionID: userData?.unionID,
@@ -88,6 +89,7 @@ export const Voting = ({ navigation, route }) => {
 
         },
         onError: (err) => {
+            refetch();
             console.log(err);
         },
         fetchPolicy: 'cache-and-network',

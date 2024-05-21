@@ -36,7 +36,6 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 export const ElectionPage = ({ navigation, route }) => {
 
     const { electionId } = route.params;
-    console.log(electionId);
     const [userData, setUserData] = useState(null);
     const [unionData, setUnionData] = useState("");
 
@@ -65,19 +64,27 @@ export const ElectionPage = ({ navigation, route }) => {
         getData();
     }, []);
 
+    const [elections, setElections] = useState([]);
+    const [pageById, setPageById] = useState('');
+    const [pageNum, setPageNum] = useState(1);
+
+
     const {
         data,
         loading,
         error,
+        refetch
     } = useQuery(FETCH_BALLOTS, {
         variables: {
             unionID: userData?.unionID,
             electionID: electionId
         },
         onCompleted: (data) => {
-            console.log(data.ballots);
+            setElections(data.ballots);
+            setPageById(data.ballots[0].id);
         },
         onError: (err) => {
+            refetch();
             console.log(err);
         },
         fetchPolicy: 'cache-and-network',
@@ -85,6 +92,10 @@ export const ElectionPage = ({ navigation, route }) => {
     });
 
 
+    const next = () => {
+        setPageById(data.ballots[pageNum]?.id)
+        setPageNum(pageNum + 1);
+    }
 
     return (
         <>
@@ -94,7 +105,20 @@ export const ElectionPage = ({ navigation, route }) => {
                     <ActivityIndicator size="large" color="blue" />
                 </View>
                 :
-                <Text>Salam</Text>
+                elections.length !== 0 ?
+                    <ScrollView style={styles.wrapper}>
+                        {pageNum+1 !== elections.length ?
+                            elections.filter(item => item?.id === pageById).map((item) =>
+                                <Text onPress={next}>Salam {pageById}</Text>
+                            )
+                            :
+                            <Text>End of elections</Text>
+                        }
+
+                    </ScrollView>
+                    :
+                    <Text style={{ padding: 15, textAlign: 'center', fontWeight: '700', fontSize: 16, color: '#696666' }}>Something gone wrong.</Text>
+
             }
         </>
     );
