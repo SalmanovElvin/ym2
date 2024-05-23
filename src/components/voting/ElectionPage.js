@@ -66,7 +66,7 @@ export const ElectionPage = ({ navigation, route }) => {
 
     const [elections, setElections] = useState([]);
     const [pageById, setPageById] = useState('');
-    const [pageNum, setPageNum] = useState(1);
+    const [pageNum, setPageNum] = useState(0);
 
     const {
         data,
@@ -91,8 +91,13 @@ export const ElectionPage = ({ navigation, route }) => {
     });
 
     const next = () => {
-        setPageById(data.ballots[pageNum]?.id)
+        setPageById(data.ballots[pageNum + 1]?.id)
         setPageNum(pageNum + 1);
+    }
+
+    const previous = () => {
+        setPageById(data.ballots[pageNum - 1]?.id)
+        setPageNum(pageNum - 1);
     }
 
     return (
@@ -104,25 +109,51 @@ export const ElectionPage = ({ navigation, route }) => {
                 </View>
                 :
                 elections.length !== 0 ?
-                    <ScrollView style={styles.wrapper}>
-                        {pageNum !== elections.length ?
+                    <ScrollView >
+                        {pageNum + 1 !== elections.length ?
                             elections.filter(item => item?.id === pageById).map((item) =>
                                 <View key={item.id}>
-                                    <View style={{ marginVertical: 15 }}>
+                                    <View style={{ ...styles.wrapper, marginVertical: 15 }}>
                                         <Text style={{ color: '#242529', fontSize: 16, fontWeight: '400' }}>
-                                            <Text style={{ fontWeight: '600' }}>{pageNum}/{elections.length}</Text> Questions
+                                            <Text style={{ fontWeight: '600' }}>{pageNum + 1}/{elections.length}</Text> Questions
                                         </Text>
                                         <View style={{ height: 12, width: '100%', borderRadius: 8, backgroundColor: '#DFDFDF', marginTop: 8, marginBottom: 4 }}>
-                                            <View style={{ height: 12, width: `${(pageNum / elections.length) * 100}%`, borderRadius: 8, backgroundColor: '#5BD476' }}></View>
+                                            <View style={{ height: 12, width: `${((pageNum + 1) / elections.length) * 100}%`, borderRadius: 8, backgroundColor: '#5BD476' }}></View>
                                         </View>
-                                        <Text>{elections.length - pageNum} more to complete</Text>
+                                        <Text>{elections.length - pageNum - 1} more to complete</Text>
                                     </View>
 
-                                    <Text onPress={next}>Next</Text>
+
+                                    {pageNum == 0 ?
+                                        <View style={{ paddingVertical: 16, paddingHorizontal: 32, backgroundColor: '#fff', marginTop: 30 }}>
+                                            <TouchableOpacity onPress={next} style={{ justifyContent: 'center', alignItems: 'center', paddingVertical: 16, paddingHorizontal: 32, backgroundColor: '#34519A', borderRadius: 5 }} activeOpacity={0.6}>
+                                                <Text style={{ fontWeight: '700', fontSize: 16, color: '#FFFFFF' }}>Next</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                        :
+                                        pageNum == elections.length - 2 ?
+                                            <View style={{ paddingVertical: 16, paddingHorizontal: 32, backgroundColor: '#fff', marginTop: 30 }}>
+                                                <TouchableOpacity onPress={next} style={{ borderStyle: 'solid', borderWidth: 1, borderColor: '#5BD476', width: '100%', justifyContent: 'center', alignItems: 'center', paddingVertical: 16, paddingHorizontal: 32, backgroundColor: '#5BD476', borderRadius: 5 }} activeOpacity={0.6}>
+                                                    <Text style={{ fontWeight: '700', fontSize: 16, color: '#FFFFFF' }}>Submit</Text>
+                                                </TouchableOpacity>
+                                                <TouchableOpacity onPress={() => navigation.navigate('Voting')} style={{ marginTop: 10, borderStyle: 'solid', borderWidth: 1, borderColor: '#34519A', width: '100%', justifyContent: 'center', alignItems: 'center', paddingVertical: 16, paddingHorizontal: 32, backgroundColor: '#fff', borderRadius: 5 }} activeOpacity={0.6}>
+                                                    <Text style={{ fontWeight: '700', fontSize: 16, color: '#34519A' }}>Change selection</Text>
+                                                </TouchableOpacity>
+                                            </View>
+                                            :
+                                            <View style={{ paddingVertical: 16, paddingHorizontal: 32, backgroundColor: '#fff', marginTop: 30, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                <TouchableOpacity onPress={previous} style={{ borderStyle: 'solid', borderWidth: 1, borderColor: '#34519A', width: '48%', justifyContent: 'center', alignItems: 'center', paddingVertical: 16, paddingHorizontal: 32, backgroundColor: '#fff', borderRadius: 5 }} activeOpacity={0.6}>
+                                                    <Text style={{ fontWeight: '700', fontSize: 16, color: '#34519A' }}>Back</Text>
+                                                </TouchableOpacity>
+                                                <TouchableOpacity onPress={next} style={{ borderStyle: 'solid', borderWidth: 1, borderColor: '#34519A', width: '48%', justifyContent: 'center', alignItems: 'center', paddingVertical: 16, paddingHorizontal: 32, backgroundColor: '#34519A', borderRadius: 5 }} activeOpacity={0.6}>
+                                                    <Text style={{ fontWeight: '700', fontSize: 16, color: '#FFFFFF' }}>Next</Text>
+                                                </TouchableOpacity>
+                                            </View>
+                                    }
                                 </View>
                             )
                             :
-                            <View style={{ marginTop: 50 }}>
+                            <View style={{ ...styles.wrapper, marginTop: 50 }}>
                                 <View style={{
                                     alignItems: 'center',
                                     justifyContent: 'center', backgroundColor: '#FFFFFF',
