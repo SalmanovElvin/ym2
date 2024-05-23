@@ -175,7 +175,6 @@ export const ElectionPage = ({ navigation, route }) => {
                                                                 :
                                                                 <></>
                                                             }
-
                                                         </View>
                                                     </TouchableOpacity>
                                                 )}
