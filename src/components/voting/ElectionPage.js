@@ -154,9 +154,29 @@ export const ElectionPage = ({ navigation, route }) => {
                                                             value={item.title}
                                                             status={checked === item.title ? 'checked' : 'unchecked'}
                                                         />
-                                                        <Text style={{ marginLeft: 8 }}>
-                                                            {item.title}
-                                                        </Text>
+                                                        <View style={{ marginLeft: 8 }}>
+                                                            <Text style={{ color: "#242529", fontWeight: '500', fontSize: 16 }}>
+                                                                {item.title}
+                                                            </Text>
+                                                            {item.description.trim().length !== 0 ?
+                                                                <View style={{ marginTop: 7, }}>
+                                                                    <Text style={{ fontSize: 14, fontWeight: '400', color: '#757881', }}>{item.description}</Text>
+                                                                </View>
+                                                                :
+                                                                <></>
+                                                            }
+                                                            {item.imageURL.trim().length !== 0 ?
+                                                                <View style={{ marginTop: 7, height: 146, width: 198, borderRadius: 10, overflow: 'hidden' }}>
+                                                                    <Image
+                                                                        style={{ height: '100%', width: '100%', borderRadius: 10 }}
+                                                                        source={{ uri: item.imageURL }}
+                                                                    />
+                                                                </View>
+                                                                :
+                                                                <></>
+                                                            }
+
+                                                        </View>
                                                     </TouchableOpacity>
                                                 )}
 
