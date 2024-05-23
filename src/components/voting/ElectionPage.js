@@ -30,6 +30,7 @@ import Svg, {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { HeaderInPages } from './../header/HeaderInPages';
 import { FETCH_BALLOTS } from "../../../graph/queries/elections";
+import { RadioButton } from 'react-native-paper';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -107,6 +108,9 @@ export const ElectionPage = ({ navigation, route }) => {
         setPageNum(pageNum - 1);
     }
 
+
+    const [checked, setChecked] = useState('first');
+
     return (
         <>
             <HeaderInPages title="Voting" />
@@ -143,7 +147,26 @@ export const ElectionPage = ({ navigation, route }) => {
                                                 </Text>
                                             }
 
+                                            <View style={{ marginVertical: 20 }}>
+                                                {ballot.options.map((item) =>
+                                                    <TouchableOpacity activeOpacity={0.6} onPress={() => setChecked(item.title)} style={{ marginVertical: 10, flexDirection: "row", alignItems: 'center', borderWidth: 1, borderStyle: 'solid', borderColor: '#BFC2CD', paddingVertical: 16, paddingHorizontal: 24, borderRadius: 5 }}>
+                                                        <RadioButton
+                                                            value={item.title}
+                                                            status={checked === item.title ? 'checked' : 'unchecked'}
+                                                        />
+                                                        <Text style={{ marginLeft: 8 }}>
+                                                            {item.title}
+                                                        </Text>
+                                                    </TouchableOpacity>
+                                                )}
 
+                                            </View>
+
+                                            {/* <RadioButton
+                                                value="second"
+                                                status={checked === 'second' ? 'checked' : 'unchecked'}
+                                                onPress={() => setChecked('second')}
+                                            /> */}
 
                                         </View>
                                         :
@@ -151,6 +174,12 @@ export const ElectionPage = ({ navigation, route }) => {
                                             <ActivityIndicator size="large" color="blue" />
                                         </View>
                                     }
+
+
+
+
+
+
 
                                     {pageNum == 0 ?
                                         <View style={{ paddingVertical: 16, paddingHorizontal: 32, backgroundColor: '#fff', marginTop: 30 }}>

@@ -39,6 +39,7 @@
     "react-native-gesture-handler": "~2.16.1",
     "react-native-htmlview": "^0.17.0",
     "react-native-indicators": "^0.17.0",
+    "react-native-paper": "^5.12.3",
     "react-native-phone-number-input": "^2.1.0",
     "react-native-qrcode-svg": "^6.3.1",
     "react-native-reanimated": "~3.10.1",
