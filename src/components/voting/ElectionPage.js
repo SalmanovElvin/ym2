@@ -122,7 +122,39 @@ export const ElectionPage = ({ navigation, route }) => {
                                 </View>
                             )
                             :
-                            <Text>End of elections</Text>
+                            <View style={{ marginTop: 50 }}>
+                                <View style={{
+                                    alignItems: 'center',
+                                    justifyContent: 'center', backgroundColor: '#FFFFFF',
+                                    borderRadius: 20, paddingVertical: 35,
+                                    paddingHorizontal: 20,
+                                    shadowColor: "#4468C1",
+                                    shadowOffset: {
+                                        width: 0,
+                                        height: 0,
+                                    },
+                                    shadowOpacity: 0.3,
+                                    shadowRadius: 7,
+                                    elevation: 5,
+                                }}>
+                                    <Svg width={112} height={112} viewBox="0 0 112 112" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <Circle cx="56" cy="56" r="56" fill="#CAEFD4" />
+                                        <Circle cx="56.0001" cy="56.0001" r="41.44" fill="#5BD476" />
+                                        <Path d="M49.1572 61.8642C49.1572 61.8642 46.3658 60.1047 42.9944 57.405C42.8229 57.2675 42.6252 57.1657 42.4131 57.1056C42.201 57.0456 41.9789 57.0285 41.76 57.0554C41.5412 57.0823 41.33 57.1527 41.1391 57.2623C40.9483 57.3719 40.7816 57.5185 40.6491 57.6934C40.451 57.9551 40.3369 58.2699 40.3218 58.5969C40.3067 58.9238 40.3911 59.2476 40.5642 59.5263C42.2716 62.2768 45.2172 66.6134 47.4973 69.463C48.573 70.8072 50.4817 70.9319 51.7369 69.7499C58.9546 62.9543 65.6549 54.3813 73.6746 42.5107C73.8752 42.2189 73.9573 41.8627 73.9044 41.5134C73.8516 41.1641 73.6678 40.8475 73.3897 40.6269C73.1116 40.4063 72.7598 40.2981 72.4047 40.3238C72.0496 40.3495 71.7174 40.5073 71.4746 40.7656C62.5748 50.1136 58.0114 54.5564 49.1572 61.8642Z" fill="#F9FAFC" />
+                                    </Svg>
+                                    <Text style={{ color: '#5BD476', fontWeight: '600', fontSize: 18, marginTop: 10 }}>All Done!</Text>
+
+                                    <Text style={{ color: '#242529', fontWeight: '600', fontSize: 16, marginTop: 25 }}>Your receipt ID is:</Text>
+                                    <Text style={{ width: '70%', textAlign: 'center', color: '#696666', fontWeight: '400', fontSize: 18, marginTop: 10 }}>asdfg-asdasdg-asdg-sfg-asgasg-sfgdfg-fgafg</Text>
+                                </View>
+
+                                <TouchableOpacity onPress={() => navigation.navigate('Voting')} style={{ marginTop: 50, borderWidth: 1, borderColor: '#34519A', borderStyle: 'solid', backgroundColor: '#34519A', paddingVertical: 18, paddingHorizontal: 32, justifyContent: 'center', alignItems: 'center', borderRadius: 5 }} activeOpacity={0.6}>
+                                    <Text style={{ color: '#fff', fontWeight: '700', fontSize: 16 }}>Finish</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={{ marginTop: 10, borderWidth: 1, borderColor: '#34519A', borderStyle: 'solid', backgroundColor: 'transparent', paddingVertical: 18, paddingHorizontal: 32, justifyContent: 'center', alignItems: 'center', borderRadius: 5 }} activeOpacity={0.6}>
+                                    <Text style={{ color: '#34519A', fontWeight: '700', fontSize: 16 }}>Send Email</Text>
+                                </TouchableOpacity>
+                            </View>
                         }
 
                     </ScrollView>
