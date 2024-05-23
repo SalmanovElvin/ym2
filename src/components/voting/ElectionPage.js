@@ -110,7 +110,7 @@ export const ElectionPage = ({ navigation, route }) => {
                 :
                 elections.length !== 0 ?
                     <ScrollView >
-                        {pageNum + 1 !== elections.length ?
+                        {pageNum !== elections.length ?
                             elections.filter(item => item?.id === pageById).map((item) =>
                                 <View key={item.id}>
                                     <View style={{ ...styles.wrapper, marginVertical: 15 }}>
@@ -124,6 +124,7 @@ export const ElectionPage = ({ navigation, route }) => {
                                     </View>
 
 
+
                                     {pageNum == 0 ?
                                         <View style={{ paddingVertical: 16, paddingHorizontal: 32, backgroundColor: '#fff', marginTop: 30 }}>
                                             <TouchableOpacity onPress={next} style={{ justifyContent: 'center', alignItems: 'center', paddingVertical: 16, paddingHorizontal: 32, backgroundColor: '#34519A', borderRadius: 5 }} activeOpacity={0.6}>
@@ -131,7 +132,7 @@ export const ElectionPage = ({ navigation, route }) => {
                                             </TouchableOpacity>
                                         </View>
                                         :
-                                        pageNum == elections.length - 2 ?
+                                        pageNum == elections.length - 1 ?
                                             <View style={{ paddingVertical: 16, paddingHorizontal: 32, backgroundColor: '#fff', marginTop: 30 }}>
                                                 <TouchableOpacity onPress={next} style={{ borderStyle: 'solid', borderWidth: 1, borderColor: '#5BD476', width: '100%', justifyContent: 'center', alignItems: 'center', paddingVertical: 16, paddingHorizontal: 32, backgroundColor: '#5BD476', borderRadius: 5 }} activeOpacity={0.6}>
                                                     <Text style={{ fontWeight: '700', fontSize: 16, color: '#FFFFFF' }}>Submit</Text>
