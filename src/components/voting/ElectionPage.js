@@ -121,17 +121,17 @@ export const ElectionPage = ({ navigation, route }) => {
                 :
                 elections.length !== 0 ?
                     <ScrollView >
-                        {pageNum !== elections.length ?
+                        {pageNum !== elections.length + 1 ?
                             elections.filter(item => item?.id === pageById).map((item) =>
                                 <View key={item.id}>
                                     <View style={{ ...styles.wrapper, marginVertical: 15 }}>
                                         <Text style={{ color: '#242529', fontSize: 16, fontWeight: '400' }}>
-                                            <Text style={{ fontWeight: '600' }}>{pageNum + 1}/{elections.length}</Text> Questions
+                                            <Text style={{ fontWeight: '600' }}>{pageNum}/{elections.length}</Text> Questions
                                         </Text>
                                         <View style={{ height: 12, width: '100%', borderRadius: 8, backgroundColor: '#DFDFDF', marginTop: 8, marginBottom: 4 }}>
-                                            <View style={{ height: 12, width: `${((pageNum + 1) / elections.length) * 100}%`, borderRadius: 8, backgroundColor: '#5BD476' }}></View>
+                                            <View style={{ height: 12, width: `${((pageNum) / elections.length) * 100}%`, borderRadius: 8, backgroundColor: '#5BD476' }}></View>
                                         </View>
-                                        <Text>{elections.length - pageNum - 1} more to complete</Text>
+                                        <Text>{elections.length - pageNum} more to complete</Text>
                                     </View>
 
                                     {ballot ?
@@ -149,7 +149,7 @@ export const ElectionPage = ({ navigation, route }) => {
 
                                             <View style={{ marginVertical: 20 }}>
                                                 {ballot.options.map((item) =>
-                                                    <TouchableOpacity activeOpacity={0.6} onPress={() => setChecked(item.title)} style={{ marginVertical: 10, flexDirection: "row", alignItems: 'center', borderWidth: 1, borderStyle: 'solid', borderColor: '#BFC2CD', paddingVertical: 16, paddingHorizontal: 24, borderRadius: 5 }}>
+                                                    <TouchableOpacity key={item.id} activeOpacity={0.6} onPress={() => setChecked(item.title)} style={{ marginVertical: 10, flexDirection: "row", alignItems: 'center', borderWidth: 1, borderStyle: 'solid', borderColor: '#BFC2CD', paddingVertical: 16, paddingHorizontal: 24, borderRadius: 5 }}>
                                                         <RadioButton
                                                             value={item.title}
                                                             status={checked === item.title ? 'checked' : 'unchecked'}
@@ -181,32 +181,7 @@ export const ElectionPage = ({ navigation, route }) => {
 
 
 
-                                    {pageNum == 0 ?
-                                        <View style={{ paddingVertical: 16, paddingHorizontal: 32, backgroundColor: '#fff', marginTop: 30 }}>
-                                            <TouchableOpacity onPress={next} style={{ justifyContent: 'center', alignItems: 'center', paddingVertical: 16, paddingHorizontal: 32, backgroundColor: '#34519A', borderRadius: 5 }} activeOpacity={0.6}>
-                                                <Text style={{ fontWeight: '700', fontSize: 16, color: '#FFFFFF' }}>Next</Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                        :
-                                        pageNum == elections.length - 1 ?
-                                            <View style={{ paddingVertical: 16, paddingHorizontal: 32, backgroundColor: '#fff', marginTop: 30 }}>
-                                                <TouchableOpacity onPress={next} style={{ borderStyle: 'solid', borderWidth: 1, borderColor: '#5BD476', width: '100%', justifyContent: 'center', alignItems: 'center', paddingVertical: 16, paddingHorizontal: 32, backgroundColor: '#5BD476', borderRadius: 5 }} activeOpacity={0.6}>
-                                                    <Text style={{ fontWeight: '700', fontSize: 16, color: '#FFFFFF' }}>Submit</Text>
-                                                </TouchableOpacity>
-                                                <TouchableOpacity onPress={() => navigation.navigate('Voting')} style={{ marginTop: 10, borderStyle: 'solid', borderWidth: 1, borderColor: '#34519A', width: '100%', justifyContent: 'center', alignItems: 'center', paddingVertical: 16, paddingHorizontal: 32, backgroundColor: '#fff', borderRadius: 5 }} activeOpacity={0.6}>
-                                                    <Text style={{ fontWeight: '700', fontSize: 16, color: '#34519A' }}>Change selection</Text>
-                                                </TouchableOpacity>
-                                            </View>
-                                            :
-                                            <View style={{ paddingVertical: 16, paddingHorizontal: 32, backgroundColor: '#fff', marginTop: 30, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                <TouchableOpacity onPress={previous} style={{ borderStyle: 'solid', borderWidth: 1, borderColor: '#34519A', width: '48%', justifyContent: 'center', alignItems: 'center', paddingVertical: 16, paddingHorizontal: 32, backgroundColor: '#fff', borderRadius: 5 }} activeOpacity={0.6}>
-                                                    <Text style={{ fontWeight: '700', fontSize: 16, color: '#34519A' }}>Back</Text>
-                                                </TouchableOpacity>
-                                                <TouchableOpacity onPress={next} style={{ borderStyle: 'solid', borderWidth: 1, borderColor: '#34519A', width: '48%', justifyContent: 'center', alignItems: 'center', paddingVertical: 16, paddingHorizontal: 32, backgroundColor: '#34519A', borderRadius: 5 }} activeOpacity={0.6}>
-                                                    <Text style={{ fontWeight: '700', fontSize: 16, color: '#FFFFFF' }}>Next</Text>
-                                                </TouchableOpacity>
-                                            </View>
-                                    }
+
                                 </View>
                             )
                             :
@@ -245,6 +220,45 @@ export const ElectionPage = ({ navigation, route }) => {
                             </View>
                         }
 
+
+
+
+                        {pageNum == elections.length ?
+                            <Text>Summary</Text>
+                            : <></>}
+
+
+
+
+                        {pageNum == 0 ?
+                            <View style={{ paddingVertical: 16, paddingHorizontal: 32, marginTop: 30 }}>
+                                <TouchableOpacity onPress={next} style={{ justifyContent: 'center', alignItems: 'center', paddingVertical: 16, paddingHorizontal: 32, backgroundColor: '#34519A', borderRadius: 5 }} activeOpacity={0.6}>
+                                    <Text style={{ fontWeight: '700', fontSize: 16, color: '#FFFFFF' }}>Next</Text>
+                                </TouchableOpacity>
+                            </View>
+                            :
+                            pageNum == elections.length ?
+                                <View style={{ paddingVertical: 16, paddingHorizontal: 32, marginTop: 30 }}>
+                                    <TouchableOpacity onPress={next} style={{ borderStyle: 'solid', borderWidth: 1, borderColor: '#5BD476', width: '100%', justifyContent: 'center', alignItems: 'center', paddingVertical: 16, paddingHorizontal: 32, backgroundColor: '#5BD476', borderRadius: 5 }} activeOpacity={0.6}>
+                                        <Text style={{ fontWeight: '700', fontSize: 16, color: '#FFFFFF' }}>Submit</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => navigation.navigate('Voting')} style={{ marginTop: 10, borderStyle: 'solid', borderWidth: 1, borderColor: '#34519A', width: '100%', justifyContent: 'center', alignItems: 'center', paddingVertical: 16, paddingHorizontal: 32, backgroundColor: 'transparent', borderRadius: 5 }} activeOpacity={0.6}>
+                                        <Text style={{ fontWeight: '700', fontSize: 16, color: '#34519A' }}>Change selection</Text>
+                                    </TouchableOpacity>
+                                </View>
+                                :
+                                pageNum < elections.length ?
+                                    <View style={{ paddingVertical: 16, paddingHorizontal: 32, marginTop: 30, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <TouchableOpacity onPress={previous} style={{ borderStyle: 'solid', borderWidth: 1, borderColor: '#34519A', width: '48%', justifyContent: 'center', alignItems: 'center', paddingVertical: 16, paddingHorizontal: 32, backgroundColor: 'transparent', borderRadius: 5 }} activeOpacity={0.6}>
+                                            <Text style={{ fontWeight: '700', fontSize: 16, color: '#34519A' }}>Back</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity onPress={next} style={{ borderStyle: 'solid', borderWidth: 1, borderColor: '#34519A', width: '48%', justifyContent: 'center', alignItems: 'center', paddingVertical: 16, paddingHorizontal: 32, backgroundColor: '#34519A', borderRadius: 5 }} activeOpacity={0.6}>
+                                            <Text style={{ fontWeight: '700', fontSize: 16, color: '#FFFFFF' }}>Next</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                    :
+                                    <></>
+                        }
                     </ScrollView>
                     :
                     <Text style={{ padding: 15, textAlign: 'center', fontWeight: '700', fontSize: 16, color: '#696666' }}>Something gone wrong.</Text>
