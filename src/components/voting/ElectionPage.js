@@ -67,6 +67,8 @@ export const ElectionPage = ({ navigation, route }) => {
     const [elections, setElections] = useState([]);
     const [pageById, setPageById] = useState('');
     const [pageNum, setPageNum] = useState(0);
+    const [ballot, setBallot] = useState(null);
+
 
     const {
         data,
@@ -80,6 +82,7 @@ export const ElectionPage = ({ navigation, route }) => {
         },
         onCompleted: (data) => {
             setElections(data.ballots);
+            setBallot(data.ballots[0])
             setPageById(data.ballots[0].id);
         },
         onError: (err) => {
@@ -91,12 +94,16 @@ export const ElectionPage = ({ navigation, route }) => {
     });
 
     const next = () => {
-        setPageById(data.ballots[pageNum + 1]?.id)
+        setPageById(data.ballots[pageNum + 1]?.id);
+        setBallot(null);
+        setBallot(data.ballots[pageNum + 1]);
         setPageNum(pageNum + 1);
     }
 
     const previous = () => {
-        setPageById(data.ballots[pageNum - 1]?.id)
+        setPageById(data.ballots[pageNum - 1]?.id);
+        setBallot(null);
+        setBallot(data.ballots[pageNum - 1]);
         setPageNum(pageNum - 1);
     }
 
@@ -123,7 +130,27 @@ export const ElectionPage = ({ navigation, route }) => {
                                         <Text>{elections.length - pageNum - 1} more to complete</Text>
                                     </View>
 
+                                    {ballot ?
+                                        <View style={{ paddingVertical: 24, paddingHorizontal: 16, backgroundColor: '#fff' }}>
+                                            <Text style={{ fontSize: 18, fontWeight: '600', color: '#242529' }}>{ballot.title}</Text>
+                                            {ballot.choiceType == 'one' ?
+                                                <Text style={{ fontSize: 14, fontWeight: '400', color: '#757881', marginTop: 10 }}>
+                                                    You must select 1 option
+                                                </Text>
+                                                :
+                                                <Text style={{ fontSize: 14, fontWeight: '400', color: '#757881', marginTop: 10 }}>
+                                                    You may select multiple options
+                                                </Text>
+                                            }
 
+
+
+                                        </View>
+                                        :
+                                        <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+                                            <ActivityIndicator size="large" color="blue" />
+                                        </View>
+                                    }
 
                                     {pageNum == 0 ?
                                         <View style={{ paddingVertical: 16, paddingHorizontal: 32, backgroundColor: '#fff', marginTop: 30 }}>
