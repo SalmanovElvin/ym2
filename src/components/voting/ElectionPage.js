@@ -31,6 +31,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { HeaderInPages } from './../header/HeaderInPages';
 import { FETCH_BALLOTS } from "../../../graph/queries/elections";
 import { RadioButton } from 'react-native-paper';
+import { SUBMIT_VOTE } from './../../../graph/mutations/elections';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -70,6 +71,9 @@ export const ElectionPage = ({ navigation, route }) => {
     const [pageNum, setPageNum] = useState(0);
     const [ballot, setBallot] = useState(null);
 
+    // --------------------------- hold state for user votes and store ballots with options to show on comfirmation screen
+    const [voteInput, setVoteInput] = useState([]);
+    const [storedBallot, setStoredBallot] = useState();
 
     const {
         data,
@@ -85,6 +89,22 @@ export const ElectionPage = ({ navigation, route }) => {
             setElections(data.ballots);
             setBallot(data.ballots[0])
             setPageById(data.ballots[0].id);
+
+            if (data && data.ballots) {
+                const temp = [];
+                const currentBallot = {};
+                data.ballots.forEach((ballot) => {
+                    temp.push({ ballotID: ballot.id, optionID: [] });
+
+                    currentBallot[ballot.id] = ballot.title;
+                    ballot.options &&
+                        ballot.options.forEach((option) => {
+                            currentBallot[option.id] = option.title;
+                        });
+                });
+                setVoteInput(temp);
+                setStoredBallot(currentBallot);
+            }
         },
         onError: (err) => {
             refetch();
@@ -95,10 +115,16 @@ export const ElectionPage = ({ navigation, route }) => {
     });
 
     const next = () => {
-        setPageById(data.ballots[pageNum + 1]?.id);
-        setBallot(null);
-        setBallot(data.ballots[pageNum + 1]);
-        setPageNum(pageNum + 1);
+        if (checked.trim().length === 0) {
+            alert('Please, select option.')
+        } else {
+            setPageById(data.ballots[pageNum + 1]?.id);
+            setBallot(null);
+            setBallot(data.ballots[pageNum + 1]);
+            setPageNum(pageNum + 1);
+            setChecked('');
+        }
+
     }
 
     const previous = () => {
@@ -109,7 +135,53 @@ export const ElectionPage = ({ navigation, route }) => {
     }
 
 
-    const [checked, setChecked] = useState('first');
+    const [checked, setChecked] = useState('');
+
+
+    // --------------------------------- graphql mutation to send the votes to the database
+    const [kioskVote, { loading: voteLoading, data: voteData }] = useMutation(
+        SUBMIT_VOTE,
+        {
+            onCompleted: () => {
+                setPageById(data.ballots[pageNum + 1]?.id);
+                setBallot(null);
+                setBallot(data.ballots[pageNum + 1]);
+                setPageNum(pageNum + 1);
+            },
+            onError: (err) => {
+                console.log(err);
+            }
+        }
+    );
+
+    // ---------------------------------- Running the mutation function when submit button is clicked
+
+    const sendVote = () => {
+        // const requiredInput = voteInput.filter((ballot) => ballot.optionID.length);
+
+        const tempVoteInput = voteInput;
+
+        data.ballots.map((ballot, i) => {
+            if (
+                ballot.allowAbstainType === 'yes' &&
+                tempVoteInput[i].optionID.length === 0
+            ) {
+                const abstainOption = ballot.options.find(
+                    (option) => option.name === 'Abstain'
+                );
+                tempVoteInput[i].optionID.push(abstainOption.id);
+            }
+        });
+
+        kioskVote({
+            variables: {
+                unionID: userData?.unionID,
+                electionID: electionId,
+                votes: tempVoteInput,
+                mode: 'Web'
+            }
+        });
+    };
 
     return (
         <>
@@ -149,10 +221,11 @@ export const ElectionPage = ({ navigation, route }) => {
 
                                             <View style={{ marginVertical: 20 }}>
                                                 {ballot.options.map((item) =>
-                                                    <TouchableOpacity key={item.id} activeOpacity={0.6} onPress={() => setChecked(item.title)} style={{ marginVertical: 10, flexDirection: "row", alignItems: 'center', borderWidth: 1, borderStyle: 'solid', borderColor: '#BFC2CD', paddingVertical: 16, paddingHorizontal: 24, borderRadius: 5 }}>
+                                                    <TouchableOpacity key={item.id} activeOpacity={0.6} onPress={() => { console.log(item.id); setChecked(item.id); }} style={{ marginVertical: 10, flexDirection: "row", alignItems: 'center', borderWidth: 1, borderStyle: 'solid', borderColor: '#BFC2CD', paddingVertical: 16, paddingHorizontal: 24, borderRadius: 5 }}>
                                                         <RadioButton
                                                             value={item.title}
-                                                            status={checked === item.title ? 'checked' : 'unchecked'}
+                                                            onPress={() => { setChecked(item.id); console.log(item.id); }}
+                                                            status={checked === item.id ? 'checked' : 'unchecked'}
                                                         />
                                                         <View style={{ marginLeft: 8 }}>
                                                             <Text style={{ color: "#242529", fontWeight: '500', fontSize: 16 }}>
@@ -258,7 +331,7 @@ export const ElectionPage = ({ navigation, route }) => {
                             :
                             pageNum == elections.length ?
                                 <View style={{ paddingVertical: 16, paddingHorizontal: 32, marginTop: 30 }}>
-                                    <TouchableOpacity onPress={next} style={{ borderStyle: 'solid', borderWidth: 1, borderColor: '#5BD476', width: '100%', justifyContent: 'center', alignItems: 'center', paddingVertical: 16, paddingHorizontal: 32, backgroundColor: '#5BD476', borderRadius: 5 }} activeOpacity={0.6}>
+                                    <TouchableOpacity onPress={sendVote} style={{ borderStyle: 'solid', borderWidth: 1, borderColor: '#5BD476', width: '100%', justifyContent: 'center', alignItems: 'center', paddingVertical: 16, paddingHorizontal: 32, backgroundColor: '#5BD476', borderRadius: 5 }} activeOpacity={0.6}>
                                         <Text style={{ fontWeight: '700', fontSize: 16, color: '#FFFFFF' }}>Submit</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity onPress={() => navigation.navigate('Voting')} style={{ marginTop: 10, borderStyle: 'solid', borderWidth: 1, borderColor: '#34519A', width: '100%', justifyContent: 'center', alignItems: 'center', paddingVertical: 16, paddingHorizontal: 32, backgroundColor: 'transparent', borderRadius: 5 }} activeOpacity={0.6}>
