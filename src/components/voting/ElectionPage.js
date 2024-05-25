@@ -125,7 +125,6 @@ export const ElectionPage = ({ navigation, route }) => {
         } else {
             alert('Please, select option.')
         }
-
     }
 
     const previous = () => {
