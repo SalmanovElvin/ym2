@@ -239,22 +239,21 @@ export const ElectionPage = ({ navigation, route }) => {
 
                                                         let newObj = new Object();
                                                         newObj.title = ballot.title;
-                                                        newObj.selectedOptions = [item.title];
+                                                        newObj.selectedOptions = [item];
                                                         let arrayOfObjects = selectedValues;
                                                         // !arrayOfObjects.some(obj => obj.title === newObj.title) && arrayOfObjects.push(newObj);
 
                                                         let titleExists = arrayOfObjects.some(obj => {
                                                             if (obj.title === newObj.title) {
-                                                                obj.selectedOptions = [item.title];
+                                                                obj.selectedOptions = [item];
                                                                 return true;
                                                             }
                                                             return false;
                                                         });
 
                                                         if (!titleExists) {
-                                                            arrayOfObjects.push({ ...newObj, selectedOptions: [item.title] });
+                                                            arrayOfObjects.push({ ...newObj, selectedOptions: [item] });
                                                         }
-
 
                                                         setSelectedValues(arrayOfObjects);
                                                     }
@@ -280,6 +279,36 @@ export const ElectionPage = ({ navigation, route }) => {
                                                             // console.log(arr);
                                                             setVoteInput(newArr);
                                                             setMultipleChecked(arr);
+
+                                                            let newObj = new Object();
+                                                            newObj.title = ballot.title;
+                                                            newObj.selectedOptions = arr;
+                                                            let arrayOfObjects = selectedValues;
+
+                                                            let arrOfTitles = [...multipleCheckedTitles];
+                                                            if (!arrOfTitles.includes(item)) {
+                                                                arrOfTitles.push(item);
+                                                            } else {
+                                                                const index = arrOfTitles.indexOf(item);
+                                                                if (index !== -1) {
+                                                                    arrOfTitles.splice(index, 1);
+                                                                }
+                                                            }
+                                                            setMultipleCheckedTitles(arrOfTitles);
+
+                                                            let titleExists = arrayOfObjects.some(obj => {
+                                                                if (obj.title === newObj.title) {
+                                                                    obj.selectedOptions = arrOfTitles;
+                                                                    return true;
+                                                                }
+                                                                return false;
+                                                            });
+
+                                                            if (!titleExists) {
+                                                                arrayOfObjects.push({ ...newObj, selectedOptions: arrOfTitles });
+                                                            }
+
+                                                            setSelectedValues(arrayOfObjects);
                                                         }} style={{ marginVertical: 10, flexDirection: "row", alignItems: 'center', borderWidth: 1, borderStyle: 'solid', borderColor: '#BFC2CD', paddingVertical: 16, paddingHorizontal: 24, borderRadius: 5 }}>
 
                                                         {ballot.choiceType == 'one' ?
@@ -297,22 +326,21 @@ export const ElectionPage = ({ navigation, route }) => {
 
                                                                     let newObj = new Object();
                                                                     newObj.title = ballot.title;
-                                                                    newObj.selectedOptions = [item.title];
+                                                                    newObj.selectedOptions = [item];
                                                                     let arrayOfObjects = selectedValues;
                                                                     // !arrayOfObjects.some(obj => obj.title === newObj.title) && arrayOfObjects.push(newObj);
 
                                                                     let titleExists = arrayOfObjects.some(obj => {
                                                                         if (obj.title === newObj.title) {
-                                                                            obj.selectedOptions = [item.title];
+                                                                            obj.selectedOptions = [item];
                                                                             return true;
                                                                         }
                                                                         return false;
                                                                     });
 
                                                                     if (!titleExists) {
-                                                                        arrayOfObjects.push({ ...newObj, selectedOptions: [item.title] });
+                                                                        arrayOfObjects.push({ ...newObj, selectedOptions: [item] });
                                                                     }
-
 
                                                                     setSelectedValues(arrayOfObjects);
                                                                 }}
@@ -349,10 +377,10 @@ export const ElectionPage = ({ navigation, route }) => {
                                                                     let arrayOfObjects = selectedValues;
 
                                                                     let arrOfTitles = [...multipleCheckedTitles];
-                                                                    if (!arrOfTitles.includes(item.title)) {
-                                                                        arrOfTitles.push(item.title);
+                                                                    if (!arrOfTitles.includes(item)) {
+                                                                        arrOfTitles.push(item);
                                                                     } else {
-                                                                        const index = arrOfTitles.indexOf(item.title);
+                                                                        const index = arrOfTitles.indexOf(item);
                                                                         if (index !== -1) {
                                                                             arrOfTitles.splice(index, 1);
                                                                         }
@@ -371,8 +399,7 @@ export const ElectionPage = ({ navigation, route }) => {
                                                                         arrayOfObjects.push({ ...newObj, selectedOptions: arrOfTitles });
                                                                     }
 
-
-                                                                    console.log(arrayOfObjects);
+                                                                    setSelectedValues(arrayOfObjects);
                                                                 }}
                                                             />
                                                         }
@@ -415,14 +442,6 @@ export const ElectionPage = ({ navigation, route }) => {
                                             <ActivityIndicator size="large" color="blue" />
                                         </View>
                                     }
-
-
-
-
-
-
-
-
                                 </View>
                             )
                             :
