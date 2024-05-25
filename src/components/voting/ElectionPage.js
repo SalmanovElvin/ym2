@@ -103,6 +103,7 @@ export const ElectionPage = ({ navigation, route }) => {
                         });
                 });
                 setVoteInput(temp);
+                // console.log(temp);
                 setStoredBallot(currentBallot);
             }
         },
@@ -139,7 +140,7 @@ export const ElectionPage = ({ navigation, route }) => {
 
     const [checked, setChecked] = useState('');
     const [multipleChecked, setMultipleChecked] = useState([]);
-
+    const [selectedValues, setSelectedValues] = useState([]);
 
 
     // --------------------------------- graphql mutation to send the votes to the database
@@ -225,7 +226,16 @@ export const ElectionPage = ({ navigation, route }) => {
 
                                             <View style={{ marginVertical: 20 }}>
                                                 {ballot.options.map((item) =>
-                                                    <TouchableOpacity key={item.id} activeOpacity={0.6} onPress={ballot.choiceType == 'one' ? () => { console.log(item.id); setChecked(item.id); }
+                                                    <TouchableOpacity key={item.id} activeOpacity={0.6} onPress={ballot.choiceType == 'one' ? () => {
+                                                        setChecked(item.id);
+                                                        // console.log(item.id);
+                                                        let index = voteInput.findIndex(obj => obj.ballotID === pageById);
+                                                        let newArr = voteInput;
+                                                        if (index !== -1) {
+                                                            newArr[index].optionID[0] = item.id; // Using spread syntax (...) to push multiple values
+                                                        }
+                                                        setVoteInput(newArr);
+                                                    }
                                                         :
                                                         () => {
                                                             let arr = [...multipleChecked];
@@ -239,15 +249,30 @@ export const ElectionPage = ({ navigation, route }) => {
                                                                 }
                                                             }
 
-                                                            console.log(arr);
+                                                            let index = voteInput.findIndex(obj => obj.ballotID === pageById);
+                                                            let newArr = voteInput;
+                                                            if (index !== -1) {
+                                                                newArr[index].optionID = arr; // Using spread syntax (...) to push multiple values
+                                                            }
 
+                                                            // console.log(arr);
+                                                            setVoteInput(newArr);
                                                             setMultipleChecked(arr);
                                                         }} style={{ marginVertical: 10, flexDirection: "row", alignItems: 'center', borderWidth: 1, borderStyle: 'solid', borderColor: '#BFC2CD', paddingVertical: 16, paddingHorizontal: 24, borderRadius: 5 }}>
 
                                                         {ballot.choiceType == 'one' ?
                                                             <RadioButton
                                                                 value={item.title}
-                                                                onPress={() => { setChecked(item.id); console.log(item.id); }}
+                                                                onPress={() => {
+                                                                    setChecked(item.id);
+                                                                    // console.log(item.id);
+                                                                    let index = voteInput.findIndex(obj => obj.ballotID === pageById);
+                                                                    let newArr = voteInput;
+                                                                    if (index !== -1) {
+                                                                        newArr[index].optionID[0] = item.id; // Using spread syntax (...) to push multiple values
+                                                                    }
+                                                                    setVoteInput(newArr);
+                                                                }}
                                                                 status={checked === item.id ? 'checked' : 'unchecked'}
                                                             />
                                                             :
@@ -265,11 +290,15 @@ export const ElectionPage = ({ navigation, route }) => {
                                                                         }
                                                                     }
 
-                                                                    console.log(arr);
+                                                                    let index = voteInput.findIndex(obj => obj.ballotID === pageById);
+                                                                    let newArr = voteInput;
+                                                                    if (index !== -1) {
+                                                                        newArr[index].optionID = arr; // Using spread syntax (...) to push multiple values
+                                                                    }
 
+                                                                    // console.log(arr);
+                                                                    setVoteInput(newArr);
                                                                     setMultipleChecked(arr);
-                                                                    // console.log(item.id);
-                                                                    // setChecked(item.id);
                                                                 }}
                                                             />
                                                         }
@@ -362,7 +391,29 @@ export const ElectionPage = ({ navigation, route }) => {
 
 
                         {pageNum == elections.length ?
-                            <Text>Summary</Text>
+                            <View>
+                                <Text style={{ paddingVertical: 16, paddingHorizontal: 24, color: '#242529', fontSize: 18, fontWeight: '600' }}>Summary</Text>
+                                <View style={{ backgroundColor: '#fff', paddingVertical: 16, paddingHorizontal: 24, }}>
+                                    <View style={{ marginVertical: 10, }}>
+                                        <Text style={{ fontWeight: '600', fontSize: 16, color: '#242529' }}>1. Favourite color?</Text>
+                                        <View style={{ marginTop: 8, borderColor: '#BFC2CD', borderWidth: 1, borderStyle: 'solid', paddingVertical: 16, paddingHorizontal: 24, borderRadius: 5 }}>
+                                            <Text style={{ fontSize: 16, fontWeight: '500', color: '#242529' }}>Red</Text>
+                                        </View>
+                                    </View>
+                                    <View style={{ marginVertical: 10, }}>
+                                        <Text style={{ fontWeight: '600', fontSize: 16, color: '#242529' }}>1. Favourite color?</Text>
+                                        <View style={{ marginTop: 8, borderColor: '#BFC2CD', borderWidth: 1, borderStyle: 'solid', paddingVertical: 16, paddingHorizontal: 24, borderRadius: 5 }}>
+                                            <Text style={{ fontSize: 16, fontWeight: '500', color: '#242529' }}>Red</Text>
+                                        </View>
+                                    </View>
+                                    <View style={{ marginVertical: 10, }}>
+                                        <Text style={{ fontWeight: '600', fontSize: 16, color: '#242529' }}>1. Favourite color?</Text>
+                                        <View style={{ marginTop: 8, borderColor: '#BFC2CD', borderWidth: 1, borderStyle: 'solid', paddingVertical: 16, paddingHorizontal: 24, borderRadius: 5 }}>
+                                            <Text style={{ fontSize: 16, fontWeight: '500', color: '#242529' }}>Red</Text>
+                                        </View>
+                                    </View>
+                                </View>
+                            </View>
                             : <></>}
 
 
