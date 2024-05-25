@@ -30,7 +30,7 @@ import Svg, {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { HeaderInPages } from './../header/HeaderInPages';
 import { FETCH_BALLOTS } from "../../../graph/queries/elections";
-import { RadioButton } from 'react-native-paper';
+import { RadioButton, Checkbox } from 'react-native-paper';
 import { SUBMIT_VOTE } from './../../../graph/mutations/elections';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
@@ -123,6 +123,7 @@ export const ElectionPage = ({ navigation, route }) => {
             setBallot(data.ballots[pageNum + 1]);
             setPageNum(pageNum + 1);
             setChecked('');
+            setMultipleChecked([]);
         }
 
     }
@@ -132,10 +133,14 @@ export const ElectionPage = ({ navigation, route }) => {
         setBallot(null);
         setBallot(data.ballots[pageNum - 1]);
         setPageNum(pageNum - 1);
+        setChecked('');
+        setMultipleChecked([]);
     }
 
 
     const [checked, setChecked] = useState('');
+    const [multipleChecked, setMultipleChecked] = useState([]);
+
 
 
     // --------------------------------- graphql mutation to send the votes to the database
@@ -222,11 +227,35 @@ export const ElectionPage = ({ navigation, route }) => {
                                             <View style={{ marginVertical: 20 }}>
                                                 {ballot.options.map((item) =>
                                                     <TouchableOpacity key={item.id} activeOpacity={0.6} onPress={() => { console.log(item.id); setChecked(item.id); }} style={{ marginVertical: 10, flexDirection: "row", alignItems: 'center', borderWidth: 1, borderStyle: 'solid', borderColor: '#BFC2CD', paddingVertical: 16, paddingHorizontal: 24, borderRadius: 5 }}>
-                                                        <RadioButton
-                                                            value={item.title}
-                                                            onPress={() => { setChecked(item.id); console.log(item.id); }}
-                                                            status={checked === item.id ? 'checked' : 'unchecked'}
-                                                        />
+                                                        {ballot.choiceType == 'one' ?
+                                                            <RadioButton
+                                                                value={item.title}
+                                                                onPress={() => { setChecked(item.id); console.log(item.id); }}
+                                                                status={checked === item.id ? 'checked' : 'unchecked'}
+                                                            />
+                                                            :
+                                                            <Checkbox
+                                                                status={multipleChecked.includes(item.id) ? 'checked' : 'unchecked'}
+                                                                onPress={() => {
+                                                                    let arr = [...multipleChecked];
+
+                                                                    if (multipleChecked.length === 0 || !arr.includes(item.id)) {
+                                                                        arr.push(item.id);
+                                                                    } else {
+                                                                        const index = arr.indexOf(item.id);
+                                                                        if (index !== -1) {
+                                                                            arr.splice(index, 1);
+                                                                        }
+                                                                    }
+
+                                                                    console.log(arr);
+
+                                                                    setMultipleChecked(arr);
+                                                                    // console.log(item.id);
+                                                                    // setChecked(item.id);
+                                                                }}
+                                                            />
+                                                        }
                                                         <View style={{ marginLeft: 8 }}>
                                                             <Text style={{ color: "#242529", fontWeight: '500', fontSize: 16 }}>
                                                                 {item.title}
