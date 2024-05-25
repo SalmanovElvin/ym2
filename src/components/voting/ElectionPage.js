@@ -115,15 +115,15 @@ export const ElectionPage = ({ navigation, route }) => {
     });
 
     const next = () => {
-        if (checked.trim().length === 0) {
-            alert('Please, select option.')
-        } else {
+        if (checked.trim().length !== 0 || multipleChecked.length !== 0) {
             setPageById(data.ballots[pageNum + 1]?.id);
             setBallot(null);
             setBallot(data.ballots[pageNum + 1]);
             setPageNum(pageNum + 1);
             setChecked('');
             setMultipleChecked([]);
+        } else {
+            alert('Please, select option.')
         }
 
     }
