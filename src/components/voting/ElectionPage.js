@@ -192,7 +192,7 @@ export const ElectionPage = ({ navigation, route }) => {
     return (
         <>
             <HeaderInPages title="Voting" />
-            {loading ?
+            {loading || voteLoading ?
                 <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
                     <ActivityIndicator size="large" color="blue" />
                 </View>
@@ -494,6 +494,23 @@ export const ElectionPage = ({ navigation, route }) => {
                                                 {item.selectedOptions.map((elem, idx) =>
                                                     <View key={elem.id} style={{ marginVertical: 8 }}>
                                                         <Text style={{ fontSize: 16, fontWeight: '500', color: '#242529' }}>{elem.title}</Text>
+                                                        {elem.description.trim().length !== 0 ?
+                                                            <View style={{ marginTop: 7, }}>
+                                                                <Text style={{ fontSize: 14, fontWeight: '400', color: '#757881', }}>{elem.description}</Text>
+                                                            </View>
+                                                            :
+                                                            <></>
+                                                        }
+                                                        {elem.imageURL.trim().length !== 0 ?
+                                                            <View style={{ marginTop: 7, height: 146, width: 198, borderRadius: 10, overflow: 'hidden' }}>
+                                                                <Image
+                                                                    style={{ height: '100%', width: '100%', borderRadius: 10 }}
+                                                                    source={{ uri: elem.imageURL }}
+                                                                />
+                                                            </View>
+                                                            :
+                                                            <></>
+                                                        }
                                                     </View>
                                                 )}
                                             </View>
