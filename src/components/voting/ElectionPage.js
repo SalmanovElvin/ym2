@@ -226,7 +226,25 @@ export const ElectionPage = ({ navigation, route }) => {
 
                                             <View style={{ marginVertical: 20 }}>
                                                 {ballot.options.map((item) =>
-                                                    <TouchableOpacity key={item.id} activeOpacity={0.6} onPress={() => { console.log(item.id); setChecked(item.id); }} style={{ marginVertical: 10, flexDirection: "row", alignItems: 'center', borderWidth: 1, borderStyle: 'solid', borderColor: '#BFC2CD', paddingVertical: 16, paddingHorizontal: 24, borderRadius: 5 }}>
+                                                    <TouchableOpacity key={item.id} activeOpacity={0.6} onPress={ballot.choiceType == 'one' ? () => { console.log(item.id); setChecked(item.id); }
+                                                        :
+                                                        () => {
+                                                            let arr = [...multipleChecked];
+
+                                                            if (multipleChecked.length === 0 || !arr.includes(item.id)) {
+                                                                arr.push(item.id);
+                                                            } else {
+                                                                const index = arr.indexOf(item.id);
+                                                                if (index !== -1) {
+                                                                    arr.splice(index, 1);
+                                                                }
+                                                            }
+
+                                                            console.log(arr);
+
+                                                            setMultipleChecked(arr);
+                                                        }} style={{ marginVertical: 10, flexDirection: "row", alignItems: 'center', borderWidth: 1, borderStyle: 'solid', borderColor: '#BFC2CD', paddingVertical: 16, paddingHorizontal: 24, borderRadius: 5 }}>
+
                                                         {ballot.choiceType == 'one' ?
                                                             <RadioButton
                                                                 value={item.title}
