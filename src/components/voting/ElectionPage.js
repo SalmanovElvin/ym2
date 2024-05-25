@@ -31,7 +31,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { HeaderInPages } from './../header/HeaderInPages';
 import { FETCH_BALLOTS } from "../../../graph/queries/elections";
 import { RadioButton, Checkbox } from 'react-native-paper';
-import { SUBMIT_VOTE } from './../../../graph/mutations/elections';
+import { SEND_EMAIL, SUBMIT_VOTE } from './../../../graph/mutations/elections';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -142,7 +142,7 @@ export const ElectionPage = ({ navigation, route }) => {
     const [multipleChecked, setMultipleChecked] = useState([]);
     const [multipleCheckedTitles, setMultipleCheckedTitles] = useState([]);
     const [selectedValues, setSelectedValues] = useState([]);
-
+    const [afterSubmitData, setAfterSubmitData] = useState('')
 
     // --------------------------------- graphql mutation to send the votes to the database
     const [kioskVote, { loading: voteLoading, data: voteData }] = useMutation(
@@ -153,9 +153,11 @@ export const ElectionPage = ({ navigation, route }) => {
                 setBallot(null);
                 setBallot(data.ballots[pageNum + 1]);
                 setPageNum(pageNum + 1);
+                setAfterSubmitData(voteData.kioskVote);
+
             },
             onError: (err) => {
-                console.log(err);
+                alert(err.message);
             }
         }
     );
@@ -189,10 +191,20 @@ export const ElectionPage = ({ navigation, route }) => {
         });
     };
 
+
+    const [sendEmail, { loading: sendingEmail, error: errorWithSendingEmail }] = useMutation(SEND_EMAIL, {
+        onCompleted: () => {
+            alert('Results was sended to your profile email');
+        },
+        onError: (error) => {
+            alert('Something gone wrong, please try again later.')
+        },
+    });
+
     return (
         <>
             <HeaderInPages title="Voting" />
-            {loading || voteLoading ?
+            {loading || voteLoading || sendingEmail ?
                 <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
                     <ActivityIndicator size="large" color="blue" />
                 </View>
@@ -468,13 +480,20 @@ export const ElectionPage = ({ navigation, route }) => {
                                     <Text style={{ color: '#5BD476', fontWeight: '600', fontSize: 18, marginTop: 10 }}>All Done!</Text>
 
                                     <Text style={{ color: '#242529', fontWeight: '600', fontSize: 16, marginTop: 25 }}>Your receipt ID is:</Text>
-                                    <Text style={{ width: '70%', textAlign: 'center', color: '#696666', fontWeight: '400', fontSize: 18, marginTop: 10 }}>asdfg-asdasdg-asdg-sfg-asgasg-sfgdfg-fgafg</Text>
+                                    <Text style={{ width: '70%', textAlign: 'center', color: '#696666', fontWeight: '400', fontSize: 18, marginTop: 10 }}>{afterSubmitData}</Text>
                                 </View>
 
                                 <TouchableOpacity onPress={() => navigation.navigate('Voting')} style={{ marginTop: 50, borderWidth: 1, borderColor: '#34519A', borderStyle: 'solid', backgroundColor: '#34519A', paddingVertical: 18, paddingHorizontal: 32, justifyContent: 'center', alignItems: 'center', borderRadius: 5 }} activeOpacity={0.6}>
                                     <Text style={{ color: '#fff', fontWeight: '700', fontSize: 16 }}>Finish</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={{ marginTop: 10, borderWidth: 1, borderColor: '#34519A', borderStyle: 'solid', backgroundColor: 'transparent', paddingVertical: 18, paddingHorizontal: 32, justifyContent: 'center', alignItems: 'center', borderRadius: 5 }} activeOpacity={0.6}>
+                                <TouchableOpacity onPress={() => sendEmail({
+                                    variables: {
+                                        email: 'salmanov.elvin96@gmail.com',
+                                        sender: 'Vote Receipt',
+                                        subject: 'Here is what you selected',
+                                        content: 'test email',
+                                    },
+                                })} style={{ marginTop: 10, borderWidth: 1, borderColor: '#34519A', borderStyle: 'solid', backgroundColor: 'transparent', paddingVertical: 18, paddingHorizontal: 32, justifyContent: 'center', alignItems: 'center', borderRadius: 5 }} activeOpacity={0.6}>
                                     <Text style={{ color: '#34519A', fontWeight: '700', fontSize: 16 }}>Send Email</Text>
                                 </TouchableOpacity>
                             </View>
