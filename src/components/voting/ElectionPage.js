@@ -487,24 +487,20 @@ export const ElectionPage = ({ navigation, route }) => {
                             <View>
                                 <Text style={{ paddingVertical: 16, paddingHorizontal: 24, color: '#242529', fontSize: 18, fontWeight: '600' }}>Summary</Text>
                                 <View style={{ backgroundColor: '#fff', paddingVertical: 16, paddingHorizontal: 24, }}>
-                                    <View style={{ marginVertical: 10, }}>
-                                        <Text style={{ fontWeight: '600', fontSize: 16, color: '#242529' }}>1. Favourite color?</Text>
-                                        <View style={{ marginTop: 8, borderColor: '#BFC2CD', borderWidth: 1, borderStyle: 'solid', paddingVertical: 16, paddingHorizontal: 24, borderRadius: 5 }}>
-                                            <Text style={{ fontSize: 16, fontWeight: '500', color: '#242529' }}>Red</Text>
+                                    {selectedValues.map((item, index) =>
+                                        <View key={index} style={{ marginVertical: 10, }}>
+                                            <Text style={{ fontWeight: '600', fontSize: 16, color: '#242529' }}>{index + 1}. {item.title}</Text>
+                                            <View style={{ marginTop: 8, borderColor: '#BFC2CD', borderWidth: 1, borderStyle: 'solid', paddingVertical: 16, paddingHorizontal: 24, borderRadius: 5 }}>
+                                                {item.selectedOptions.map((elem, idx) =>
+                                                    <View key={elem.id} style={{ marginVertical: 8 }}>
+                                                        <Text style={{ fontSize: 16, fontWeight: '500', color: '#242529' }}>{elem.title}</Text>
+                                                    </View>
+                                                )}
+                                            </View>
                                         </View>
-                                    </View>
-                                    <View style={{ marginVertical: 10, }}>
-                                        <Text style={{ fontWeight: '600', fontSize: 16, color: '#242529' }}>1. Favourite color?</Text>
-                                        <View style={{ marginTop: 8, borderColor: '#BFC2CD', borderWidth: 1, borderStyle: 'solid', paddingVertical: 16, paddingHorizontal: 24, borderRadius: 5 }}>
-                                            <Text style={{ fontSize: 16, fontWeight: '500', color: '#242529' }}>Red</Text>
-                                        </View>
-                                    </View>
-                                    <View style={{ marginVertical: 10, }}>
-                                        <Text style={{ fontWeight: '600', fontSize: 16, color: '#242529' }}>1. Favourite color?</Text>
-                                        <View style={{ marginTop: 8, borderColor: '#BFC2CD', borderWidth: 1, borderStyle: 'solid', paddingVertical: 16, paddingHorizontal: 24, borderRadius: 5 }}>
-                                            <Text style={{ fontSize: 16, fontWeight: '500', color: '#242529' }}>Red</Text>
-                                        </View>
-                                    </View>
+                                    )}
+
+
                                 </View>
                             </View>
                             : <></>}
