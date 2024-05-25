@@ -179,7 +179,7 @@ export const Chat = ({ route, chat, participants }) => {
                 </Svg>
                 :
                 participantsrArr[0]?.profile?.imageURL !== '' ?
-                    <Image style={{ width: 45, height: 45, borderRadius: 50 }} source={{ uri: participantsrArr[0]?.profile?.imageURL }} />
+                    <Image style={{ width: 50, height: 50, borderRadius: 50 }} source={{ uri: participantsrArr[0]?.profile?.imageURL }} />
                     :
                     <Svg
                         style={{ width: 45, height: 45, borderRadius: 50 }}
@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
     wrapper: {
         position: 'relative',
         paddingVertical: 16,
-        paddingHorizontal: 24,
+        paddingHorizontal: 18,
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: "#fff",
