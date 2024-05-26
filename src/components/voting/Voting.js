@@ -115,7 +115,7 @@ export const Voting = ({ navigation, route }) => {
                                 <Text style={{ textAlign: 'center', marginBottom: 10, color: '#4A4A4A', fontSizeL: 14, fontWeight: '400' }}>
                                     Ends in {Math.floor(Math.abs(new Date(item.endDate) - new Date(item.startDate)) / (1000 * 60 * 60 * 24))} day(s) | {new Date(item.startDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).replace(/(\d{1,2})(st|nd|rd|th)/, "$1$2")}
                                 </Text>
-                                <TouchableOpacity onPress={() => navigation.navigate('electionPage', { electionId: item.id })} style={{ justifyContent: 'center', alignItems: 'center', borderRadius: 5, backgroundColor: '#34519A', paddingVertical: 16, paddingHorizontal: 24 }} activeOpacity={0.6}>
+                                <TouchableOpacity onPress={() => navigation.navigate('electionPage', { electionId: item.id, electiuonTitle: item.title })} style={{ justifyContent: 'center', alignItems: 'center', borderRadius: 5, backgroundColor: '#34519A', paddingVertical: 16, paddingHorizontal: 24 }} activeOpacity={0.6}>
                                     <Text style={{ color: '#fff', fontWeight: '700', fontSize: 16 }}>Vote</Text>
                                 </TouchableOpacity>
                             </View>
