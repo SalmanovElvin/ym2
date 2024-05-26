@@ -214,96 +214,218 @@ export const ElectionPage = ({ navigation, route }) => {
           <ActivityIndicator size="large" color="blue" />
         </View>
       ) : elections.length !== 0 ? (
-        <ScrollView>
-          {pageNum !== elections.length + 1 ? (
-            elections
-              .filter((item) => item?.id === pageById)
-              .map((item) => (
-                <View key={item.id}>
-                  <View style={{ ...styles.wrapper, marginVertical: 15 }}>
-                    <Text
-                      style={{
-                        color: "#242529",
-                        fontSize: 16,
-                        fontWeight: "400",
-                      }}
-                    >
-                      <Text style={{ fontWeight: "600" }}>
-                        {pageNum}/{elections.length}
-                      </Text>{" "}
-                      Questions
-                    </Text>
-                    <View
-                      style={{
-                        height: 12,
-                        width: "100%",
-                        borderRadius: 8,
-                        backgroundColor: "#DFDFDF",
-                        marginTop: 8,
-                        marginBottom: 4,
-                      }}
-                    >
+        <KeyboardAvoidingView
+          style={{ height: "100%" }}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 100}
+        >
+          <ScrollView>
+            {pageNum !== elections.length + 1 ? (
+              elections
+                .filter((item) => item?.id === pageById)
+                .map((item) => (
+                  <View key={item.id}>
+                    <View style={{ ...styles.wrapper, marginVertical: 15 }}>
+                      <Text
+                        style={{
+                          color: "#242529",
+                          fontSize: 16,
+                          fontWeight: "400",
+                        }}
+                      >
+                        <Text style={{ fontWeight: "600" }}>
+                          {pageNum}/{elections.length}
+                        </Text>{" "}
+                        Questions
+                      </Text>
                       <View
                         style={{
                           height: 12,
-                          width: `${(pageNum / elections.length) * 100}%`,
+                          width: "100%",
                           borderRadius: 8,
-                          backgroundColor: "#5BD476",
-                        }}
-                      ></View>
-                    </View>
-                    <Text>{elections.length - pageNum} more to complete</Text>
-                  </View>
-
-                  {ballot ? (
-                    <View
-                      style={{
-                        paddingVertical: 24,
-                        paddingHorizontal: 16,
-                        backgroundColor: "#fff",
-                      }}
-                    >
-                      <Text
-                        style={{
-                          fontSize: 18,
-                          fontWeight: "600",
-                          color: "#242529",
+                          backgroundColor: "#DFDFDF",
+                          marginTop: 8,
+                          marginBottom: 4,
                         }}
                       >
-                        {ballot.title}
-                      </Text>
-                      {ballot.choiceType == "one" ? (
-                        <Text
+                        <View
                           style={{
-                            fontSize: 14,
-                            fontWeight: "400",
-                            color: "#757881",
-                            marginTop: 10,
+                            height: 12,
+                            width: `${(pageNum / elections.length) * 100}%`,
+                            borderRadius: 8,
+                            backgroundColor: "#5BD476",
                           }}
-                        >
-                          You must select 1 option
-                        </Text>
-                      ) : (
-                        <Text
-                          style={{
-                            fontSize: 14,
-                            fontWeight: "400",
-                            color: "#757881",
-                            marginTop: 10,
-                          }}
-                        >
-                          You may select multiple options
-                        </Text>
-                      )}
+                        ></View>
+                      </View>
+                      <Text>{elections.length - pageNum} more to complete</Text>
+                    </View>
 
-                      <View style={{ marginVertical: 20 }}>
-                        {ballot.options.map((item) => (
-                          <TouchableOpacity
-                            key={item.id}
-                            activeOpacity={0.6}
-                            onPress={
-                              ballot.choiceType == "one"
-                                ? () => {
+                    {ballot ? (
+                      <View
+                        style={{
+                          paddingVertical: 24,
+                          paddingHorizontal: 16,
+                          backgroundColor: "#fff",
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontSize: 18,
+                            fontWeight: "600",
+                            color: "#242529",
+                          }}
+                        >
+                          {ballot.title}
+                        </Text>
+                        {ballot.choiceType == "one" ? (
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: "400",
+                              color: "#757881",
+                              marginTop: 10,
+                            }}
+                          >
+                            You must select 1 option
+                          </Text>
+                        ) : (
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              fontWeight: "400",
+                              color: "#757881",
+                              marginTop: 10,
+                            }}
+                          >
+                            You may select multiple options
+                          </Text>
+                        )}
+
+                        <View style={{ marginVertical: 20 }}>
+                          {ballot.options.map((item) => (
+                            <TouchableOpacity
+                              key={item.id}
+                              activeOpacity={0.6}
+                              onPress={
+                                ballot.choiceType == "one"
+                                  ? () => {
+                                      setChecked(item.id);
+                                      // console.log(item.id);
+                                      let index = voteInput.findIndex(
+                                        (obj) => obj.ballotID === pageById
+                                      );
+                                      let newArr = voteInput;
+                                      if (index !== -1) {
+                                        newArr[index].optionID[0] = item.id; // Using spread syntax (...) to push multiple values
+                                      }
+                                      setVoteInput(newArr);
+
+                                      let newObj = new Object();
+                                      newObj.title = ballot.title;
+                                      newObj.selectedOptions = [item];
+                                      let arrayOfObjects = selectedValues;
+                                      // !arrayOfObjects.some(obj => obj.title === newObj.title) && arrayOfObjects.push(newObj);
+
+                                      let titleExists = arrayOfObjects.some(
+                                        (obj) => {
+                                          if (obj.title === newObj.title) {
+                                            obj.selectedOptions = [item];
+                                            return true;
+                                          }
+                                          return false;
+                                        }
+                                      );
+
+                                      if (!titleExists) {
+                                        arrayOfObjects.push({
+                                          ...newObj,
+                                          selectedOptions: [item],
+                                        });
+                                      }
+
+                                      setSelectedValues(arrayOfObjects);
+                                    }
+                                  : () => {
+                                      let arr = [...multipleChecked];
+
+                                      if (
+                                        multipleChecked.length === 0 ||
+                                        !arr.includes(item.id)
+                                      ) {
+                                        arr.push(item.id);
+                                      } else {
+                                        const index = arr.indexOf(item.id);
+                                        if (index !== -1) {
+                                          arr.splice(index, 1);
+                                        }
+                                      }
+
+                                      let index = voteInput.findIndex(
+                                        (obj) => obj.ballotID === pageById
+                                      );
+                                      let newArr = voteInput;
+                                      if (index !== -1) {
+                                        newArr[index].optionID = arr; // Using spread syntax (...) to push multiple values
+                                      }
+
+                                      // console.log(arr);
+                                      setVoteInput(newArr);
+                                      setMultipleChecked(arr);
+
+                                      let newObj = new Object();
+                                      newObj.title = ballot.title;
+                                      newObj.selectedOptions = arr;
+                                      let arrayOfObjects = selectedValues;
+
+                                      let arrOfTitles = [
+                                        ...multipleCheckedTitles,
+                                      ];
+                                      if (!arrOfTitles.includes(item)) {
+                                        arrOfTitles.push(item);
+                                      } else {
+                                        const index = arrOfTitles.indexOf(item);
+                                        if (index !== -1) {
+                                          arrOfTitles.splice(index, 1);
+                                        }
+                                      }
+                                      setMultipleCheckedTitles(arrOfTitles);
+
+                                      let titleExists = arrayOfObjects.some(
+                                        (obj) => {
+                                          if (obj.title === newObj.title) {
+                                            obj.selectedOptions = arrOfTitles;
+                                            return true;
+                                          }
+                                          return false;
+                                        }
+                                      );
+
+                                      if (!titleExists) {
+                                        arrayOfObjects.push({
+                                          ...newObj,
+                                          selectedOptions: arrOfTitles,
+                                        });
+                                      }
+
+                                      setSelectedValues(arrayOfObjects);
+                                    }
+                              }
+                              style={{
+                                marginVertical: 10,
+                                flexDirection: "row",
+                                alignItems: "center",
+                                borderWidth: 1,
+                                borderStyle: "solid",
+                                borderColor: "#BFC2CD",
+                                paddingVertical: 16,
+                                paddingHorizontal: 24,
+                                borderRadius: 5,
+                              }}
+                            >
+                              {ballot.choiceType == "one" ? (
+                                <RadioButton
+                                  value={item.title}
+                                  onPress={() => {
                                     setChecked(item.id);
                                     // console.log(item.id);
                                     let index = voteInput.findIndex(
@@ -339,8 +461,21 @@ export const ElectionPage = ({ navigation, route }) => {
                                     }
 
                                     setSelectedValues(arrayOfObjects);
+                                  }}
+                                  status={
+                                    checked === item.id
+                                      ? "checked"
+                                      : "unchecked"
                                   }
-                                : () => {
+                                />
+                              ) : (
+                                <Checkbox
+                                  status={
+                                    multipleChecked.includes(item.id)
+                                      ? "checked"
+                                      : "unchecked"
+                                  }
+                                  onPress={() => {
                                     let arr = [...multipleChecked];
 
                                     if (
@@ -403,428 +538,162 @@ export const ElectionPage = ({ navigation, route }) => {
                                     }
 
                                     setSelectedValues(arrayOfObjects);
-                                  }
-                            }
-                            style={{
-                              marginVertical: 10,
-                              flexDirection: "row",
-                              alignItems: "center",
-                              borderWidth: 1,
-                              borderStyle: "solid",
-                              borderColor: "#BFC2CD",
-                              paddingVertical: 16,
-                              paddingHorizontal: 24,
-                              borderRadius: 5,
-                            }}
-                          >
-                            {ballot.choiceType == "one" ? (
-                              <RadioButton
-                                value={item.title}
-                                onPress={() => {
-                                  setChecked(item.id);
-                                  // console.log(item.id);
-                                  let index = voteInput.findIndex(
-                                    (obj) => obj.ballotID === pageById
-                                  );
-                                  let newArr = voteInput;
-                                  if (index !== -1) {
-                                    newArr[index].optionID[0] = item.id; // Using spread syntax (...) to push multiple values
-                                  }
-                                  setVoteInput(newArr);
-
-                                  let newObj = new Object();
-                                  newObj.title = ballot.title;
-                                  newObj.selectedOptions = [item];
-                                  let arrayOfObjects = selectedValues;
-                                  // !arrayOfObjects.some(obj => obj.title === newObj.title) && arrayOfObjects.push(newObj);
-
-                                  let titleExists = arrayOfObjects.some(
-                                    (obj) => {
-                                      if (obj.title === newObj.title) {
-                                        obj.selectedOptions = [item];
-                                        return true;
-                                      }
-                                      return false;
-                                    }
-                                  );
-
-                                  if (!titleExists) {
-                                    arrayOfObjects.push({
-                                      ...newObj,
-                                      selectedOptions: [item],
-                                    });
-                                  }
-
-                                  setSelectedValues(arrayOfObjects);
-                                }}
-                                status={
-                                  checked === item.id ? "checked" : "unchecked"
-                                }
-                              />
-                            ) : (
-                              <Checkbox
-                                status={
-                                  multipleChecked.includes(item.id)
-                                    ? "checked"
-                                    : "unchecked"
-                                }
-                                onPress={() => {
-                                  let arr = [...multipleChecked];
-
-                                  if (
-                                    multipleChecked.length === 0 ||
-                                    !arr.includes(item.id)
-                                  ) {
-                                    arr.push(item.id);
-                                  } else {
-                                    const index = arr.indexOf(item.id);
-                                    if (index !== -1) {
-                                      arr.splice(index, 1);
-                                    }
-                                  }
-
-                                  let index = voteInput.findIndex(
-                                    (obj) => obj.ballotID === pageById
-                                  );
-                                  let newArr = voteInput;
-                                  if (index !== -1) {
-                                    newArr[index].optionID = arr; // Using spread syntax (...) to push multiple values
-                                  }
-
-                                  // console.log(arr);
-                                  setVoteInput(newArr);
-                                  setMultipleChecked(arr);
-
-                                  let newObj = new Object();
-                                  newObj.title = ballot.title;
-                                  newObj.selectedOptions = arr;
-                                  let arrayOfObjects = selectedValues;
-
-                                  let arrOfTitles = [...multipleCheckedTitles];
-                                  if (!arrOfTitles.includes(item)) {
-                                    arrOfTitles.push(item);
-                                  } else {
-                                    const index = arrOfTitles.indexOf(item);
-                                    if (index !== -1) {
-                                      arrOfTitles.splice(index, 1);
-                                    }
-                                  }
-                                  setMultipleCheckedTitles(arrOfTitles);
-
-                                  let titleExists = arrayOfObjects.some(
-                                    (obj) => {
-                                      if (obj.title === newObj.title) {
-                                        obj.selectedOptions = arrOfTitles;
-                                        return true;
-                                      }
-                                      return false;
-                                    }
-                                  );
-
-                                  if (!titleExists) {
-                                    arrayOfObjects.push({
-                                      ...newObj,
-                                      selectedOptions: arrOfTitles,
-                                    });
-                                  }
-
-                                  setSelectedValues(arrayOfObjects);
-                                }}
-                              />
-                            )}
-                            <View style={{ marginLeft: 8 }}>
-                              <Text
-                                style={{
-                                  color: "#242529",
-                                  fontWeight: "500",
-                                  fontSize: 16,
-                                }}
-                              >
-                                {item.title}
-                              </Text>
-                              {item.description.trim().length !== 0 ? (
-                                <View style={{ marginTop: 7 }}>
-                                  <Text
-                                    style={{
-                                      fontSize: 14,
-                                      fontWeight: "400",
-                                      color: "#757881",
-                                    }}
-                                  >
-                                    {item.description}
-                                  </Text>
-                                </View>
-                              ) : (
-                                <></>
+                                  }}
+                                />
                               )}
-                              {item.imageURL.trim().length !== 0 ? (
-                                <View
+                              <View style={{ marginLeft: 8 }}>
+                                <Text
                                   style={{
-                                    marginTop: 7,
-                                    height: 146,
-                                    width: 198,
-                                    borderRadius: 10,
-                                    overflow: "hidden",
+                                    color: "#242529",
+                                    fontWeight: "500",
+                                    fontSize: 16,
                                   }}
                                 >
-                                  <Image
+                                  {item.title}
+                                </Text>
+                                {item.description.trim().length !== 0 ? (
+                                  <View style={{ marginTop: 7 }}>
+                                    <Text
+                                      style={{
+                                        fontSize: 14,
+                                        fontWeight: "400",
+                                        color: "#757881",
+                                      }}
+                                    >
+                                      {item.description}
+                                    </Text>
+                                  </View>
+                                ) : (
+                                  <></>
+                                )}
+                                {item.imageURL.trim().length !== 0 ? (
+                                  <View
                                     style={{
-                                      height: "100%",
-                                      width: "100%",
+                                      marginTop: 7,
+                                      height: 146,
+                                      width: 198,
                                       borderRadius: 10,
+                                      overflow: "hidden",
                                     }}
-                                    source={{ uri: item.imageURL }}
-                                  />
-                                </View>
-                              ) : (
-                                <></>
-                              )}
-                            </View>
-                          </TouchableOpacity>
-                        ))}
-                      </View>
+                                  >
+                                    <Image
+                                      style={{
+                                        height: "100%",
+                                        width: "100%",
+                                        borderRadius: 10,
+                                      }}
+                                      source={{ uri: item.imageURL }}
+                                    />
+                                  </View>
+                                ) : (
+                                  <></>
+                                )}
+                              </View>
+                            </TouchableOpacity>
+                          ))}
+                        </View>
 
-                      {/* <RadioButton
+                        {/* <RadioButton
                                                 value="second"
                                                 status={checked === 'second' ? 'checked' : 'unchecked'}
                                                 onPress={() => setChecked('second')}
                                             /> */}
-                    </View>
-                  ) : (
-                    <View
-                      style={{
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flex: 1,
-                      }}
-                    >
-                      <ActivityIndicator size="large" color="blue" />
-                    </View>
-                  )}
-                </View>
-              ))
-          ) : (
-            <View style={{ ...styles.wrapper, marginTop: 50 }}>
-              <View
-                style={{
-                  alignItems: "center",
-                  justifyContent: "center",
-                  backgroundColor: "#FFFFFF",
-                  borderRadius: 20,
-                  paddingVertical: 35,
-                  paddingHorizontal: 20,
-                  shadowColor: "#4468C1",
-                  shadowOffset: {
-                    width: 0,
-                    height: 0,
-                  },
-                  shadowOpacity: 0.3,
-                  shadowRadius: 7,
-                  elevation: 5,
-                }}
-              >
-                <Svg
-                  width={112}
-                  height={112}
-                  viewBox="0 0 112 112"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <Circle cx="56" cy="56" r="56" fill="#CAEFD4" />
-                  <Circle cx="56.0001" cy="56.0001" r="41.44" fill="#5BD476" />
-                  <Path
-                    d="M49.1572 61.8642C49.1572 61.8642 46.3658 60.1047 42.9944 57.405C42.8229 57.2675 42.6252 57.1657 42.4131 57.1056C42.201 57.0456 41.9789 57.0285 41.76 57.0554C41.5412 57.0823 41.33 57.1527 41.1391 57.2623C40.9483 57.3719 40.7816 57.5185 40.6491 57.6934C40.451 57.9551 40.3369 58.2699 40.3218 58.5969C40.3067 58.9238 40.3911 59.2476 40.5642 59.5263C42.2716 62.2768 45.2172 66.6134 47.4973 69.463C48.573 70.8072 50.4817 70.9319 51.7369 69.7499C58.9546 62.9543 65.6549 54.3813 73.6746 42.5107C73.8752 42.2189 73.9573 41.8627 73.9044 41.5134C73.8516 41.1641 73.6678 40.8475 73.3897 40.6269C73.1116 40.4063 72.7598 40.2981 72.4047 40.3238C72.0496 40.3495 71.7174 40.5073 71.4746 40.7656C62.5748 50.1136 58.0114 54.5564 49.1572 61.8642Z"
-                    fill="#F9FAFC"
-                  />
-                </Svg>
-                <Text
-                  style={{
-                    color: "#5BD476",
-                    fontWeight: "600",
-                    fontSize: 18,
-                    marginTop: 10,
-                  }}
-                >
-                  All Done!
-                </Text>
-
-                <Text
-                  style={{
-                    color: "#242529",
-                    fontWeight: "600",
-                    fontSize: 16,
-                    marginTop: 25,
-                  }}
-                >
-                  Your receipt ID is:
-                </Text>
-                <Text
-                  style={{
-                    width: "70%",
-                    textAlign: "center",
-                    color: "#696666",
-                    fontWeight: "400",
-                    fontSize: 18,
-                    marginTop: 10,
-                  }}
-                >
-                  {afterSubmitData}
-                </Text>
-              </View>
-
-              <TouchableOpacity
-                onPress={() => navigation.navigate("Voting")}
-                style={{
-                  marginTop: 50,
-                  borderWidth: 1,
-                  borderColor: "#34519A",
-                  borderStyle: "solid",
-                  backgroundColor: "#34519A",
-                  paddingVertical: 18,
-                  paddingHorizontal: 32,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  borderRadius: 5,
-                }}
-                activeOpacity={0.6}
-              >
-                <Text
-                  style={{ color: "#fff", fontWeight: "700", fontSize: 16 }}
-                >
-                  Finish
-                </Text>
-              </TouchableOpacity>
-              {emailVisible ? (
+                      </View>
+                    ) : (
+                      <View
+                        style={{
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flex: 1,
+                        }}
+                      >
+                        <ActivityIndicator size="large" color="blue" />
+                      </View>
+                    )}
+                  </View>
+                ))
+            ) : (
+              <View style={{ ...styles.wrapper, marginTop: 50 }}>
                 <View
                   style={{
-                    marginTop: 8,
-                    flexDirection: "row",
                     alignItems: "center",
-                    justifyContent: "space-between",
+                    justifyContent: "center",
+                    backgroundColor: "#FFFFFF",
+                    borderRadius: 20,
+                    paddingVertical: 35,
+                    paddingHorizontal: 20,
+                    shadowColor: "#4468C1",
+                    shadowOffset: {
+                      width: 0,
+                      height: 0,
+                    },
+                    shadowOpacity: 0.3,
+                    shadowRadius: 7,
+                    elevation: 5,
                   }}
                 >
-                  <TextInput
-                    style={{
-                      width: "80%",
-                      borderWidth: 1,
-                      borderColor: "#BFC2CD",
-                      borderStyle: "solid",
-                      borderRadius: 5,
-                      height: 56,
-                      fontSize: 16,
-                      paddingLeft: 24,
-                    }}
-                    placeholder="Please write email"
-                    keyboardType="email-address"
-                    onChangeText={setEmail}
-                  />
-                  <TouchableOpacity
-                    onPress={() => {
-                      if (email.trim().length !== 0) {
-                        let content = `<div style="display: flex;justify-content: center;margin: 20px 0">
-                    <img src="${
-                      unionData.information.imageURL
-                    }" alt="Union Logo" style="width: 125px;height: 125px;border-radius: 10px">
-                  </div>\n
-                 
-                  <h1 style="font-style: italic;text-align: center">Thank You for Voting!</h1>\n
-              
-                  <p style="margin-top:20px">On ${new Date()}</p>\n
-                 <h2 style="margin-top:40px;line-height: 1.3">In ${electiuonTitle}</h2>`;
-                        voteInput.map((vote) => {
-                          content =
-                            content +
-                            `<h3 style="margin-top:40px">For: ${
-                              storedBallot[vote.ballotID]
-                            }</h3>\n
-                      <p>You selected</p>`;
-                          vote.optionID.map((option) => {
-                            content =
-                              content +
-                              `<p style="margin-left:30px">${storedBallot[option]}</p>`;
-                          });
-                        });
-                        //   content =
-                        //     content +
-                        //     `<h5 style="margin-top:80px">Receipt ID:</h5>\n
-                        //                     <p>${voteID}</p>`;
-                        sendEmail({
-                          variables: {
-                            email: email,
-                            sender: "Vote Receipt",
-                            subject: "Here is what you selected",
-                            content: content,
-                          },
-                        });
-                      }
-                    }}
-                    style={{
-                      backgroundColor: "#34519A",
-                      height: 56,
-                      width: "16%",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      borderRadius: 5,
-                    }}
-                    activeOpacity={0.6}
+                  <Svg
+                    width={112}
+                    height={112}
+                    viewBox="0 0 112 112"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    <Svg
-                      version="1.0"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width={35}
-                      height={35}
-                      viewBox="0 0 512.000000 512.000000"
-                      preserveAspectRatio="xMidYMid meet"
-                    >
-                      <G
-                        transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
-                        fill="#fff"
-                        stroke="none"
-                      >
-                        <Path
-                          d="M972 4042 c-39 -36 -49 -86 -28 -136 30 -71 -122 -66 1967 -66 2060
-0 1928 4 1960 -57 21 -39 21 -2407 0 -2446 -32 -61 100 -57 -1960 -57 -2089 0
--1937 5 -1967 -66 -21 -50 -11 -100 28 -136 l30 -28 1922 0 1921 0 56 23 c104
-43 177 125 204 228 22 81 22 2437 0 2518 -27 103 -100 185 -204 228 l-56 23
--1921 0 -1922 0 -30 -28z"
-                        />
-                        <Path
-                          d="M1453 3600 c-55 -23 -83 -134 -45 -178 39 -47 1290 -984 1359 -1018
-162 -82 355 -84 513 -6 54 26 1292 966 1338 1015 12 13 25 40 29 60 17 108
--100 166 -194 98 -23 -16 -301 -229 -619 -472 -319 -244 -603 -457 -632 -475
--104 -63 -245 -67 -350 -9 -26 14 -324 237 -662 496 -338 259 -622 474 -630
-479 -26 14 -84 20 -107 10z"
-                        />
-                        <Path
-                          d="M85 3253 c-87 -22 -113 -139 -44 -197 l31 -26 513 0 513 0 31 31 c26
-26 31 38 31 78 0 60 -26 96 -78 111 -37 10 -957 13 -997 3z"
-                        />
-                        <Path
-                          d="M441 2673 c-42 -8 -70 -34 -83 -74 -15 -52 2 -110 40 -135 25 -18 56
--19 528 -19 546 0 540 -1 570 57 28 54 13 123 -35 155 -24 17 -65 18 -511 19
--267 1 -496 0 -509 -3z"
-                        />
-                        <Path
-                          d="M3771 2414 c-33 -27 -50 -73 -43 -114 7 -38 736 -768 779 -779 98
--27 182 85 127 169 -24 36 -672 687 -718 721 -51 38 -102 39 -145 3z"
-                        />
-                        <Path
-                          d="M754 2079 c-81 -40 -65 -184 23 -208 24 -7 207 -11 503 -11 296 0
-479 4 503 11 90 25 104 170 20 208 -32 15 -1019 14 -1049 0z"
-                        />
-                      </G>
-                    </Svg>
-                  </TouchableOpacity>
+                    <Circle cx="56" cy="56" r="56" fill="#CAEFD4" />
+                    <Circle
+                      cx="56.0001"
+                      cy="56.0001"
+                      r="41.44"
+                      fill="#5BD476"
+                    />
+                    <Path
+                      d="M49.1572 61.8642C49.1572 61.8642 46.3658 60.1047 42.9944 57.405C42.8229 57.2675 42.6252 57.1657 42.4131 57.1056C42.201 57.0456 41.9789 57.0285 41.76 57.0554C41.5412 57.0823 41.33 57.1527 41.1391 57.2623C40.9483 57.3719 40.7816 57.5185 40.6491 57.6934C40.451 57.9551 40.3369 58.2699 40.3218 58.5969C40.3067 58.9238 40.3911 59.2476 40.5642 59.5263C42.2716 62.2768 45.2172 66.6134 47.4973 69.463C48.573 70.8072 50.4817 70.9319 51.7369 69.7499C58.9546 62.9543 65.6549 54.3813 73.6746 42.5107C73.8752 42.2189 73.9573 41.8627 73.9044 41.5134C73.8516 41.1641 73.6678 40.8475 73.3897 40.6269C73.1116 40.4063 72.7598 40.2981 72.4047 40.3238C72.0496 40.3495 71.7174 40.5073 71.4746 40.7656C62.5748 50.1136 58.0114 54.5564 49.1572 61.8642Z"
+                      fill="#F9FAFC"
+                    />
+                  </Svg>
+                  <Text
+                    style={{
+                      color: "#5BD476",
+                      fontWeight: "600",
+                      fontSize: 18,
+                      marginTop: 10,
+                    }}
+                  >
+                    All Done!
+                  </Text>
+
+                  <Text
+                    style={{
+                      color: "#242529",
+                      fontWeight: "600",
+                      fontSize: 16,
+                      marginTop: 25,
+                    }}
+                  >
+                    Your receipt ID is:
+                  </Text>
+                  <Text
+                    style={{
+                      width: "70%",
+                      textAlign: "center",
+                      color: "#696666",
+                      fontWeight: "400",
+                      fontSize: 18,
+                      marginTop: 10,
+                    }}
+                  >
+                    {afterSubmitData}
+                  </Text>
                 </View>
-              ) : (
+
                 <TouchableOpacity
-                  onPress={() => setEmailVisible(true)}
+                  onPress={() => navigation.navigate("Voting")}
                   style={{
-                    marginTop: 10,
+                    marginTop: 50,
                     borderWidth: 1,
                     borderColor: "#34519A",
                     borderStyle: "solid",
-                    backgroundColor: "transparent",
+                    backgroundColor: "#34519A",
                     paddingVertical: 18,
                     paddingHorizontal: 32,
                     justifyContent: "center",
@@ -834,261 +703,427 @@ export const ElectionPage = ({ navigation, route }) => {
                   activeOpacity={0.6}
                 >
                   <Text
-                    style={{
-                      color: "#34519A",
-                      fontWeight: "700",
-                      fontSize: 16,
-                    }}
+                    style={{ color: "#fff", fontWeight: "700", fontSize: 16 }}
                   >
-                    Send Email
+                    Finish
                   </Text>
                 </TouchableOpacity>
-              )}
-            </View>
-          )}
-
-          {pageNum == elections.length ? (
-            <View>
-              <Text
-                style={{
-                  paddingVertical: 16,
-                  paddingHorizontal: 24,
-                  color: "#242529",
-                  fontSize: 18,
-                  fontWeight: "600",
-                }}
-              >
-                Summary
-              </Text>
-              <View
-                style={{
-                  backgroundColor: "#fff",
-                  paddingVertical: 16,
-                  paddingHorizontal: 24,
-                }}
-              >
-                {selectedValues.map((item, index) => (
-                  <View key={index} style={{ marginVertical: 10 }}>
-                    <Text
+                {emailVisible ? (
+                  <View
+                    style={{
+                      marginTop: 8,
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <TextInput
                       style={{
-                        fontWeight: "600",
-                        fontSize: 16,
-                        color: "#242529",
-                      }}
-                    >
-                      {index + 1}. {item.title}
-                    </Text>
-                    <View
-                      style={{
-                        marginTop: 8,
-                        borderColor: "#BFC2CD",
+                        width: "80%",
                         borderWidth: 1,
+                        borderColor: "#BFC2CD",
                         borderStyle: "solid",
-                        paddingVertical: 16,
-                        paddingHorizontal: 24,
+                        borderRadius: 5,
+                        height: 56,
+                        fontSize: 16,
+                        paddingLeft: 24,
+                      }}
+                      placeholder="Please write email"
+                      keyboardType="email-address"
+                      onChangeText={setEmail}
+                    />
+                    <TouchableOpacity
+                      onPress={() => {
+                        if (email.trim().length !== 0) {
+                          let content = `<div style="display: flex;justify-content: center;margin: 20px 0">
+                    <img src="${
+                      unionData.information.imageURL
+                    }" alt="Union Logo" style="width: 125px;height: 125px;border-radius: 10px">
+                  </div>\n
+                 
+                  <h1 style="font-style: italic;text-align: center">Thank You for Voting!</h1>\n
+              
+                  <p style="margin-top:20px">On ${new Date()}</p>\n
+                 <h2 style="margin-top:40px;line-height: 1.3">In ${electiuonTitle}</h2>`;
+                          voteInput.map((vote) => {
+                            content =
+                              content +
+                              `<h3 style="margin-top:40px">For: ${
+                                storedBallot[vote.ballotID]
+                              }</h3>\n
+                      <p>You selected</p>`;
+                            vote.optionID.map((option) => {
+                              content =
+                                content +
+                                `<p style="margin-left:30px">${storedBallot[option]}</p>`;
+                            });
+                          });
+                          //   content =
+                          //     content +
+                          //     `<h5 style="margin-top:80px">Receipt ID:</h5>\n
+                          //                     <p>${voteID}</p>`;
+                          sendEmail({
+                            variables: {
+                              email: email,
+                              sender: "Vote Receipt",
+                              subject: "Here is what you selected",
+                              content: content,
+                            },
+                          });
+                        }
+                      }}
+                      style={{
+                        backgroundColor: "#34519A",
+                        height: 56,
+                        width: "16%",
+                        justifyContent: "center",
+                        alignItems: "center",
                         borderRadius: 5,
                       }}
+                      activeOpacity={0.6}
                     >
-                      {item.selectedOptions.map((elem, idx) => (
-                        <View key={elem.id} style={{ marginVertical: 8 }}>
-                          <Text
-                            style={{
-                              fontSize: 16,
-                              fontWeight: "500",
-                              color: "#242529",
-                            }}
-                          >
-                            {elem.title}
-                          </Text>
-                          {elem.description.trim().length !== 0 ? (
-                            <View style={{ marginTop: 7 }}>
-                              <Text
-                                style={{
-                                  fontSize: 14,
-                                  fontWeight: "400",
-                                  color: "#757881",
-                                }}
-                              >
-                                {elem.description}
-                              </Text>
-                            </View>
-                          ) : (
-                            <></>
-                          )}
-                          {elem.imageURL.trim().length !== 0 ? (
-                            <View
+                      <Svg
+                        version="1.0"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width={35}
+                        height={35}
+                        viewBox="0 0 512.000000 512.000000"
+                        preserveAspectRatio="xMidYMid meet"
+                      >
+                        <G
+                          transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
+                          fill="#fff"
+                          stroke="none"
+                        >
+                          <Path
+                            d="M972 4042 c-39 -36 -49 -86 -28 -136 30 -71 -122 -66 1967 -66 2060
+0 1928 4 1960 -57 21 -39 21 -2407 0 -2446 -32 -61 100 -57 -1960 -57 -2089 0
+-1937 5 -1967 -66 -21 -50 -11 -100 28 -136 l30 -28 1922 0 1921 0 56 23 c104
+43 177 125 204 228 22 81 22 2437 0 2518 -27 103 -100 185 -204 228 l-56 23
+-1921 0 -1922 0 -30 -28z"
+                          />
+                          <Path
+                            d="M1453 3600 c-55 -23 -83 -134 -45 -178 39 -47 1290 -984 1359 -1018
+162 -82 355 -84 513 -6 54 26 1292 966 1338 1015 12 13 25 40 29 60 17 108
+-100 166 -194 98 -23 -16 -301 -229 -619 -472 -319 -244 -603 -457 -632 -475
+-104 -63 -245 -67 -350 -9 -26 14 -324 237 -662 496 -338 259 -622 474 -630
+479 -26 14 -84 20 -107 10z"
+                          />
+                          <Path
+                            d="M85 3253 c-87 -22 -113 -139 -44 -197 l31 -26 513 0 513 0 31 31 c26
+26 31 38 31 78 0 60 -26 96 -78 111 -37 10 -957 13 -997 3z"
+                          />
+                          <Path
+                            d="M441 2673 c-42 -8 -70 -34 -83 -74 -15 -52 2 -110 40 -135 25 -18 56
+-19 528 -19 546 0 540 -1 570 57 28 54 13 123 -35 155 -24 17 -65 18 -511 19
+-267 1 -496 0 -509 -3z"
+                          />
+                          <Path
+                            d="M3771 2414 c-33 -27 -50 -73 -43 -114 7 -38 736 -768 779 -779 98
+-27 182 85 127 169 -24 36 -672 687 -718 721 -51 38 -102 39 -145 3z"
+                          />
+                          <Path
+                            d="M754 2079 c-81 -40 -65 -184 23 -208 24 -7 207 -11 503 -11 296 0
+479 4 503 11 90 25 104 170 20 208 -32 15 -1019 14 -1049 0z"
+                          />
+                        </G>
+                      </Svg>
+                    </TouchableOpacity>
+                  </View>
+                ) : (
+                  <TouchableOpacity
+                    onPress={() => setEmailVisible(true)}
+                    style={{
+                      marginTop: 10,
+                      borderWidth: 1,
+                      borderColor: "#34519A",
+                      borderStyle: "solid",
+                      backgroundColor: "transparent",
+                      paddingVertical: 18,
+                      paddingHorizontal: 32,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderRadius: 5,
+                    }}
+                    activeOpacity={0.6}
+                  >
+                    <Text
+                      style={{
+                        color: "#34519A",
+                        fontWeight: "700",
+                        fontSize: 16,
+                      }}
+                    >
+                      Send Email
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              </View>
+            )}
+
+            {pageNum == elections.length ? (
+              <View>
+                <Text
+                  style={{
+                    paddingVertical: 16,
+                    paddingHorizontal: 24,
+                    color: "#242529",
+                    fontSize: 18,
+                    fontWeight: "600",
+                  }}
+                >
+                  Summary
+                </Text>
+                <View
+                  style={{
+                    backgroundColor: "#fff",
+                    paddingVertical: 16,
+                    paddingHorizontal: 24,
+                  }}
+                >
+                  {selectedValues.map((item, index) => (
+                    <View key={index} style={{ marginVertical: 10 }}>
+                      <Text
+                        style={{
+                          fontWeight: "600",
+                          fontSize: 16,
+                          color: "#242529",
+                        }}
+                      >
+                        {index + 1}. {item.title}
+                      </Text>
+                      <View
+                        style={{
+                          marginTop: 8,
+                          borderColor: "#BFC2CD",
+                          borderWidth: 1,
+                          borderStyle: "solid",
+                          paddingVertical: 16,
+                          paddingHorizontal: 24,
+                          borderRadius: 5,
+                        }}
+                      >
+                        {item.selectedOptions.map((elem, idx) => (
+                          <View key={elem.id} style={{ marginVertical: 8 }}>
+                            <Text
                               style={{
-                                marginTop: 7,
-                                height: 146,
-                                width: 198,
-                                borderRadius: 10,
-                                overflow: "hidden",
+                                fontSize: 16,
+                                fontWeight: "500",
+                                color: "#242529",
                               }}
                             >
-                              <Image
+                              {elem.title}
+                            </Text>
+                            {elem.description.trim().length !== 0 ? (
+                              <View style={{ marginTop: 7 }}>
+                                <Text
+                                  style={{
+                                    fontSize: 14,
+                                    fontWeight: "400",
+                                    color: "#757881",
+                                  }}
+                                >
+                                  {elem.description}
+                                </Text>
+                              </View>
+                            ) : (
+                              <></>
+                            )}
+                            {elem.imageURL.trim().length !== 0 ? (
+                              <View
                                 style={{
-                                  height: "100%",
-                                  width: "100%",
+                                  marginTop: 7,
+                                  height: 146,
+                                  width: 198,
                                   borderRadius: 10,
+                                  overflow: "hidden",
                                 }}
-                                source={{ uri: elem.imageURL }}
-                              />
-                            </View>
-                          ) : (
-                            <></>
-                          )}
-                        </View>
-                      ))}
+                              >
+                                <Image
+                                  style={{
+                                    height: "100%",
+                                    width: "100%",
+                                    borderRadius: 10,
+                                  }}
+                                  source={{ uri: elem.imageURL }}
+                                />
+                              </View>
+                            ) : (
+                              <></>
+                            )}
+                          </View>
+                        ))}
+                      </View>
                     </View>
-                  </View>
-                ))}
+                  ))}
+                </View>
               </View>
-            </View>
-          ) : (
-            <></>
-          )}
+            ) : (
+              <></>
+            )}
 
-          {pageNum == 0 ? (
-            <View
-              style={{
-                paddingVertical: 16,
-                paddingHorizontal: 32,
-                marginTop: 30,
-              }}
-            >
-              <TouchableOpacity
-                onPress={next}
+            {pageNum == 0 ? (
+              <View
                 style={{
-                  justifyContent: "center",
-                  alignItems: "center",
                   paddingVertical: 16,
                   paddingHorizontal: 32,
-                  backgroundColor: "#34519A",
-                  borderRadius: 5,
+                  marginTop: 30,
                 }}
-                activeOpacity={0.6}
               >
-                <Text
-                  style={{ fontWeight: "700", fontSize: 16, color: "#FFFFFF" }}
+                <TouchableOpacity
+                  onPress={next}
+                  style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    paddingVertical: 16,
+                    paddingHorizontal: 32,
+                    backgroundColor: "#34519A",
+                    borderRadius: 5,
+                  }}
+                  activeOpacity={0.6}
                 >
-                  Next
-                </Text>
-              </TouchableOpacity>
-            </View>
-          ) : pageNum == elections.length ? (
-            <View
-              style={{
-                paddingVertical: 16,
-                paddingHorizontal: 32,
-                marginTop: 30,
-              }}
-            >
-              <TouchableOpacity
-                onPress={sendVote}
+                  <Text
+                    style={{
+                      fontWeight: "700",
+                      fontSize: 16,
+                      color: "#FFFFFF",
+                    }}
+                  >
+                    Next
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            ) : pageNum == elections.length ? (
+              <View
                 style={{
-                  borderStyle: "solid",
-                  borderWidth: 1,
-                  borderColor: "#5BD476",
-                  width: "100%",
-                  justifyContent: "center",
-                  alignItems: "center",
                   paddingVertical: 16,
                   paddingHorizontal: 32,
-                  backgroundColor: "#5BD476",
-                  borderRadius: 5,
+                  marginTop: 30,
                 }}
-                activeOpacity={0.6}
               >
-                <Text
-                  style={{ fontWeight: "700", fontSize: 16, color: "#FFFFFF" }}
+                <TouchableOpacity
+                  onPress={sendVote}
+                  style={{
+                    borderStyle: "solid",
+                    borderWidth: 1,
+                    borderColor: "#5BD476",
+                    width: "100%",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    paddingVertical: 16,
+                    paddingHorizontal: 32,
+                    backgroundColor: "#5BD476",
+                    borderRadius: 5,
+                  }}
+                  activeOpacity={0.6}
                 >
-                  Submit
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("Voting")}
+                  <Text
+                    style={{
+                      fontWeight: "700",
+                      fontSize: 16,
+                      color: "#FFFFFF",
+                    }}
+                  >
+                    Submit
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("Voting")}
+                  style={{
+                    marginTop: 10,
+                    borderStyle: "solid",
+                    borderWidth: 1,
+                    borderColor: "#34519A",
+                    width: "100%",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    paddingVertical: 16,
+                    paddingHorizontal: 32,
+                    backgroundColor: "transparent",
+                    borderRadius: 5,
+                  }}
+                  activeOpacity={0.6}
+                >
+                  <Text
+                    style={{
+                      fontWeight: "700",
+                      fontSize: 16,
+                      color: "#34519A",
+                    }}
+                  >
+                    Change selection
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            ) : pageNum < elections.length ? (
+              <View
                 style={{
-                  marginTop: 10,
-                  borderStyle: "solid",
-                  borderWidth: 1,
-                  borderColor: "#34519A",
-                  width: "100%",
-                  justifyContent: "center",
-                  alignItems: "center",
                   paddingVertical: 16,
                   paddingHorizontal: 32,
-                  backgroundColor: "transparent",
-                  borderRadius: 5,
-                }}
-                activeOpacity={0.6}
-              >
-                <Text
-                  style={{ fontWeight: "700", fontSize: 16, color: "#34519A" }}
-                >
-                  Change selection
-                </Text>
-              </TouchableOpacity>
-            </View>
-          ) : pageNum < elections.length ? (
-            <View
-              style={{
-                paddingVertical: 16,
-                paddingHorizontal: 32,
-                marginTop: 30,
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <TouchableOpacity
-                onPress={previous}
-                style={{
-                  borderStyle: "solid",
-                  borderWidth: 1,
-                  borderColor: "#34519A",
-                  width: "48%",
-                  justifyContent: "center",
+                  marginTop: 30,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
                   alignItems: "center",
-                  paddingVertical: 16,
-                  paddingHorizontal: 32,
-                  backgroundColor: "transparent",
-                  borderRadius: 5,
                 }}
-                activeOpacity={0.6}
               >
-                <Text
-                  style={{ fontWeight: "700", fontSize: 16, color: "#34519A" }}
+                <TouchableOpacity
+                  onPress={previous}
+                  style={{
+                    borderStyle: "solid",
+                    borderWidth: 1,
+                    borderColor: "#34519A",
+                    width: "48%",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    paddingVertical: 16,
+                    paddingHorizontal: 32,
+                    backgroundColor: "transparent",
+                    borderRadius: 5,
+                  }}
+                  activeOpacity={0.6}
                 >
-                  Back
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={next}
-                style={{
-                  borderStyle: "solid",
-                  borderWidth: 1,
-                  borderColor: "#34519A",
-                  width: "48%",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  paddingVertical: 16,
-                  paddingHorizontal: 32,
-                  backgroundColor: "#34519A",
-                  borderRadius: 5,
-                }}
-                activeOpacity={0.6}
-              >
-                <Text
-                  style={{ fontWeight: "700", fontSize: 16, color: "#FFFFFF" }}
+                  <Text
+                    style={{
+                      fontWeight: "700",
+                      fontSize: 16,
+                      color: "#34519A",
+                    }}
+                  >
+                    Back
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={next}
+                  style={{
+                    borderStyle: "solid",
+                    borderWidth: 1,
+                    borderColor: "#34519A",
+                    width: "48%",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    paddingVertical: 16,
+                    paddingHorizontal: 32,
+                    backgroundColor: "#34519A",
+                    borderRadius: 5,
+                  }}
+                  activeOpacity={0.6}
                 >
-                  Next
-                </Text>
-              </TouchableOpacity>
-            </View>
-          ) : (
-            <></>
-          )}
-        </ScrollView>
+                  <Text
+                    style={{
+                      fontWeight: "700",
+                      fontSize: 16,
+                      color: "#FFFFFF",
+                    }}
+                  >
+                    Next
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <></>
+            )}
+          </ScrollView>
+        </KeyboardAvoidingView>
       ) : (
         <Text
           style={{

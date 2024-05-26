@@ -105,6 +105,7 @@ export const Voting = ({ navigation, route }) => {
                     <ActivityIndicator size="large" color="blue" />
                 </View>
                 :
+                
                 <ScrollView style={styles.wrapper}>
 
 
