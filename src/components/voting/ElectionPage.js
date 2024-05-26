@@ -152,11 +152,11 @@ export const ElectionPage = ({ navigation, route }) => {
       },
       onError: (err) => {
         //
-        setPageById(data.ballots[pageNum + 1]?.id);
-        setBallot(null);
-        setBallot(data.ballots[pageNum + 1]);
-        setPageNum(pageNum + 1);
-        setAfterSubmitData(voteData.kioskVote);
+        // setPageById(data.ballots[pageNum + 1]?.id);
+        // setBallot(null);
+        // setBallot(data.ballots[pageNum + 1]);
+        // setPageNum(pageNum + 1);
+        // setAfterSubmitData(voteData.kioskVote);
         //
         alert(err.message);
       },
