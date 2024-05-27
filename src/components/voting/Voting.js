@@ -31,8 +31,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { HeaderInPages } from "./../header/HeaderInPages";
 import {
   ELECTIONS_FOR_USER,
+  ELECTION_REPORT,
   GET_ELECTIONS,
 } from "../../../graph/queries/elections";
+import { ActualVote } from "./ActualVote";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -67,6 +69,9 @@ export const Voting = ({ navigation, route }) => {
 
   const [actualElections, setActualElections] = useState([]),
     [expiredElections, setExpiredElections] = useState([]);
+  const [votedElections, setVotedElections] = useState([]);
+  const [electionId, setElectionId] = useState('');
+
 
   const {
     data: electionsData,
@@ -78,9 +83,13 @@ export const Voting = ({ navigation, route }) => {
       unionID: userData?.unionID,
     },
     onCompleted: (data) => {
-      console.log(electionsData.elections.filter(
+      let actArr = electionsData.elections.filter(
         (election) => new Date(election.endDate) > new Date()
-      ));
+      );
+      for (let i = 0; i < actArr?.length; i++) {
+        setElectionId(actArr[i].id);
+      }
+
       setActualElections(
         electionsData.elections.filter(
           (election) => new Date(election.endDate) > new Date()
@@ -101,18 +110,32 @@ export const Voting = ({ navigation, route }) => {
     notifyOnNetworkStatusChange: true,
   });
 
-  const [votedElections, setVotedElections] = useState([]);
 
-  //   const { loading: electionLoading } = useQuery(ELECTIONS_FOR_USER, {
-  //     notifyOnNetworkStatusChange: true,
-  //     onCompleted: (data) => {
-  //       if (data && data.electionsForUser) {
-  //         setVotedElections(data.electionsForUser);
-  //       }
-  //     },
-  //     fetchPolicy: "network-only",
-  //   });
+  // ------------------- Query to check which ballot the user already submitted
+  // const { refetch: fetchReport } = useQuery(ELECTION_REPORT, {
+  //   notifyOnNetworkStatusChange: true,
+  //   variables: {
+  //     unionID: userData?.unionID,
+  //     electionID: electionId,
+  //     // ballotID: id,
+  //     reportType: 'any'
+  //   },
+  //   onCompleted: (data) => {
+  //     console.log(data?.electionReport);
+  //     // if (data.electionReport) {
+  //     //   data.electionReport.forEach((report) => {
+  //     //     if (report.respondent.id === userID) {
+  //     //       setCheckStatus(true);
+  //     //     }
+  //     //   });
+  //     // }
+  //   },
+  //   onError: (err) => {
+  //     console.error(err); // eslint-disable-line
+  //   }
+  // });
 
+ 
   return (
     <>
       <HeaderInPages title="Voting" />
@@ -126,88 +149,7 @@ export const Voting = ({ navigation, route }) => {
         <ScrollView style={styles.wrapper}>
           {actualElections.length !== 0 ? (
             actualElections.map((item) => (
-              <View key={item.id} style={styles.block}>
-                <Text
-                  style={{
-                    textAlign: "center",
-                    marginBottom: 10,
-                    color: "#242529",
-                    fontSizeL: 16,
-                    fontWeight: "600",
-                  }}
-                >
-                  {item.title.toUpperCase()}
-                </Text>
-                <Text
-                  style={{
-                    textAlign: "center",
-                    marginBottom: 10,
-                    color: "#4A4A4A",
-                    fontSizeL: 14,
-                    fontWeight: "400",
-                  }}
-                >
-                  Ends in{" "}
-                  {Math.floor(
-                    Math.abs(
-                      new Date(item.endDate) - new Date(item.startDate)
-                    ) /
-                    (1000 * 60 * 60 * 24)
-                  )}{" "}
-                  day(s) |{" "}
-                  {new Date(item.startDate)
-                    .toLocaleDateString("en-US", {
-                      month: "long",
-                      day: "numeric",
-                      year: "numeric",
-                    })
-                    .replace(/(\d{1,2})(st|nd|rd|th)/, "$1$2")}
-                </Text>
-                {/* {votedElections.some((election) => election.id === item.id) ? (
-                  <TouchableOpacity
-                    disabled
-                    style={{
-                      justifyContent: "center",
-                      alignItems: "center",
-                      borderRadius: 5,
-                      backgroundColor: "grey",
-                      paddingVertical: 16,
-                      paddingHorizontal: 24,
-                    }}
-                    activeOpacity={0.6}
-                  >
-                    <Text
-                      style={{ color: "#fff", fontWeight: "700", fontSize: 16 }}
-                    >
-                      You previously voted this election.
-                    </Text>
-                  </TouchableOpacity>
-                ) : ( */}
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate("electionPage", {
-                      electionId: item.id,
-                      electiuonTitle: item.title,
-                    })
-                  }
-                  style={{
-                    justifyContent: "center",
-                    alignItems: "center",
-                    borderRadius: 5,
-                    backgroundColor: "#34519A",
-                    paddingVertical: 16,
-                    paddingHorizontal: 24,
-                  }}
-                  activeOpacity={0.6}
-                >
-                  <Text
-                    style={{ color: "#fff", fontWeight: "700", fontSize: 16 }}
-                  >
-                    Vote
-                  </Text>
-                </TouchableOpacity>
-                {/* )} */}
-              </View>
+              <ActualVote key={item.id} item={item} />
             ))
           ) : (
             <Text
