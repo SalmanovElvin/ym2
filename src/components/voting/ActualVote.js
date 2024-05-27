@@ -37,12 +37,14 @@ import { useNavigation } from '@react-navigation/native';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
-export const ActualVote = ({ item }) => {
+export const ActualVote = ({ item, onRefreshFunction }) => {
     const navigation = useNavigation();
     const [userData, setUserData] = useState(null);
     const [unionData, setUnionData] = useState("");
 
+  
     useEffect(() => {
+
         const getData = async () => {
             try {
                 const value = await AsyncStorage.getItem("UNION"); // Replace 'key' with your actual key
@@ -68,6 +70,7 @@ export const ActualVote = ({ item }) => {
     }, []);
 
     const [isVotedElection, setIsVotedElections] = useState(false);
+    const [recieptId, setRecieptId] = useState('');
 
     // ------------------- Query to check which ballot the user already submitted
     const { refetch: fetchReport, loading } = useQuery(ELECTION_REPORT, {
@@ -84,6 +87,7 @@ export const ActualVote = ({ item }) => {
                 data.electionReport.forEach((report) => {
                     if (report.respondent.id === userData.id) {
                         setIsVotedElections(true);
+                        setRecieptId(report.recieptID);
                     }
                 });
             }
@@ -134,29 +138,39 @@ export const ActualVote = ({ item }) => {
                         .replace(/(\d{1,2})(st|nd|rd|th)/, "$1$2")}
                 </Text>
                 {isVotedElection ? (
-                    <TouchableOpacity
-                        disabled
-                        style={{
-                            justifyContent: "center",
-                            alignItems: "center",
-                            borderRadius: 5,
-                            backgroundColor: "grey",
-                            paddingVertical: 16,
-                            paddingHorizontal: 24,
-                        }}
-                        activeOpacity={0.6}
-                    >
-                        {loading ?
-                            <ActivityIndicator size="small" color="#fff" />
-                            :
-                            <Text
-                                style={{ color: "#fff", fontWeight: "700", fontSize: 16 }}
-                            >
-                                You previously voted this election.
+                    <>
+                        <View style={{ marginVertical: 8, justifyContent: 'center', alignItems: 'center' }}>
+                            <Text style={{ textAlign: 'center', fontSize: 14, fontWeight: '600', color: '#4A4A4A', width: '60%' }}>
+                                Receipt ID:
                             </Text>
-                        }
+                            <Text style={{ textAlign: 'center', fontSize: 14, fontWeight: '600', color: '#4A4A4A', width: '60%' }}>
+                                {recieptId}
+                            </Text>
+                        </View>
+                        <TouchableOpacity
+                            disabled
+                            style={{
+                                justifyContent: "center",
+                                alignItems: "center",
+                                borderRadius: 5,
+                                backgroundColor: "grey",
+                                paddingVertical: 16,
+                                paddingHorizontal: 24,
+                            }}
+                            activeOpacity={0.6}
+                        >
+                            {loading ?
+                                <ActivityIndicator size="small" color="#fff" />
+                                :
+                                <Text
+                                    style={{ color: "#fff", fontWeight: "700", fontSize: 16 }}
+                                >
+                                    You previously voted this election.
+                                </Text>
+                            }
 
-                    </TouchableOpacity>
+                        </TouchableOpacity>
+                    </>
                 ) : (
                     <TouchableOpacity
                         onPress={() =>

@@ -304,106 +304,106 @@ export const ElectionPage = ({ navigation, route }) => {
                             onPress={
                               ballot.choiceType == "one"
                                 ? () => {
-                                    setChecked(item.id);
-                                    // console.log(item.id);
-                                    let index = voteInput.findIndex(
-                                      (obj) => obj.ballotID === pageById
-                                    );
-                                    let newArr = voteInput;
-                                    if (index !== -1) {
-                                      newArr[index].optionID[0] = item.id; // Using spread syntax (...) to push multiple values
-                                    }
-                                    setVoteInput(newArr);
-
-                                    let newObj = new Object();
-                                    newObj.title = ballot.title;
-                                    newObj.selectedOptions = [item];
-                                    let arrayOfObjects = selectedValues;
-                                    // !arrayOfObjects.some(obj => obj.title === newObj.title) && arrayOfObjects.push(newObj);
-
-                                    let titleExists = arrayOfObjects.some(
-                                      (obj) => {
-                                        if (obj.title === newObj.title) {
-                                          obj.selectedOptions = [item];
-                                          return true;
-                                        }
-                                        return false;
-                                      }
-                                    );
-
-                                    if (!titleExists) {
-                                      arrayOfObjects.push({
-                                        ...newObj,
-                                        selectedOptions: [item],
-                                      });
-                                    }
-
-                                    setSelectedValues(arrayOfObjects);
+                                  setChecked(item.id);
+                                  // console.log(item.id);
+                                  let index = voteInput.findIndex(
+                                    (obj) => obj.ballotID === pageById
+                                  );
+                                  let newArr = voteInput;
+                                  if (index !== -1) {
+                                    newArr[index].optionID[0] = item.id; // Using spread syntax (...) to push multiple values
                                   }
+                                  setVoteInput(newArr);
+
+                                  let newObj = new Object();
+                                  newObj.title = ballot.title;
+                                  newObj.selectedOptions = [item];
+                                  let arrayOfObjects = selectedValues;
+                                  // !arrayOfObjects.some(obj => obj.title === newObj.title) && arrayOfObjects.push(newObj);
+
+                                  let titleExists = arrayOfObjects.some(
+                                    (obj) => {
+                                      if (obj.title === newObj.title) {
+                                        obj.selectedOptions = [item];
+                                        return true;
+                                      }
+                                      return false;
+                                    }
+                                  );
+
+                                  if (!titleExists) {
+                                    arrayOfObjects.push({
+                                      ...newObj,
+                                      selectedOptions: [item],
+                                    });
+                                  }
+
+                                  setSelectedValues(arrayOfObjects);
+                                }
                                 : () => {
-                                    let arr = [...multipleChecked];
+                                  let arr = [...multipleChecked];
 
-                                    if (
-                                      multipleChecked.length === 0 ||
-                                      !arr.includes(item.id)
-                                    ) {
-                                      arr.push(item.id);
-                                    } else {
-                                      const index = arr.indexOf(item.id);
-                                      if (index !== -1) {
-                                        arr.splice(index, 1);
-                                      }
-                                    }
-
-                                    let index = voteInput.findIndex(
-                                      (obj) => obj.ballotID === pageById
-                                    );
-                                    let newArr = voteInput;
+                                  if (
+                                    multipleChecked.length === 0 ||
+                                    !arr.includes(item.id)
+                                  ) {
+                                    arr.push(item.id);
+                                  } else {
+                                    const index = arr.indexOf(item.id);
                                     if (index !== -1) {
-                                      newArr[index].optionID = arr; // Using spread syntax (...) to push multiple values
+                                      arr.splice(index, 1);
                                     }
-
-                                    // console.log(arr);
-                                    setVoteInput(newArr);
-                                    setMultipleChecked(arr);
-
-                                    let newObj = new Object();
-                                    newObj.title = ballot.title;
-                                    newObj.selectedOptions = arr;
-                                    let arrayOfObjects = selectedValues;
-
-                                    let arrOfTitles = [
-                                      ...multipleCheckedTitles,
-                                    ];
-                                    if (!arrOfTitles.includes(item)) {
-                                      arrOfTitles.push(item);
-                                    } else {
-                                      const index = arrOfTitles.indexOf(item);
-                                      if (index !== -1) {
-                                        arrOfTitles.splice(index, 1);
-                                      }
-                                    }
-                                    setMultipleCheckedTitles(arrOfTitles);
-
-                                    let titleExists = arrayOfObjects.some(
-                                      (obj) => {
-                                        if (obj.title === newObj.title) {
-                                          obj.selectedOptions = arrOfTitles;
-                                          return true;
-                                        }
-                                        return false;
-                                      }
-                                    );
-
-                                    if (!titleExists) {
-                                      arrayOfObjects.push({
-                                        ...newObj,
-                                        selectedOptions: arrOfTitles,
-                                      });
-                                    }
-
-                                    setSelectedValues(arrayOfObjects);
                                   }
+
+                                  let index = voteInput.findIndex(
+                                    (obj) => obj.ballotID === pageById
+                                  );
+                                  let newArr = voteInput;
+                                  if (index !== -1) {
+                                    newArr[index].optionID = arr; // Using spread syntax (...) to push multiple values
+                                  }
+
+                                  // console.log(arr);
+                                  setVoteInput(newArr);
+                                  setMultipleChecked(arr);
+
+                                  let newObj = new Object();
+                                  newObj.title = ballot.title;
+                                  newObj.selectedOptions = arr;
+                                  let arrayOfObjects = selectedValues;
+
+                                  let arrOfTitles = [
+                                    ...multipleCheckedTitles,
+                                  ];
+                                  if (!arrOfTitles.includes(item)) {
+                                    arrOfTitles.push(item);
+                                  } else {
+                                    const index = arrOfTitles.indexOf(item);
+                                    if (index !== -1) {
+                                      arrOfTitles.splice(index, 1);
+                                    }
+                                  }
+                                  setMultipleCheckedTitles(arrOfTitles);
+
+                                  let titleExists = arrayOfObjects.some(
+                                    (obj) => {
+                                      if (obj.title === newObj.title) {
+                                        obj.selectedOptions = arrOfTitles;
+                                        return true;
+                                      }
+                                      return false;
+                                    }
+                                  );
+
+                                  if (!titleExists) {
+                                    arrayOfObjects.push({
+                                      ...newObj,
+                                      selectedOptions: arrOfTitles,
+                                    });
+                                  }
+
+                                  setSelectedValues(arrayOfObjects);
+                                }
                             }
                             style={{
                               marginVertical: 10,
@@ -673,7 +673,7 @@ export const ElectionPage = ({ navigation, route }) => {
               </View>
 
               <TouchableOpacity
-                onPress={() => navigation.navigate("Voting")}
+                onPress={() => navigation.navigate("Voting", { onFinishClick: true })}
                 style={{
                   marginTop: 50,
                   borderWidth: 1,
@@ -722,9 +722,8 @@ export const ElectionPage = ({ navigation, route }) => {
                     onPress={() => {
                       if (email.trim().length !== 0) {
                         let content = `<div style="display: flex;justify-content: center;margin: 20px 0">
-                    <img src="${
-                      unionData.information.imageURL
-                    }" alt="Union Logo" style="width: 125px;height: 125px;border-radius: 10px">
+                    <img src="${unionData.information.imageURL
+                          }" alt="Union Logo" style="width: 125px;height: 125px;border-radius: 10px">
                   </div>\n
                  
                   <h1 style="font-style: italic;text-align: center">Thank You for Voting!</h1>\n
@@ -734,8 +733,7 @@ export const ElectionPage = ({ navigation, route }) => {
                         voteInput.map((vote) => {
                           content =
                             content +
-                            `<h3 style="margin-top:40px">For: ${
-                              storedBallot[vote.ballotID]
+                            `<h3 style="margin-top:40px">For: ${storedBallot[vote.ballotID]
                             }</h3>\n
                       <p>You selected</p>`;
                           vote.optionID.map((option) => {
