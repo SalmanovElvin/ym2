@@ -78,6 +78,9 @@ export const Voting = ({ navigation, route }) => {
       unionID: userData?.unionID,
     },
     onCompleted: (data) => {
+      console.log(electionsData.elections.filter(
+        (election) => new Date(election.endDate) > new Date()
+      ));
       setActualElections(
         electionsData.elections.filter(
           (election) => new Date(election.endDate) > new Date()
@@ -100,15 +103,15 @@ export const Voting = ({ navigation, route }) => {
 
   const [votedElections, setVotedElections] = useState([]);
 
-//   const { loading: electionLoading } = useQuery(ELECTIONS_FOR_USER, {
-//     notifyOnNetworkStatusChange: true,
-//     onCompleted: (data) => {
-//       if (data && data.electionsForUser) {
-//         setVotedElections(data.electionsForUser);
-//       }
-//     },
-//     fetchPolicy: "network-only",
-//   });
+  //   const { loading: electionLoading } = useQuery(ELECTIONS_FOR_USER, {
+  //     notifyOnNetworkStatusChange: true,
+  //     onCompleted: (data) => {
+  //       if (data && data.electionsForUser) {
+  //         setVotedElections(data.electionsForUser);
+  //       }
+  //     },
+  //     fetchPolicy: "network-only",
+  //   });
 
   return (
     <>
@@ -133,7 +136,7 @@ export const Voting = ({ navigation, route }) => {
                     fontWeight: "600",
                   }}
                 >
-                  {item.title}
+                  {item.title.toUpperCase()}
                 </Text>
                 <Text
                   style={{
@@ -149,7 +152,7 @@ export const Voting = ({ navigation, route }) => {
                     Math.abs(
                       new Date(item.endDate) - new Date(item.startDate)
                     ) /
-                      (1000 * 60 * 60 * 24)
+                    (1000 * 60 * 60 * 24)
                   )}{" "}
                   day(s) |{" "}
                   {new Date(item.startDate)
@@ -180,29 +183,29 @@ export const Voting = ({ navigation, route }) => {
                     </Text>
                   </TouchableOpacity>
                 ) : ( */}
-                  <TouchableOpacity
-                    onPress={() =>
-                      navigation.navigate("electionPage", {
-                        electionId: item.id,
-                        electiuonTitle: item.title,
-                      })
-                    }
-                    style={{
-                      justifyContent: "center",
-                      alignItems: "center",
-                      borderRadius: 5,
-                      backgroundColor: "#34519A",
-                      paddingVertical: 16,
-                      paddingHorizontal: 24,
-                    }}
-                    activeOpacity={0.6}
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("electionPage", {
+                      electionId: item.id,
+                      electiuonTitle: item.title,
+                    })
+                  }
+                  style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    borderRadius: 5,
+                    backgroundColor: "#34519A",
+                    paddingVertical: 16,
+                    paddingHorizontal: 24,
+                  }}
+                  activeOpacity={0.6}
+                >
+                  <Text
+                    style={{ color: "#fff", fontWeight: "700", fontSize: 16 }}
                   >
-                    <Text
-                      style={{ color: "#fff", fontWeight: "700", fontSize: 16 }}
-                    >
-                      Vote
-                    </Text>
-                  </TouchableOpacity>
+                    Vote
+                  </Text>
+                </TouchableOpacity>
                 {/* )} */}
               </View>
             ))
@@ -250,7 +253,7 @@ export const Voting = ({ navigation, route }) => {
                       fontWeight: "600",
                     }}
                   >
-                    {item.title}
+                    {item.title.toUpperCase()}
                   </Text>
                   <Text
                     style={{
@@ -266,7 +269,7 @@ export const Voting = ({ navigation, route }) => {
                       Math.abs(
                         new Date(item.endDate) - new Date(item.startDate)
                       ) /
-                        (1000 * 60 * 60 * 24)
+                      (1000 * 60 * 60 * 24)
                     )}{" "}
                     day(s) |{" "}
                     {new Date(item.startDate)
