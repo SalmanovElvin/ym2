@@ -119,6 +119,8 @@ export const Voting = ({ navigation, route }) => {
 
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = React.useCallback(() => {
+    setActualElections([]);
+    setExpiredElections([]);
     refetch();
     setRefreshing(true);
   }, []);
@@ -141,7 +143,7 @@ export const Voting = ({ navigation, route }) => {
           } style={styles.wrapper}>
             {actualElections.length !== 0 ? (
               actualElections.map((item) => (
-                <ActualVote key={item.id} item={item} />
+                <ActualVote userData={userData} key={item.id} item={item} />
               ))
             ) : (
               <Text

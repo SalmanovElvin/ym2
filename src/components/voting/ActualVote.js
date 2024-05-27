@@ -33,41 +33,18 @@ import {
     ELECTION_REPORT,
     GET_ELECTIONS,
 } from "../../../graph/queries/elections";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
-export const ActualVote = ({ item, onRefreshFunction }) => {
+export const ActualVote = ({ item, userData }) => {
     const navigation = useNavigation();
-    const [userData, setUserData] = useState(null);
-    const [unionData, setUnionData] = useState("");
 
-  
-    useEffect(() => {
-
-        const getData = async () => {
-            try {
-                const value = await AsyncStorage.getItem("UNION"); // Replace 'key' with your actual key
-
-                if (value !== null) {
-                    setUnionData(JSON.parse(value));
-                } else {
-                    console.log("No union data found");
-                }
-
-                const userVal = await AsyncStorage.getItem("@USER"); // Replace 'key' with your actual key
-
-                if (userVal !== null && JSON.parse(userVal).username !== undefined) {
-                    setUserData(JSON.parse(userVal));
-                } else {
-                    console.log("No user data found");
-                }
-            } catch (error) {
-                console.error("Error retrieving data:", error);
-            }
-        };
-        getData();
-    }, []);
+    useFocusEffect(
+        React.useCallback(() => {
+            fetchReport(); // Call fetchReport when the screen comes into focus
+        }, [])
+    );
 
     const [isVotedElection, setIsVotedElections] = useState(false);
     const [recieptId, setRecieptId] = useState('');
@@ -97,7 +74,9 @@ export const ActualVote = ({ item, onRefreshFunction }) => {
         }
     });
 
-
+    useEffect(() => {
+        fetchReport();
+    }, [])
     return (
         <>
             <View key={item.id} style={styles.block}>
