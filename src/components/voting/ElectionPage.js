@@ -32,6 +32,7 @@ import { HeaderInPages } from "./../header/HeaderInPages";
 import { FETCH_BALLOTS } from "../../../graph/queries/elections";
 import { RadioButton, Checkbox } from "react-native-paper";
 import { SEND_EMAIL, SUBMIT_VOTE } from "./../../../graph/mutations/elections";
+import AnimatedLoader from 'react-native-animated-loader';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -152,11 +153,11 @@ export const ElectionPage = ({ navigation, route }) => {
       },
       onError: (err) => {
         //
-        // setPageById(data.ballots[pageNum + 1]?.id);
-        // setBallot(null);
-        // setBallot(data.ballots[pageNum + 1]);
-        // setPageNum(pageNum + 1);
-        // setAfterSubmitData(voteData.kioskVote);
+        setPageById(data.ballots[pageNum + 1]?.id);
+        setBallot(null);
+        setBallot(data.ballots[pageNum + 1]);
+        setPageNum(pageNum + 1);
+        setAfterSubmitData(voteData.kioskVote);
         //
         alert(err.message);
       },
@@ -197,16 +198,34 @@ export const ElectionPage = ({ navigation, route }) => {
       onCompleted: () => {
         setEmailVisible(false);
         setEmail("");
-        alert("Results was sended to your profile email");
+        setSuccess(true);
+        setTimeout(function () {
+          setSuccess(false);
+        }, 3000);
+        // alert("Results was sended to your profile email");
       },
       onError: (error) => {
         alert("Something gone wrong, please try again later.");
       },
     });
 
+
+  const [success, setSuccess] = useState(false);
+
   return (
     <>
       <HeaderInPages title="Voting" />
+      <AnimatedLoader
+        visible={success}
+        overlayColor="rgba(255,255,255,0.9)"
+        animationStyle={styles.lottie}
+        speed={1.2}
+        source={require("../../../animations/success.json")}
+      >
+        <Text style={styles.ok}>
+          Results was sended to your profile email!
+        </Text>
+      </AnimatedLoader>
       {loading || voteLoading || sendingEmail ? (
         <View
           style={{ alignItems: "center", justifyContent: "center", flex: 1 }}
@@ -1142,5 +1161,16 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 7,
     elevation: 5,
+  },
+  ok: {
+    padding: 15,
+    fontSize: 16,
+    color: 'green',
+    width: '70%',
+    textAlign: 'center',
+  },
+  lottie: {
+    width: 80,
+    height: 80,
   },
 });
