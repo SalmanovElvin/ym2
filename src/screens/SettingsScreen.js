@@ -11,6 +11,8 @@ import {
 } from "react-native";
 import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
 
+import { Switch } from 'react-native-paper';
+
 import { useUnionState } from "../../store/union-context";
 import { useUserState } from "../../store/user-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -47,10 +49,21 @@ export const SettingsScreen = ({ navigation, route }) => {
     getData();
   }, []);
 
+
+  const [isSwitchOnUnionNot, setIsSwitchOnUnionNot] = useState(false);
+  const [isSwitchOnCallDrops, setIsSwitchOnCallDrops] = useState(false);
+  const [isSwitchOnTextMessages, setIsSwitchOnTextMessages] = useState(false);
+  const [isSwitchOnEmails, setIsSwitchOnEmails] = useState(false);
+  const [isSwitchOnPushNotifications, setIsSwitchOnPushNotifications] = useState(false);
+  const [isSwitchOnRegistrationEmails, setIsSwitchOnRegistrationEmails] = useState(false);
+
+
+  // const onToggleSwitch = () => setIsSwitchOnUnionNot(!isSwitchOn);
+
   return (
-    <View>
+    <View style={{ flex: 1, }}>
       <Header />
-      <ScrollView style={{ paddingVertical: 20, paddingHorizontal: 15 }}>
+      <ScrollView style={{ paddingVertical: 10, paddingHorizontal: 15 }}>
         <View style={styles.firstBlockWrapper}>
           <Text style={{ fontWeight: '600', fontSize: 16, color: '#242529', paddingHorizontal: 15 }}>
             Contacts
@@ -87,7 +100,6 @@ export const SettingsScreen = ({ navigation, route }) => {
               {unionData?.information?.address}, {unionData?.information?.province} {unionData?.information?.postalCode}
             </Text>
           </View>
-
         </View>
 
         <View style={styles.firstBlockWrapper}>
@@ -100,44 +112,58 @@ export const SettingsScreen = ({ navigation, route }) => {
             <Text style={{ width: '70%', fontSize: 16, fontWeight: '400', color: '#242529', marginLeft: 10 }}>
               Union Notifications
             </Text>
-
+            <Switch value={isSwitchOnUnionNot} onValueChange={() => setIsSwitchOnUnionNot(!isSwitchOnUnionNot)} />
           </View>
 
           <View style={{ paddingHorizontal: 15, paddingVertical: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 1, borderBottomColor: '#F4F4F4', borderStyle: 'solid' }}>
             <Text style={{ width: '70%', fontSize: 16, fontWeight: '400', color: '#242529', marginLeft: 10 }}>
               Allow call drops
             </Text>
-
+            <Switch value={isSwitchOnCallDrops} onValueChange={() => setIsSwitchOnCallDrops(!isSwitchOnCallDrops)} />
           </View>
 
           <View style={{ paddingHorizontal: 15, paddingVertical: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 1, borderBottomColor: '#F4F4F4', borderStyle: 'solid' }}>
             <Text style={{ width: '70%', fontSize: 16, fontWeight: '400', color: '#242529', marginLeft: 10 }}>
               Allow text messages
             </Text>
-
+            <Switch value={isSwitchOnTextMessages} onValueChange={() => setIsSwitchOnTextMessages(!isSwitchOnTextMessages)} />
           </View>
 
           <View style={{ paddingHorizontal: 15, paddingVertical: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 1, borderBottomColor: '#F4F4F4', borderStyle: 'solid' }}>
             <Text style={{ width: '70%', fontSize: 16, fontWeight: '400', color: '#242529', marginLeft: 10 }}>
               Allow emails
             </Text>
-
+            <Switch value={isSwitchOnEmails} onValueChange={() => setIsSwitchOnEmails(!isSwitchOnEmails)} />
           </View>
 
           <View style={{ paddingHorizontal: 15, paddingVertical: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 1, borderBottomColor: '#F4F4F4', borderStyle: 'solid' }}>
             <Text style={{ width: '70%', fontSize: 16, fontWeight: '400', color: '#242529', marginLeft: 10 }}>
               Allow push notifications
             </Text>
-
+            <Switch value={isSwitchOnPushNotifications} onValueChange={() => setIsSwitchOnPushNotifications(!isSwitchOnPushNotifications)} />
           </View>
 
           <View style={{ paddingHorizontal: 15, paddingVertical: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 1, borderBottomColor: '#F4F4F4', borderStyle: 'solid' }}>
             <Text style={{ width: '70%', fontSize: 16, fontWeight: '400', color: '#242529', marginLeft: 10 }}>
               Allow registration emails
             </Text>
-
+            <Switch value={isSwitchOnRegistrationEmails} onValueChange={() => setIsSwitchOnRegistrationEmails(!isSwitchOnRegistrationEmails)} />
           </View>
 
+        </View>
+
+        <View style={styles.firstBlockWrapper}>
+          <Text style={{ fontWeight: '600', fontSize: 16, color: '#242529', paddingHorizontal: 15 }}>
+            System settings
+          </Text>
+
+          <View style={{ width: '100%', height: 2, backgroundColor: '#D9D9D9', marginVertical: 15 }}></View>
+
+          <View style={{ paddingHorizontal: 15, paddingVertical: 10, flexDirection: 'row', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#F4F4F4', borderStyle: 'solid' }}>
+            <Text style={{ width: '70%', fontSize: 16, fontWeight: '400', color: '#242529', marginLeft: 10 }}>
+              Version - 2.0.0
+            </Text>
+          </View>
         </View>
       </ScrollView>
     </View>
