@@ -7,11 +7,11 @@ import {
   Button,
   FlatList,
   Image,
+  TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
   ActivityIndicator,
   Platform,
-  TextInput,
   KeyboardAvoidingView,
 } from "react-native";
 import { useMutation, useQuery } from "@apollo/client";
@@ -30,6 +30,8 @@ import AnimatedLoader from "react-native-animated-loader";
 import * as ImagePicker from "expo-image-picker";
 import { UPLOAD_AVATAR } from "./../../../graph/mutations/uploads";
 import { ReactNativeFile } from "apollo-upload-client";
+
+// import { TextInput } from 'react-native-paper';
 
 export const Profile = ({ navigation, route }) => {
   const { signOutUserAnsStr } = route.params;
@@ -290,39 +292,39 @@ export const Profile = ({ navigation, route }) => {
     let newObj =
       oldEmail !== email
         ? {
-            // dateOfBirth: "1975-04-08T20:00:00Z",
-            // ...userData,
-            firstName: name,
-            lastName: lastName,
-            username: username,
-            profile: {
-              // ...userProfile,
-              address: address,
-              city: city,
-              email: email,
-              // imageURL: profileImg,
-              // phone: phone,
-              postalCode: postalCode,
-              province: province,
-            },
-          }
+          // dateOfBirth: "1975-04-08T20:00:00Z",
+          // ...userData,
+          firstName: name,
+          lastName: lastName,
+          username: username,
+          profile: {
+            // ...userProfile,
+            address: address,
+            city: city,
+            email: email,
+            // imageURL: profileImg,
+            // phone: phone,
+            postalCode: postalCode,
+            province: province,
+          },
+        }
         : {
-            // dateOfBirth: "1975-04-08T20:00:00Z",
-            // ...userData,
-            firstName: name,
-            lastName: lastName,
-            username: username,
-            profile: {
-              // ...userProfile,
-              address: address,
-              city: city,
-              // email: email + " ",
-              // imageURL: profileImg,
-              phone: phone,
-              postalCode: postalCode,
-              province: province,
-            },
-          };
+          // dateOfBirth: "1975-04-08T20:00:00Z",
+          // ...userData,
+          firstName: name,
+          lastName: lastName,
+          username: username,
+          profile: {
+            // ...userProfile,
+            address: address,
+            city: city,
+            // email: email + " ",
+            // imageURL: profileImg,
+            phone: phone,
+            postalCode: postalCode,
+            province: province,
+          },
+        };
     AsyncStorage.setItem(
       "@USER",
       JSON.stringify({
@@ -646,6 +648,14 @@ export const Profile = ({ navigation, route }) => {
               keyboardType="email-address"
               placeholder="Email"
             />
+
+            {/* <TextInput
+              label="Type something"
+              style={styles.input}
+              value={email}
+              onChangeText={text => setEmail(text)}
+            /> */}
+
             <TextInput
               onChangeText={setPhone}
               value={phone}
