@@ -79,3 +79,19 @@ export const READ_NOTIFICATION_ALL = gql`
  		markNotificationsAsRead(notificationID: $notificationID)
  	}
 `;
+
+export const OPTION_OUT = gql`
+	mutation optionOut(
+		$unionID: UnifiedID!
+		$userID: UnifiedID!
+		$service: String!
+		$opOut: Boolean!
+	) {
+		optionOut(
+			unionID: $unionID
+			userID: $userID
+			service: $service
+			opOut: $opOut
+		)
+	}
+`;

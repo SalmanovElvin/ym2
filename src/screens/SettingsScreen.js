@@ -8,7 +8,7 @@ import {
   Button,
   ScrollView,
   Alert,
-  ActivityIndicator
+  ActivityIndicator,
 } from "react-native";
 import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
 
@@ -20,6 +20,7 @@ import { useUserState } from "../../store/user-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Header } from "../components/header/Header";
 import { SINGLE_USER } from "../../graph/queries/users";
+import { OPTION_OUT } from "../../graph/mutations/notifications";
 
 export const SettingsScreen = ({ navigation, route }) => {
   const [userData, setUserData] = useState(null);
@@ -53,6 +54,15 @@ export const SettingsScreen = ({ navigation, route }) => {
 
   const [singleUserData, setSingleUserData] = useState([]);
 
+  const [isSwitchOnUnionNot, setIsSwitchOnUnionNot] = useState(false);
+  const [isSwitchOnCallDrops, setIsSwitchOnCallDrops] = useState(false);
+  const [isSwitchOnTextMessages, setIsSwitchOnTextMessages] = useState(false);
+  const [isSwitchOnEmails, setIsSwitchOnEmails] = useState(false);
+  const [isSwitchOnPushNotifications, setIsSwitchOnPushNotifications] =
+    useState(false);
+  const [isSwitchOnRegistrationEmails, setIsSwitchOnRegistrationEmails] =
+    useState(false);
+
   const {
     data: userInfo,
     error: errorUser,
@@ -63,22 +73,28 @@ export const SettingsScreen = ({ navigation, route }) => {
     notifyOnNetworkStatusChange: true,
     onCompleted: (data) => {
       setSingleUserData(data?.singleUser);
+
+      setIsSwitchOnCallDrops(!data?.singleUser.callOpOut);
+      setIsSwitchOnTextMessages(!data?.singleUser.textOpOut);
+      setIsSwitchOnEmails(!data?.singleUser.emailOpOut);
+      setIsSwitchOnPushNotifications(!data?.singleUser.pushOpOut);
+    },
+    onError: (error) => {
+      console.error(error); // eslint-disable-line
+    },
+  });
+  // const onToggleSwitch = () => setIsSwitchOnUnionNot(!isSwitchOn);
+
+  const [optionOut] = useMutation(OPTION_OUT, {
+    onCompleted: () => {
+      console.log("success");
     },
     onError: (error) => {
       console.error(error); // eslint-disable-line
     },
   });
 
-  const [isSwitchOnUnionNot, setIsSwitchOnUnionNot] = useState(false);
-  const [isSwitchOnCallDrops, setIsSwitchOnCallDrops] = useState(!singleUserData.callOpOut);
-  const [isSwitchOnTextMessages, setIsSwitchOnTextMessages] = useState(!singleUserData.textOpOut);
-  const [isSwitchOnEmails, setIsSwitchOnEmails] = useState(!singleUserData.emailOpOut);
-  const [isSwitchOnPushNotifications, setIsSwitchOnPushNotifications] =
-    useState(!singleUserData.pushOpOut);
-  const [isSwitchOnRegistrationEmails, setIsSwitchOnRegistrationEmails] =
-    useState(false);
-
-  // const onToggleSwitch = () => setIsSwitchOnUnionNot(!isSwitchOn);
+  const updateOptions = (service, opOut) => {};
 
   return (
     <View style={{ flex: 1 }}>
@@ -315,9 +331,17 @@ export const SettingsScreen = ({ navigation, route }) => {
               </Text>
               <Switch
                 value={isSwitchOnCallDrops}
-                onValueChange={() =>
-                  setIsSwitchOnCallDrops(!isSwitchOnCallDrops)
-                }
+                onValueChange={() => {
+                  optionOut({
+                    variables: {
+                      opOut: isSwitchOnCallDrops,
+                      service: "call",
+                      unionID: userData?.unionID,
+                      userID: userData?.id,
+                    },
+                  });
+                  setIsSwitchOnCallDrops(!isSwitchOnCallDrops);
+                }}
               />
             </View>
 
@@ -346,9 +370,17 @@ export const SettingsScreen = ({ navigation, route }) => {
               </Text>
               <Switch
                 value={isSwitchOnTextMessages}
-                onValueChange={() =>
-                  setIsSwitchOnTextMessages(!isSwitchOnTextMessages)
-                }
+                onValueChange={() => {
+                  optionOut({
+                    variables: {
+                      opOut: isSwitchOnTextMessages,
+                      service: "text",
+                      unionID: userData?.unionID,
+                      userID: userData?.id,
+                    },
+                  });
+                  setIsSwitchOnTextMessages(!isSwitchOnTextMessages);
+                }}
               />
             </View>
 
@@ -377,7 +409,17 @@ export const SettingsScreen = ({ navigation, route }) => {
               </Text>
               <Switch
                 value={isSwitchOnEmails}
-                onValueChange={() => setIsSwitchOnEmails(!isSwitchOnEmails)}
+                onValueChange={() => {
+                  optionOut({
+                    variables: {
+                      opOut: isSwitchOnEmails,
+                      service: "email",
+                      unionID: userData?.unionID,
+                      userID: userData?.id,
+                    },
+                  });
+                  setIsSwitchOnEmails(!isSwitchOnEmails);
+                }}
               />
             </View>
 
@@ -406,9 +448,17 @@ export const SettingsScreen = ({ navigation, route }) => {
               </Text>
               <Switch
                 value={isSwitchOnPushNotifications}
-                onValueChange={() =>
-                  setIsSwitchOnPushNotifications(!isSwitchOnPushNotifications)
-                }
+                onValueChange={() => {
+                  optionOut({
+                    variables: {
+                      opOut: isSwitchOnPushNotifications,
+                      service: "push",
+                      unionID: userData?.unionID,
+                      userID: userData?.id,
+                    },
+                  });
+                  setIsSwitchOnPushNotifications(!isSwitchOnPushNotifications);
+                }}
               />
             </View>
 
@@ -442,7 +492,6 @@ export const SettingsScreen = ({ navigation, route }) => {
                 }
               />
             </View> */}
-
           </View>
 
           <View style={styles.firstBlockWrapper}>
