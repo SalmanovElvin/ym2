@@ -9,6 +9,7 @@ import {
   ScrollView,
   Alert,
   ActivityIndicator,
+  RefreshControl,
 } from "react-native";
 import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
 
@@ -78,6 +79,7 @@ export const SettingsScreen = ({ navigation, route }) => {
       setIsSwitchOnTextMessages(!data?.singleUser.textOpOut);
       setIsSwitchOnEmails(!data?.singleUser.emailOpOut);
       setIsSwitchOnPushNotifications(!data?.singleUser.pushOpOut);
+      setRefreshing(false);
     },
     onError: (error) => {
       console.error(error); // eslint-disable-line
@@ -94,19 +96,28 @@ export const SettingsScreen = ({ navigation, route }) => {
     },
   });
 
-  const updateOptions = (service, opOut) => {};
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    refreshUser();
+  }, []);
+
+  const [refreshing, setRefreshing] = React.useState(false);
 
   return (
     <View style={{ flex: 1 }}>
       <Header />
-      {loadingUser ? (
+      {singleUserData.length === 0 ? (
         <View
           style={{ alignItems: "center", justifyContent: "center", flex: 1 }}
         >
           <ActivityIndicator size="large" color="blue" />
         </View>
       ) : (
-        <ScrollView style={{ paddingVertical: 10, paddingHorizontal: 15 }}>
+        <ScrollView style={{ paddingVertical: 10, paddingHorizontal: 15 }}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
           <View style={styles.firstBlockWrapper}>
             <Text
               style={{
