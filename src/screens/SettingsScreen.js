@@ -85,7 +85,6 @@ export const SettingsScreen = ({ navigation, route }) => {
       console.error(error); // eslint-disable-line
     },
   });
-  // const onToggleSwitch = () => setIsSwitchOnUnionNot(!isSwitchOn);
 
   const [optionOut] = useMutation(OPTION_OUT, {
     onCompleted: () => {

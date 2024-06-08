@@ -157,10 +157,6 @@ export const FeedScreen = ({ navigation, route }) => {
     getNewsFunc();
   }, []);
 
-  // For notifications
-
-
-
   return (
     <>
       <Header />

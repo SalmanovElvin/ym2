@@ -95,7 +95,7 @@ export const Grievances = ({ navigation, route }) => {
     return (
         <>
             <HeaderInPages title="Grievances" />
-            {openGrievances.length === 0 ?
+            {loading ?
                 <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
                     <ActivityIndicator size="large" color="blue" />
                 </View>
@@ -116,85 +116,91 @@ export const Grievances = ({ navigation, route }) => {
 
                     <ScrollView style={{ padding: 10 }}>
                         {isOpenCategory ?
-                            openGrievances.map((item) => (
-                                <TouchableOpacity key={item.id} onPress={() => navigation.navigate('Grievance', { grievanceData: item })} activeOpacity={0.6} style={styles.block}>
-                                    <View style={styles.rows}>
-                                        <View style={{ width: '45%' }}>
-                                            <Text style={{ color: '#696666', fontSize: 12, fontWeight: '600', marginBottom: 2 }}>
-                                                {item.caseNumber}
-                                            </Text>
-                                            <Text style={{ color: '#242529', fontSize: 16, fontWeight: '600' }}>
-                                                {item.title}
-                                            </Text>
+                            openGrievances.length === 0 ?
+                                <Text style={{ marginHorizontal: 10, textAlign: 'center', fontWeight: '600', fontSize: 18, color: '#4A4A4A' }}>There are no open grievances here.</Text>
+                                :
+                                openGrievances.map((item) => (
+                                    <TouchableOpacity key={item.id} onPress={() => navigation.navigate('Grievance', { grievanceData: item })} activeOpacity={0.6} style={styles.block}>
+                                        <View style={styles.rows}>
+                                            <View style={{ width: '45%' }}>
+                                                <Text style={{ color: '#696666', fontSize: 12, fontWeight: '600', marginBottom: 2 }}>
+                                                    {item.caseNumber}
+                                                </Text>
+                                                <Text style={{ color: '#242529', fontSize: 16, fontWeight: '600' }}>
+                                                    {item.title}
+                                                </Text>
+                                            </View>
+                                            <View style={{ backgroundColor: '#EEF164', alignItems: 'center', justifyContent: 'center', borderRadius: 16, width: 100 }}>
+                                                <Text style={{ color: '#8B8E05', fontSize: 16, fontWeight: '600', padding: 10, }}>
+                                                    {item.status}
+                                                </Text>
+                                            </View>
                                         </View>
-                                        <View style={{ backgroundColor: '#EEF164', alignItems: 'center', justifyContent: 'center', borderRadius: 16, width: 100 }}>
-                                            <Text style={{ color: '#8B8E05', fontSize: 16, fontWeight: '600', padding: 10, }}>
-                                                {item.status}
-                                            </Text>
-                                        </View>
-                                    </View>
 
-                                    <View style={styles.rows}>
-                                        <View style={{ width: '45%' }}>
-                                            <Text style={{ color: '#A6A9B4', fontSize: 14, fontWeight: '400', marginBottom: 2 }}>
-                                                Submitted on
-                                            </Text>
-                                            <Text style={{ color: '#696666', fontSize: 14, fontWeight: '400' }}>
-                                                {new Date(item.createdAt).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
-                                            </Text>
+                                        <View style={styles.rows}>
+                                            <View style={{ width: '45%' }}>
+                                                <Text style={{ color: '#A6A9B4', fontSize: 14, fontWeight: '400', marginBottom: 2 }}>
+                                                    Submitted on
+                                                </Text>
+                                                <Text style={{ color: '#696666', fontSize: 14, fontWeight: '400' }}>
+                                                    {new Date(item.createdAt).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
+                                                </Text>
+                                            </View>
+                                            <View style={{ width: '45%' }}>
+                                                <Text style={{ color: '#A6A9B4', fontSize: 14, fontWeight: '400', marginBottom: 2 }}>
+                                                    Last updated on:
+                                                </Text>
+                                                <Text style={{ color: '#696666', fontSize: 14, fontWeight: '400' }}>
+                                                    {new Date(item.lastUpdatedAt).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
+                                                </Text>
+                                            </View>
                                         </View>
-                                        <View style={{ width: '45%' }}>
-                                            <Text style={{ color: '#A6A9B4', fontSize: 14, fontWeight: '400', marginBottom: 2 }}>
-                                                Last updated on:
-                                            </Text>
-                                            <Text style={{ color: '#696666', fontSize: 14, fontWeight: '400' }}>
-                                                {new Date(item.lastUpdatedAt).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
-                                            </Text>
-                                        </View>
-                                    </View>
-                                </TouchableOpacity>
-                            ))
+                                    </TouchableOpacity>
+                                ))
 
 
                             :
-                            closedGrievances.map((item) => (
-                                <View key={item.id} style={styles.block}>
-                                    <View style={styles.rows}>
-                                        <View style={{ width: '45%' }}>
-                                            <Text style={{ color: '#696666', fontSize: 12, fontWeight: '600', marginBottom: 2 }}>
-                                                {item.caseNumber}
-                                            </Text>
-                                            <Text style={{ color: '#242529', fontSize: 16, fontWeight: '600' }}>
-                                                {item.title}
-                                            </Text>
+                            closedGrievances.length === 0 ?
+                                <Text style={{ marginHorizontal: 10, textAlign: 'center', fontWeight: '600', fontSize: 18, color: '#4A4A4A' }}>There are no closed grievances here.</Text>
+                                :
+                                closedGrievances.map((item) => (
+                                    <View key={item.id} style={styles.block}>
+                                        <View style={styles.rows}>
+                                            <View style={{ width: '45%' }}>
+                                                <Text style={{ color: '#696666', fontSize: 12, fontWeight: '600', marginBottom: 2 }}>
+                                                    {item.caseNumber}
+                                                </Text>
+                                                <Text style={{ color: '#242529', fontSize: 16, fontWeight: '600' }}>
+                                                    {item.title}
+                                                </Text>
+                                            </View>
+                                            <View style={{ width: '45%', backgroundColor: '#5BD476', alignItems: 'center', justifyContent: 'center', borderRadius: 16, width: 90 }}>
+                                                <Text style={{ color: '#F9FAFC', fontSize: 16, fontWeight: '600', padding: 10, }}>
+                                                    {item.status}
+                                                </Text>
+                                            </View>
                                         </View>
-                                        <View style={{ width: '45%', backgroundColor: '#5BD476', alignItems: 'center', justifyContent: 'center', borderRadius: 16, width: 90 }}>
-                                            <Text style={{ color: '#F9FAFC', fontSize: 16, fontWeight: '600', padding: 10, }}>
-                                                {item.status}
-                                            </Text>
-                                        </View>
-                                    </View>
 
-                                    <View style={styles.rows}>
-                                        <View style={{ width: '45%' }}>
-                                            <Text style={{ color: '#A6A9B4', fontSize: 14, fontWeight: '400', marginBottom: 2 }}>
-                                                Submitted on
-                                            </Text>
-                                            <Text style={{ color: '#696666', fontSize: 14, fontWeight: '400' }}>
-                                                {new Date(item.createdAt).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
-                                            </Text>
-                                        </View>
-                                        <View style={{ width: '45%' }}>
-                                            <Text style={{ color: '#A6A9B4', fontSize: 14, fontWeight: '400', marginBottom: 2 }}>
-                                                Last updated on:
-                                            </Text>
-                                            <Text style={{ color: '#696666', fontSize: 14, fontWeight: '400' }}>
-                                                {new Date(item.lastUpdatedAt).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
-                                            </Text>
+                                        <View style={styles.rows}>
+                                            <View style={{ width: '45%' }}>
+                                                <Text style={{ color: '#A6A9B4', fontSize: 14, fontWeight: '400', marginBottom: 2 }}>
+                                                    Submitted on
+                                                </Text>
+                                                <Text style={{ color: '#696666', fontSize: 14, fontWeight: '400' }}>
+                                                    {new Date(item.createdAt).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
+                                                </Text>
+                                            </View>
+                                            <View style={{ width: '45%' }}>
+                                                <Text style={{ color: '#A6A9B4', fontSize: 14, fontWeight: '400', marginBottom: 2 }}>
+                                                    Last updated on:
+                                                </Text>
+                                                <Text style={{ color: '#696666', fontSize: 14, fontWeight: '400' }}>
+                                                    {new Date(item.lastUpdatedAt).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}
+                                                </Text>
+                                            </View>
                                         </View>
                                     </View>
-                                </View>
-                            ))
+                                ))
                         }
                     </ScrollView>
                 </View >

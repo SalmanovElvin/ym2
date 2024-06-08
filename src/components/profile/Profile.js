@@ -7,13 +7,14 @@ import {
   Button,
   FlatList,
   Image,
-  TextInput,
+  // TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
   ActivityIndicator,
   Platform,
   KeyboardAvoidingView,
 } from "react-native";
+import { TextInput } from 'react-native-paper';
 import { useMutation, useQuery } from "@apollo/client";
 import Svg, {
   G,
@@ -624,29 +625,37 @@ export const Profile = ({ navigation, route }) => {
               </View>
             </View>
             <TextInput
+              mode="outlined"
               onChangeText={setName}
               value={name}
               style={styles.input}
-              placeholder="First name"
+              label="First name"
+            // placeholder="First name"
             />
             <TextInput
+              mode="outlined"
               onChangeText={setLastName}
               value={lastName}
               style={styles.input}
-              placeholder="Last name"
+              label="Last name"
+            // placeholder="Last name"
             />
             <TextInput
+              mode="outlined"
               onChangeText={setUsername}
               value={username}
               style={styles.input}
-              placeholder="Username"
+              label="Username"
+            // placeholder="Username"
             />
             <TextInput
+              mode="outlined"
               onChangeText={setEmail}
               value={email}
               style={styles.input}
               keyboardType="email-address"
-              placeholder="Email"
+              label="Email"
+            // placeholder="Email"
             />
 
             {/* <TextInput
@@ -657,35 +666,45 @@ export const Profile = ({ navigation, route }) => {
             /> */}
 
             <TextInput
+              mode="outlined"
               onChangeText={setPhone}
               value={phone}
               style={styles.input}
               keyboardType="phone-pad"
-              placeholder="Cell phone"
+              label="Cell phone"
+            // placeholder="Cell phone"
             />
             <TextInput
+              mode="outlined"
               onChangeText={setCity}
               value={city}
               style={styles.input}
-              placeholder="City"
+              label="City"
+            // placeholder="City"
             />
             <TextInput
+              mode="outlined"
               onChangeText={setProvince}
               value={province}
               style={styles.input}
-              placeholder="Province"
+              label="Province"
+            // placeholder="Province"
             />
             <TextInput
+              mode="outlined"
               onChangeText={setAddress}
               value={address}
               style={styles.input}
-              placeholder="Address"
+              label="Address"
+            // placeholder="Address"
             />
             <TextInput
+              mode="outlined"
               onChangeText={setPostalCode}
               value={postalCode}
               style={styles.input}
-              placeholder="Postal code"
+              label="Postal code"
+            // placeholder="Postal code"
             />
             <Text style={{ fontSize: 10, textAlign: "center", color: "grey" }}>
               You can change the fields below in the web version of the portal.
@@ -694,16 +713,20 @@ export const Profile = ({ navigation, route }) => {
               style={{ height: 1, backgroundColor: "grey", marginBottom: 10 }}
             ></View>
             <TextInput
+              mode="outlined"
               editable={false}
               value={userData?.status}
               style={styles.input}
-              placeholder="Status"
+              label="Status"
+            // placeholder="Status"
             />
             <TextInput
+              mode="outlined"
               editable={false}
               value={userData?.unit}
               style={styles.input}
-              placeholder="Unit"
+              label="Unit"
+            // placeholder="Unit"
             />
           </View>
         </ScrollView>
@@ -826,11 +849,14 @@ const styles = StyleSheet.create({
   },
   input: {
     marginBottom: 15,
-    paddingVertical: 16,
-    paddingHorizontal: 24,
-    borderWidth: 1,
-    borderStyle: "solid",
-    borderColor: "#BFC2CD",
-    borderRadius: 5,
+
+    backgroundColor: '#fff',
+    
+    // paddingVertical: 16,
+    // paddingHorizontal: 10,
+    // borderWidth: 1,
+    // borderStyle: "solid",
+    // borderColor: "#BFC2CD",
+    // borderRadius: 5,
   },
 });

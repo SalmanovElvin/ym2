@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Text, TextInput, Button, TouchableOpacity, Keyboard } from "react-native";
+import { View, StyleSheet, Text, TextInput, Button, TouchableOpacity, Keyboard, ScrollView } from "react-native";
 import Svg, { G, Path, Defs, LinearGradient, Stop } from "react-native-svg";
 import { useLazyQuery } from '@apollo/client';
 import AsyncStorage from '@react-native-async-storage/async-storage';

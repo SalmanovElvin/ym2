@@ -7,6 +7,7 @@ import {
   Button,
   Image,
   SafeAreaView,
+  ScrollView,
   TouchableOpacity,
   Keyboard,
   ActivityIndicator,
@@ -283,7 +284,7 @@ export const Login = ({ navigation, route }) => {
       ) : (
         <></>
       )}
-      <View>
+      <View style={{ alignItems: 'center' }}>
         {logoURL === "" ? <ActivityIndicator size="large" color="blue" /> : <Image
           style={{ width: 100, height: 100, borderRadius: 20 }}
           source={logoURL}
@@ -399,15 +400,16 @@ const styles = StyleSheet.create({
   },
   mainContUnion: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "space-around",
     alignItems: "center",
     width: "100%",
+    paddingVertical: 15,
     backgroundColor: "#EAF1F5",
   },
   mainFormUnion: {
     width: "80%",
     alignItems: "center",
-    margin: 45,
+    // margin: 45,
     borderRadius: 10,
     backgroundColor: "#fff",
     paddingHorizontal: 24,
@@ -492,7 +494,7 @@ const styles = StyleSheet.create({
     color: "#0A93E1",
   },
   changeUnion: {
-    marginTop: 30,
+    // marginTop: 30,
     color: "#34519A",
     textTransform: "capitalize",
     fontWeight: "700",
