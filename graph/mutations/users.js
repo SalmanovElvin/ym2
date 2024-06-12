@@ -182,6 +182,12 @@ export const MODIFY_USER = gql`
   }
 `;
 
+export const DELETE_USER = gql`
+	mutation deleteUser($unionID: UnifiedID!, $userID: UnifiedID!) {
+		deleteUser(unionID: $unionID, userID: $userID)
+	}
+`;
+
 export const OPT_OUT = gql`
   mutation optionOut(
     $unionID: UnifiedID!

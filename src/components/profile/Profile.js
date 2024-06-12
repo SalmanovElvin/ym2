@@ -26,7 +26,7 @@ import Svg, {
   Ellipse,
 } from "react-native-svg";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { MODIFY_USER } from "../../../graph/mutations/users";
+import { DELETE_USER, MODIFY_USER } from "../../../graph/mutations/users";
 import AnimatedLoader from "react-native-animated-loader";
 import * as ImagePicker from "expo-image-picker";
 import { UPLOAD_AVATAR } from "./../../../graph/mutations/uploads";
@@ -347,6 +347,8 @@ export const Profile = ({ navigation, route }) => {
   const [success, setSuccess] = useState(false);
   const [isPhoto, setIsPhoto] = useState(false);
 
+  const [deleteModal, setDeleteModal] = useState(false);
+
   const [uploadAvatar, { error }] = useMutation(UPLOAD_AVATAR, {
     variables: {
       unionID: userData?.unionID,
@@ -369,8 +371,24 @@ export const Profile = ({ navigation, route }) => {
       //   alert("Something gone wrong... Please try again.");
     },
   });
+  const [loadingForDeleting, setLoadingForDeleting] = useState(false);
+  const [removeUser] = useMutation(DELETE_USER, {
+    variables: {
+      unionID: userData?.unionID,
+      userID: userData?.id
+    },
+    onCompleted: () => {
+      console.log('deleted');
+      setLoadingForDeleting(false);
+      signOutUserAnsStr();
+    },
+    onError: (err) => {
+      setLoadingForDeleting(false);
+      alert(`${err.message}. Please contact with administrator.`);
+    }
+  });
 
-  if (!userData) {
+  if (!userData || loadingForDeleting) {
     return (
       <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
         <ActivityIndicator size="large" color="blue" />
@@ -729,12 +747,114 @@ export const Profile = ({ navigation, route }) => {
             // placeholder="Unit"
             />
           </View>
+          <TouchableOpacity onPress={() => setDeleteModal(true)} style={{ marginVertical: 15, paddingVertical: 10, justifyContent: 'center', alignItems: 'center', borderRadius: 10, backgroundColor: '#D94D2E' }} activeOpacity={0.6}>
+            <Text style={{ color: '#fff', fontSize: 16, fontWeight: '500' }}>Delete account</Text>
+          </TouchableOpacity>
         </ScrollView>
+        {deleteModal ?
+          <View style={styles.modalBack}>
+            <View style={styles.modal}>
+              <Text style={styles.errMsg}>
+                Do you want to delete your account?
+              </Text>
+              <Text style={styles.tip}>
+                {/* more information */}
+              </Text>
+              <View style={{ marginVertical: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                <TouchableOpacity onPress={() => setDeleteModal(false)} activeOpacity={0.7} style={styles.noBtn}>
+                  <Text style={{
+                    color: '#fff',
+                    fontWeight: '700',
+                    fontSize: 16
+                  }}>No</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => { removeUser(); setDeleteModal(false); setLoadingForDeleting(true); }} activeOpacity={0.7} style={styles.yesBtn}>
+                  <Text style={{
+                    color: '#fff',
+                    fontWeight: '700',
+                    fontSize: 16
+                  }}>Yes</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+          :
+          <></>
+        }
       </KeyboardAvoidingView>
     </>
   );
 };
 const styles = StyleSheet.create({
+  modalBack: {
+    zIndex: 999,
+    width: '100%',
+    position: 'absolute',
+    backgroundColor: 'rgba(0, 0, 50, 0.5)',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  modal: {
+    width: '70%',
+    borderRadius: 10,
+    backgroundColor: '#fff',
+    padding: 15,
+    justifyContent: 'space-between',
+    shadowColor: "#4468c1",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 11.27,
+  },
+  errMsg: {
+    fontSize: 16,
+    fontWeight: '500',
+    lineHeight: 22,
+  },
+  tip: {
+    fontSize: 16,
+    fontWeight: '500',
+    lineHeight: 22,
+    fontStyle: 'italic',
+    color: 'green',
+    marginBottom: 15,
+  },
+  conf: {
+    width: "100%",
+    backgroundColor: "#34519A",
+    height: 56,
+    justifyContent: "center",
+    alignItems: 'center',
+    marginVertical: 10,
+    borderRadius: 5,
+  },
+  noBtn: {
+    width: "48%",
+    backgroundColor: "#34519A",
+    height: 56,
+    justifyContent: "center",
+    alignItems: 'center',
+    marginVertical: 10,
+    borderRadius: 5,
+  },
+  yesBtn: {
+    width: "48%",
+    backgroundColor: "#D94D2E",
+    height: 56,
+    justifyContent: "center",
+    alignItems: 'center',
+    marginVertical: 10,
+    borderRadius: 5,
+  },
+  btnConf: {
+    color: '#fff',
+    fontWeight: '700',
+    fontSize: 16
+
+  },
   qr: {
     position: "absolute",
     bottom: 20,
@@ -803,7 +923,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
   },
   wrapper: {
-    marginVertical: 26,
+    marginTop: 26,
+    marginBottom: 10,
     padding: 16,
     borderRadius: 20,
     backgroundColor: "#fff",
@@ -851,7 +972,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
 
     backgroundColor: '#fff',
-    
+
     // paddingVertical: 16,
     // paddingHorizontal: 10,
     // borderWidth: 1,
