@@ -46,7 +46,7 @@ export const ServicesScreen = ({ navigation, route }) => {
     <>
       <Header />
       <View style={styles.wrapper}>
-        <TouchableOpacity activeOpacity={0.6} onPress={() => navigation.navigate('Voting')}>
+        <TouchableOpacity style={{ borderRadius: 18, overflow: 'hidden' }} activeOpacity={0.6} onPress={() => navigation.navigate('Voting')}>
           <ImageBackground
             source={require('../backImageForServices/block1.png')} // Specify the path to your image file
             style={styles.block}
@@ -69,7 +69,7 @@ export const ServicesScreen = ({ navigation, route }) => {
           </ImageBackground>
         </TouchableOpacity>
 
-        <TouchableOpacity activeOpacity={0.6} onPress={() => navigation.navigate('Calls')}>
+        <TouchableOpacity style={{ borderRadius: 18, overflow: 'hidden' }} activeOpacity={0.6} onPress={() => navigation.navigate('Calls')}>
           <ImageBackground
             source={require('../backImageForServices/block2.png')} // Specify the path to your image file
             style={styles.block}
