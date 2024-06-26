@@ -24,7 +24,6 @@ import Svg, {
 import { LIKE_NEWS_ITEM, PIN_NEWS, SHOW_PIN } from "../../../graph/mutations/news";
 import { GET_NEWS_COMMENT } from "../../../graph/queries/news";
 import HTMLView from "react-native-htmlview";
-import AnimatedLoader from "react-native-animated-loader";
 import LottieView from "lottie-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 

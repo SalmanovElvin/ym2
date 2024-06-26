@@ -32,7 +32,7 @@ import { HeaderInPages } from "./../header/HeaderInPages";
 import { FETCH_BALLOTS } from "../../../graph/queries/elections";
 import { RadioButton, Checkbox } from "react-native-paper";
 import { SEND_EMAIL, SUBMIT_VOTE } from "./../../../graph/mutations/elections";
-import AnimatedLoader from 'react-native-animated-loader';
+// import AnimatedLoader from 'react-native-animated-loader';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -215,7 +215,7 @@ export const ElectionPage = ({ navigation, route }) => {
   return (
     <>
       <HeaderInPages title="Voting" />
-      <AnimatedLoader
+      {/* <AnimatedLoader
         visible={success}
         overlayColor="rgba(255,255,255,0.9)"
         animationStyle={styles.lottie}
@@ -225,7 +225,7 @@ export const ElectionPage = ({ navigation, route }) => {
         <Text style={styles.ok}>
           Results was sended to your profile email!
         </Text>
-      </AnimatedLoader>
+      </AnimatedLoader> */}
       {loading || voteLoading || sendingEmail ? (
         <View
           style={{ alignItems: "center", justifyContent: "center", flex: 1 }}

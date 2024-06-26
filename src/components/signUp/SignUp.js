@@ -11,11 +11,12 @@ import {
   ScrollView,
   StatusBar,
   KeyboardAvoidingView,
-  Platform
+  Platform,
+  Modal
 } from "react-native";
 import { useMutation, useQuery } from '@apollo/client';
 
-import AnimatedLoader from 'react-native-animated-loader';
+import LottieView from 'lottie-react-native';
 
 import PhoneInput from "react-native-phone-number-input";
 import { DatePicker } from "react-native-woodpicker";
@@ -215,30 +216,38 @@ export const SignUp = ({ navigation }) => {
       style={styles.backCont}
     >
       <ScrollView style={styles.backCont}>
-        <AnimatedLoader
-          visible={visible}
-          overlayColor="rgba(255,255,255,0.75)"
-          animationStyle={styles.lottie}
-          speed={1}
-          source={require("../../../animations/Animation.json")}>
-        </AnimatedLoader>
+        <Modal visible={visible} transparent={true} animationType="fade">
+          <View style={{ backgroundColor: 'rgba(255,255,255,0.7)', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+            {/* You can replace this image with your animation or any other component */}
+            <LottieView
+              source={require("../../../animations/Animation.json")}
+              autoPlay
+              loop={true}
+              style={styles.lottie}
+            />
+          </View>
+        </Modal>
 
-        <AnimatedLoader
-          visible={success}
-          overlayColor="rgba(255,255,255,0.75)"
-          animationStyle={styles.lottie}
-          speed={1}
-          source={require("../../../animations/success.json")}>
-          <Text style={styles.ok}>
-            Registration successful!
-          </Text>
-          <Text style={styles.ok2}>
-            You will be redirected to the login page in {time} seconds.
-          </Text>
-          <Text style={styles.ok2}>
-            Please wait for the admins to confirm your registration. The confirmation will be sent to your email.
-          </Text>
-        </AnimatedLoader>
+        <Modal visible={success} transparent={true} animationType="fade">
+          <View style={{ backgroundColor: 'rgba(255,255,255,0.7)', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+            {/* You can replace this image with your animation or any other component */}
+            <LottieView
+              source={require("../../../animations/success.json")}
+              autoPlay
+              loop={false}
+              style={styles.lottie}
+            />
+            <Text style={styles.ok}>
+              Registration successful!
+            </Text>
+            <Text style={styles.ok2}>
+              You will be redirected to the login page in {time} seconds.
+            </Text>
+            <Text style={styles.ok2}>
+              Please wait for the admins to confirm your registration. The confirmation will be sent to your email.
+            </Text>
+          </View>
+        </Modal>
 
         {errUser ?
           <View style={styles.modalBack}>

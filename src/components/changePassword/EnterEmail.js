@@ -7,6 +7,7 @@ import {
   Image,
   TouchableOpacity,
   Keyboard,
+  Modal,
 } from "react-native";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -15,7 +16,7 @@ import { useMutation } from '@apollo/client';
 import { useUnionState } from '../../../store/union-context';
 import { REQUEST_PASSWORD_RESET } from '../../../graph/mutations/password';
 
-import AnimatedLoader from 'react-native-animated-loader';
+import LottieView from 'lottie-react-native';
 
 export const EnterEmail = ({ navigation }) => {
 
@@ -109,32 +110,42 @@ export const EnterEmail = ({ navigation }) => {
   const [success, setSuccess] = useState(false);
   const [time, setTime] = useState(7);
 
+
   return (
     <View style={styles.mainContUnion}>
-      <AnimatedLoader
-        visible={visible}
-        overlayColor="rgba(255,255,255,0.75)"
-        animationStyle={styles.lottie}
-        speed={1}
-        source={require("../../../animations/Animation.json")}>
-      </AnimatedLoader>
 
-      <AnimatedLoader
-        visible={success}
-        overlayColor="rgba(255,255,255,0.9)"
-        animationStyle={styles.lottie}
-        speed={1}
-        source={require("../../../animations/success.json")}>
-        <Text style={styles.ok}>
-          The password reset request operation was successful.
-        </Text>
-        <Text style={styles.ok2}>
-          We will send you a link to reset your password to the email you entered.
-        </Text>
-        <Text style={styles.ok2}>
-          You will be redirected to the login page in {time} seconds.
-        </Text>
-      </AnimatedLoader>
+      <Modal visible={visible} transparent={true} animationType="fade">
+        <View style={{ backgroundColor: 'rgba(255,255,255,0.7)', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+          {/* You can replace this image with your animation or any other component */}
+          <LottieView
+            source={require("../../../animations/Animation.json")}
+            autoPlay
+            loop={true}
+            style={styles.lottie}
+          />
+        </View>
+      </Modal>
+
+      <Modal visible={success} transparent={true} animationType="fade">
+        <View style={{ backgroundColor: 'rgba(255,255,255,0.7)', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+          {/* You can replace this image with your animation or any other component */}
+          <LottieView
+            source={require("../../../animations/success.json")}
+            autoPlay
+            loop={false}
+            style={styles.lottie}
+          />
+          <Text style={styles.ok}>
+            The password reset request operation was successful.
+          </Text>
+          <Text style={styles.ok2}>
+            We will send you a link to reset your password to the email you entered.
+          </Text>
+          <Text style={styles.ok2}>
+            You will be redirected to the login page in {time} seconds.
+          </Text>
+        </View>
+      </Modal>
 
       {errUser ?
         <View style={styles.modalBack}>

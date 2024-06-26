@@ -13,6 +13,7 @@ import {
   ActivityIndicator,
   Platform,
   KeyboardAvoidingView,
+  Modal
 } from "react-native";
 import { TextInput } from 'react-native-paper';
 import { useMutation, useQuery } from "@apollo/client";
@@ -27,12 +28,11 @@ import Svg, {
 } from "react-native-svg";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { DELETE_USER, MODIFY_USER } from "../../../graph/mutations/users";
-import AnimatedLoader from "react-native-animated-loader";
 import * as ImagePicker from "expo-image-picker";
 import { UPLOAD_AVATAR } from "./../../../graph/mutations/uploads";
 import { ReactNativeFile } from "apollo-upload-client";
 
-// import { TextInput } from 'react-native-paper';
+import LottieView from 'lottie-react-native';
 
 export const Profile = ({ navigation, route }) => {
   const { signOutUserAnsStr } = route.params;
@@ -476,20 +476,30 @@ export const Profile = ({ navigation, route }) => {
         <></>
       )}
 
-      <AnimatedLoader
-        visible={changing}
-        overlayColor="rgba(255,255,255,0.9)"
-        animationStyle={styles.lottie}
-        speed={1}
-        source={require("../../../animations/Animation.json")}
-      ></AnimatedLoader>
-      <AnimatedLoader
-        visible={success}
-        overlayColor="rgba(255,255,255,0.9)"
-        animationStyle={styles.lottie}
-        speed={1.2}
-        source={require("../../../animations/success.json")}
-      ></AnimatedLoader>
+      <Modal visible={changing} transparent={true} animationType="fade">
+        <View style={{ backgroundColor: 'rgba(255,255,255,0.7)', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+          {/* You can replace this image with your animation or any other component */}
+          <LottieView
+            source={require("../../../animations/Animation.json")}
+            autoPlay
+            loop={true}
+            style={styles.lottie}
+          />
+        </View>
+      </Modal>
+
+      <Modal visible={changing} transparent={true} animationType="fade">
+        <View style={{ backgroundColor: 'rgba(255,255,255,0.7)', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+          {/* You can replace this image with your animation or any other component */}
+          <LottieView
+            source={require("../../../animations/success.json")}
+            autoPlay
+            loop={false}
+            style={styles.lottie}
+          />
+        </View>
+      </Modal>
+
       <KeyboardAvoidingView
         style={{ height: "100%" }}
         behavior={Platform.OS === "ios" ? "padding" : "height"}

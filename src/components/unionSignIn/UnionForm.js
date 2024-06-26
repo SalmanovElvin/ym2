@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Text, TextInput, Button, TouchableOpacity, Keyboard, ScrollView } from "react-native";
+import { View, StyleSheet, Text, TextInput, Button, TouchableOpacity, Keyboard, ScrollView, Modal, } from "react-native";
 import Svg, { G, Path, Defs, LinearGradient, Stop } from "react-native-svg";
 import { useLazyQuery } from '@apollo/client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -8,7 +8,7 @@ import { GET_UNION, GET_UNION_BY_NAME } from '../../../graph/queries/unions';
 import { useMutation, useQuery } from '@apollo/client';
 import { useUserDispatch } from '../../../store/user-context';
 import { useUnionState, useUnionDispatch } from '../../../store/union-context';
-import AnimatedLoader from 'react-native-animated-loader';
+import LottieView from 'lottie-react-native';
 
 export const UnionForm = ({ navigation }) => {
   const openLogin = (e) => {
@@ -182,13 +182,17 @@ export const UnionForm = ({ navigation }) => {
         <Text style={styles.header}>Find My Union Local</Text>
         <TextInput onChangeText={getUnionValue} value={unionVal} style={styles.input} placeholder="Union" />
         <TextInput onChangeText={getLNValue} value={localNumber} style={styles.input} placeholder="Local number" />
-        <AnimatedLoader
-          visible={visible}
-          overlayColor="rgba(255,255,255,0.75)"
-          animationStyle={styles.lottie}
-          speed={1}
-          source={require("../../../animations/Animation.json")}>
-        </AnimatedLoader>
+        <Modal visible={visible} transparent={true} animationType="fade">
+          <View style={{ backgroundColor: 'rgba(255,255,255,0.7)', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+            {/* You can replace this image with your animation or any other component */}
+            <LottieView
+              source={require("../../../animations/Animation.json")}
+              autoPlay
+              loop={true}
+              style={styles.lottie}
+            />
+          </View>
+        </Modal>
         <TouchableOpacity onPress={(e) => openLogin(e)} activeOpacity={0.7} style={styles.conf}>
           <Text style={styles.btnConf}>Continue</Text>
         </TouchableOpacity>

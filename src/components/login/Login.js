@@ -11,6 +11,8 @@ import {
   TouchableOpacity,
   Keyboard,
   ActivityIndicator,
+  Modal,
+  Animated, Easing
 } from "react-native";
 import { useMutation } from "@apollo/client";
 
@@ -20,7 +22,7 @@ import { useUserDispatch } from "../../../store/user-context";
 
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import AnimatedLoader from "react-native-animated-loader";
+import LottieView from 'lottie-react-native';
 
 export const Login = ({ navigation, route }) => {
   const { getAccess } = route.params;
@@ -324,13 +326,17 @@ export const Login = ({ navigation, route }) => {
           Forgot password?
         </Text>
 
-        <AnimatedLoader
-          visible={visible}
-          overlayColor="rgba(255,255,255,0.75)"
-          animationStyle={styles.lottie}
-          speed={1}
-          source={require("../../../animations/Animation.json")}
-        ></AnimatedLoader>
+        <Modal visible={visible} transparent={true} animationType="fade">
+          <View style={{ backgroundColor: 'rgba(255,255,255,0.7)', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+            {/* You can replace this image with your animation or any other component */}
+            <LottieView
+              source={require("../../../animations/Animation.json")}
+              autoPlay
+              loop={true}
+              style={styles.lottie}
+            />
+          </View>
+        </Modal>
         <TouchableOpacity
           onPress={loginHandler}
           activeOpacity={0.7}
