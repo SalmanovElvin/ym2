@@ -20,13 +20,13 @@ import { NotificationProvider } from './store/notification-context';
 export default function App() {
   const [isReady, setIsReady] = useState(false);
 
-  if (!isReady) {
-    <AppLoading
-      startAsync={bootstrap}
-      onFinish={() => setIsReady(true)}
-      onError={(err) => console.log(err)}
-    />;
-  }
+  // if (!isReady) {
+  //   <AppLoading
+  //     startAsync={bootstrap}
+  //     onFinish={() => setIsReady(true)}
+  //     onError={(err) => console.log(err)}
+  //   />;
+  // }
 
   return (
     <ApolloProvider client={client}>
