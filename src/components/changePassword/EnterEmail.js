@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Keyboard,
   Modal,
+  SafeAreaView
 } from "react-native";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -112,80 +113,88 @@ export const EnterEmail = ({ navigation }) => {
 
 
   return (
-    <View style={styles.mainContUnion}>
+    <SafeAreaView style={{
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      width: "100%",
+      backgroundColor: "#EAF1F5",
+    }}>
+      <View style={styles.mainContUnion}>
 
-      <Modal visible={visible} transparent={true} animationType="fade">
-        <View style={{ backgroundColor: 'rgba(255,255,255,0.7)', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-          {/* You can replace this image with your animation or any other component */}
-          <LottieView
-            source={require("../../../animations/Animation.json")}
-            autoPlay
-            loop={true}
-            style={styles.lottie}
-          />
-        </View>
-      </Modal>
-
-      <Modal visible={success} transparent={true} animationType="fade">
-        <View style={{ backgroundColor: 'rgba(255,255,255,0.7)', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-          {/* You can replace this image with your animation or any other component */}
-          <LottieView
-            source={require("../../../animations/success.json")}
-            autoPlay
-            loop={false}
-            style={styles.lottie}
-          />
-          <Text style={styles.ok}>
-            The password reset request operation was successful.
-          </Text>
-          <Text style={styles.ok2}>
-            We will send you a link to reset your password to the email you entered.
-          </Text>
-          <Text style={styles.ok2}>
-            You will be redirected to the login page in {time} seconds.
-          </Text>
-        </View>
-      </Modal>
-
-      {errUser ?
-        <View style={styles.modalBack}>
-          <View style={styles.modal}>
-            <Text style={styles.errMsg}>
-              {errMsg}
-            </Text>
-            <Text style={styles.tip}>
-              {tip}
-            </Text>
-            <TouchableOpacity onPress={() => setErrUser(false)} activeOpacity={0.7} style={styles.conf}>
-              <Text style={styles.btnConf}>Close</Text>
-            </TouchableOpacity>
+        <Modal visible={visible} transparent={true} animationType="fade">
+          <View style={{ backgroundColor: 'rgba(255,255,255,0.7)', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+            {/* You can replace this image with your animation or any other component */}
+            <LottieView
+              source={require("../../../animations/Animation.json")}
+              autoPlay
+              loop={true}
+              style={styles.lottie}
+            />
           </View>
+        </Modal>
+
+        <Modal visible={success} transparent={true} animationType="fade">
+          <View style={{ backgroundColor: 'rgba(255,255,255,0.7)', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+            {/* You can replace this image with your animation or any other component */}
+            <LottieView
+              source={require("../../../animations/success.json")}
+              autoPlay
+              loop={false}
+              style={styles.lottie}
+            />
+            <Text style={styles.ok}>
+              The password reset request operation was successful.
+            </Text>
+            <Text style={styles.ok2}>
+              We will send you a link to reset your password to the email you entered.
+            </Text>
+            <Text style={styles.ok2}>
+              You will be redirected to the login page in {time} seconds.
+            </Text>
+          </View>
+        </Modal>
+
+        {errUser ?
+          <View style={styles.modalBack}>
+            <View style={styles.modal}>
+              <Text style={styles.errMsg}>
+                {errMsg}
+              </Text>
+              <Text style={styles.tip}>
+                {tip}
+              </Text>
+              <TouchableOpacity onPress={() => setErrUser(false)} activeOpacity={0.7} style={styles.conf}>
+                <Text style={styles.btnConf}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          :
+          <></>
+        }
+
+        <View>
+          <Image
+            style={{ width: 100, height: 100, borderRadius: 20 }}
+            source={logoURL}
+          />
         </View>
-        :
-        <></>
-      }
+        <View style={styles.mainFormUnion}>
+          <Text style={styles.header}>Enter your Email</Text>
 
-      <View>
-        <Image
-          style={{ width: 100, height: 100, borderRadius: 20 }}
-          source={logoURL}
-        />
+          <TextInput
+            style={styles.input}
+            placeholder="Personal Email"
+            keyboardType="email-address"
+            onChangeText={setEmail}
+          />
+
+          <TouchableOpacity onPress={passwordReset} activeOpacity={0.7} style={styles.conf}>
+            <Text style={styles.btnConf}>Request password reset</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-      <View style={styles.mainFormUnion}>
-        <Text style={styles.header}>Enter your Email</Text>
-
-        <TextInput
-          style={styles.input}
-          placeholder="Personal Email"
-          keyboardType="email-address"
-          onChangeText={setEmail}
-        />
-
-        <TouchableOpacity onPress={passwordReset} activeOpacity={0.7} style={styles.conf}>
-          <Text style={styles.btnConf}>Request password reset</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -4,7 +4,8 @@ import {
     Text,
     StyleSheet,
     TouchableOpacity,
-    Share
+    Share,
+    SafeAreaView
 } from "react-native";
 import QRCode from 'react-native-qrcode-svg';
 import Svg, {
@@ -105,21 +106,27 @@ export const Qr = ({ navigation, route }) => {
 
 
     return (
-        <View style={styles.wrapper}>
-            <View style={styles.header}>
-                <Text style={{ fontSize: 18, fontWeight: '700', color: '#242529' }}>
-                    Scan QR Code
-                </Text>
+        <SafeAreaView style={{
+            flex: 1,
+            width: "100%",
+            backgroundColor: "#EAF1F5",
+        }}>
+            <View style={styles.wrapper}>
+                <View style={styles.header}>
+                    <Text style={{ fontSize: 18, fontWeight: '700', color: '#242529' }}>
+                        Scan QR Code
+                    </Text>
+                </View>
+                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                    <QRCode size={180} value={user?.barcode} />
+                </View>
+                <TouchableOpacity onPress={shareContent} activeOpacity={0.6} style={styles.share}>
+                    <Text style={{ color: '#34519A', fontSize: 16, fontWeight: '700' }}>
+                        Share as a link
+                    </Text>
+                </TouchableOpacity>
             </View>
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                <QRCode size={180} value={user?.barcode} />
-            </View>
-            <TouchableOpacity onPress={shareContent} activeOpacity={0.6} style={styles.share}>
-                <Text style={{ color: '#34519A', fontSize: 16, fontWeight: '700' }}>
-                    Share as a link
-                </Text>
-            </TouchableOpacity>
-        </View>
+        </SafeAreaView>
     );
 }
 const styles = StyleSheet.create({

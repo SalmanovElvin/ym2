@@ -159,8 +159,12 @@ export const FeedScreen = ({ navigation, route }) => {
 
   return (
     <>
-      <Header />
-      <SafeAreaView style={{ flex: 1, }}>
+      <SafeAreaView style={{
+        flex: 1,
+        width: "100%",
+        backgroundColor: "#EAF1F5",
+      }}>
+        <Header />
         {errUser ? (
           <View style={styles.modalBack}>
             <View style={styles.modal}>

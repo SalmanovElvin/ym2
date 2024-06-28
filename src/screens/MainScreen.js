@@ -114,8 +114,9 @@ export const MainScreen = ({ navigation, route }) => {
 
   return (
     <>
-      <Header />
       <SafeAreaView style={styles.wrapper}>
+        <Header />
+
         <ScrollView style={styles.wrapper}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -203,13 +204,14 @@ export const MainScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    padding: 15,
   },
   block: {
     backgroundColor: '#E5E7ED',
     borderRadius: 20,
     padding: 32,
     marginBottom: 18,
+    marginTop: 18,
+    marginHorizontal: 15,
     shadowColor: "#4468c1",
     shadowOffset: {
       width: 0,

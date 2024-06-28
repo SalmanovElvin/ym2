@@ -268,98 +268,106 @@ export const Login = ({ navigation, route }) => {
   const [visible, setVisible] = useState(false);
 
   return (
-    <View style={styles.mainContUnion}>
-      {errUser ? (
-        <View style={styles.modalBack}>
-          <View style={styles.modal}>
-            <Text style={styles.errMsg}>{errMsg}</Text>
-            <Text style={styles.tip}>{tip}</Text>
-            <TouchableOpacity
-              onPress={() => setErrUser(false)}
-              activeOpacity={0.7}
-              style={styles.conf}
-            >
-              <Text style={styles.btnConf}>Close</Text>
-            </TouchableOpacity>
+    <SafeAreaView style={{
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      width: "100%",
+      backgroundColor: "#EAF1F5",
+    }}>
+      <View style={styles.mainContUnion}>
+        {errUser ? (
+          <View style={styles.modalBack}>
+            <View style={styles.modal}>
+              <Text style={styles.errMsg}>{errMsg}</Text>
+              <Text style={styles.tip}>{tip}</Text>
+              <TouchableOpacity
+                onPress={() => setErrUser(false)}
+                activeOpacity={0.7}
+                style={styles.conf}
+              >
+                <Text style={styles.btnConf}>Close</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      ) : (
-        <></>
-      )}
-      <View style={{ alignItems: 'center' }}>
-        {logoURL === "" ? <ActivityIndicator size="large" color="blue" /> : <Image
-          style={{ width: 100, height: 100, borderRadius: 20 }}
-          source={logoURL}
-        />}
+        ) : (
+          <></>
+        )}
+        <View style={{ alignItems: 'center' }}>
+          {logoURL === "" ? <ActivityIndicator size="large" color="blue" /> : <Image
+            style={{ width: 100, height: 100, borderRadius: 20 }}
+            source={logoURL}
+          />}
 
-      </View>
-      <View style={styles.mainFormUnion}>
-        <Text style={styles.header}>Log into your account</Text>
-        <TextInput
-          onChangeText={setUsername}
-          style={styles.input}
-          keyboardType="email-address"
-          placeholder="Login"
-        />
-        <View style={styles.container}>
+        </View>
+        <View style={styles.mainFormUnion}>
+          <Text style={styles.header}>Log into your account</Text>
           <TextInput
-            // Set secureTextEntry prop to hide
-            //password when showPassword is false
-            secureTextEntry={!showPassword}
-            value={password}
-            onChangeText={setPassword}
-            style={styles.inputP}
-            placeholder="Password"
+            onChangeText={setUsername}
+            style={styles.input}
+            keyboardType="email-address"
+            placeholder="Login"
           />
-          <MaterialCommunityIcons
-            name={showPassword ? "eye-off" : "eye"}
-            size={24}
-            color="#aaa"
-            style={styles.icon}
-            onPress={toggleShowPassword}
-          />
-        </View>
-        <Text
-          onPress={() => navigation.navigate("forgot")}
-          style={styles.forgot}
-        >
-          Forgot password?
-        </Text>
-
-        <Modal visible={visible} transparent={true} animationType="fade">
-          <View style={{ backgroundColor: 'rgba(255,255,255,0.7)', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-            {/* You can replace this image with your animation or any other component */}
-            <LottieView
-              source={require("../../../animations/Animation.json")}
-              autoPlay
-              loop={true}
-              style={styles.lottie}
+          <View style={styles.container}>
+            <TextInput
+              // Set secureTextEntry prop to hide
+              //password when showPassword is false
+              secureTextEntry={!showPassword}
+              value={password}
+              onChangeText={setPassword}
+              style={styles.inputP}
+              placeholder="Password"
+            />
+            <MaterialCommunityIcons
+              name={showPassword ? "eye-off" : "eye"}
+              size={24}
+              color="#aaa"
+              style={styles.icon}
+              onPress={toggleShowPassword}
             />
           </View>
-        </Modal>
-        <TouchableOpacity
-          onPress={loginHandler}
-          activeOpacity={0.7}
-          style={styles.conf}
-        >
-          <Text style={styles.btnConf}>Sign in</Text>
-        </TouchableOpacity>
-
-        <Text style={styles.create}>
-          If you don’t have an account you can sign up{" "}
           <Text
-            onPress={() => navigation.navigate("signUp")}
-            style={styles.createHere}
+            onPress={() => navigation.navigate("forgot")}
+            style={styles.forgot}
           >
-            Here
-          </Text>{" "}
-          .
-        </Text>
+            Forgot password?
+          </Text>
+
+          <Modal visible={visible} transparent={true} animationType="fade">
+            <View style={{ backgroundColor: 'rgba(255,255,255,0.7)', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+              {/* You can replace this image with your animation or any other component */}
+              <LottieView
+                source={require("../../../animations/Animation.json")}
+                autoPlay
+                loop={true}
+                style={styles.lottie}
+              />
+            </View>
+          </Modal>
+          <TouchableOpacity
+            onPress={loginHandler}
+            activeOpacity={0.7}
+            style={styles.conf}
+          >
+            <Text style={styles.btnConf}>Sign in</Text>
+          </TouchableOpacity>
+
+          <Text style={styles.create}>
+            If you don’t have an account you can sign up{" "}
+            <Text
+              onPress={() => navigation.navigate("signUp")}
+              style={styles.createHere}
+            >
+              Here
+            </Text>{" "}
+            .
+          </Text>
+        </View>
+        <TouchableOpacity onPress={openUnionLogin} style={styles.changeUnion}>
+          <Text style={styles.changeUnion}>Change Union</Text>
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={openUnionLogin} style={styles.changeUnion}>
-        <Text style={styles.changeUnion}>Change Union</Text>
-      </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 

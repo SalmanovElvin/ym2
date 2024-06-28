@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Button, FlatList, Image, ScrollView, TouchableOpacity, ActivityIndicator } from "react-native";
+import { View, Text, StyleSheet, Button, FlatList, Image, ScrollView, TouchableOpacity, ActivityIndicator, SafeAreaView } from "react-native";
 
 import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
 
@@ -132,15 +132,21 @@ export const Chats = ({ navigation, route }) => {
     }
 
     return (
-        <View style={styles.mainWrapper}>
-            <FlatList
-                data={chatsState}
-                renderItem={({ item }) => (
-                    <Chat chat={item} participants={item.participants} />
-                )}
-                keyExtractor={(item) => item?.id}
-            />
-        </View>
+        <SafeAreaView style={{
+            flex: 1,
+            width: "100%",
+            backgroundColor: "#EAF1F5",
+        }}>
+            <View style={styles.mainWrapper}>
+                <FlatList
+                    data={chatsState}
+                    renderItem={({ item }) => (
+                        <Chat chat={item} participants={item.participants} />
+                    )}
+                    keyExtractor={(item) => item?.id}
+                />
+            </View>
+        </SafeAreaView>
     );
 };
 

@@ -13,6 +13,7 @@ import {
   Platform,
   TextInput,
   Keyboard,
+  SafeAreaView
 } from "react-native";
 
 import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
@@ -174,53 +175,59 @@ export const MessagesPage = ({ navigation, route }) => {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{ height: "100%" }}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 110 : 130}
-    >
-      {msgs.length === 0 ? (
-        <View
-          style={{ alignItems: "center", justifyContent: "center", flex: 1 }}
-        >
-          <ActivityIndicator size="large" color="blue" />
-        </View>
-      ) : (
-        <View style={styles.mainWrapper}>
-          <FlatList
-            inverted
-            style={{ height: "90%" }}
-            data={[...msgs].reverse()}
-            renderItem={({ item }) => <Message msg={item} />}
-            keyExtractor={(item) => item?.id}
-          />
-        </View>
-      )}
-
-      <View style={styles.newCommentWrapper}>
-        <TextInput
-          value={newMsgContent}
-          style={styles.newCommentInput}
-          onChangeText={setNewMsgContent}
-          placeholder="Write a message"
-        />
-        <TouchableOpacity activeOpacity={0.6} onPress={sendNewMessage}>
-          <Svg
-            width="40"
-            height="40"
-            viewBox="0 0 40 40"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+    <SafeAreaView style={{
+      flex: 1,
+      width: "100%",
+      backgroundColor: "#EAF1F5",
+    }}>
+      <KeyboardAvoidingView
+        style={{ height: "100%" }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 110 : 130}
+      >
+        {msgs.length === 0 ? (
+          <View
+            style={{ alignItems: "center", justifyContent: "center", flex: 1 }}
           >
-            <Rect width="40" height="40" rx="20" fill="#34519A" />
-            <Path
-              d="M9.80732 17.8679C9.03653  18.1404 8.94011 19.1901 9.64753 19.5996L14.8199 22.588C14.9498 22.6632 15.099 22.6985 15.2488 22.6897C15.3986 22.6808 15.5426 22.6281 15.6627 22.5381L21.7814 17.9491C21.958 17.8159 22.1822 18.0401 22.0495 18.2173L17.4605 24.3348C17.3705 24.455 17.3179 24.5989 17.309 24.7488C17.3001 24.8986 17.3355 25.0478 17.4107 25.1777L20.4007 30.3528C20.8096 31.0596 21.8594 30.9632 22.1324 30.193L28.2256 12.9967C28.4948 12.2378 27.7625 11.5055 27.003 11.7742L9.80732 17.8679Z"
-              fill="white"
+            <ActivityIndicator size="large" color="blue" />
+          </View>
+        ) : (
+          <View style={styles.mainWrapper}>
+            <FlatList
+              inverted
+              style={{ height: "90%" }}
+              data={[...msgs].reverse()}
+              renderItem={({ item }) => <Message msg={item} />}
+              keyExtractor={(item) => item?.id}
             />
-          </Svg>
-        </TouchableOpacity>
-      </View>
-    </KeyboardAvoidingView>
+          </View>
+        )}
+
+        <View style={styles.newCommentWrapper}>
+          <TextInput
+            value={newMsgContent}
+            style={styles.newCommentInput}
+            onChangeText={setNewMsgContent}
+            placeholder="Write a message"
+          />
+          <TouchableOpacity activeOpacity={0.6} onPress={sendNewMessage}>
+            <Svg
+              width="40"
+              height="40"
+              viewBox="0 0 40 40"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <Rect width="40" height="40" rx="20" fill="#34519A" />
+              <Path
+                d="M9.80732 17.8679C9.03653  18.1404 8.94011 19.1901 9.64753 19.5996L14.8199 22.588C14.9498 22.6632 15.099 22.6985 15.2488 22.6897C15.3986 22.6808 15.5426 22.6281 15.6627 22.5381L21.7814 17.9491C21.958 17.8159 22.1822 18.0401 22.0495 18.2173L17.4605 24.3348C17.3705 24.455 17.3179 24.5989 17.309 24.7488C17.3001 24.8986 17.3355 25.0478 17.4107 25.1777L20.4007 30.3528C20.8096 31.0596 21.8594 30.9632 22.1324 30.193L28.2256 12.9967C28.4948 12.2378 27.7625 11.5055 27.003 11.7742L9.80732 17.8679Z"
+                fill="white"
+              />
+            </Svg>
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 

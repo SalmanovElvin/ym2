@@ -5,6 +5,7 @@ import {
   Text,
   StyleSheet,
   ScrollView,
+  SafeAreaView,
   Button,
   FlatList,
   Image,
@@ -145,122 +146,214 @@ export const Perks = ({ navigation, route }) => {
 
   return (
     <>
-      <HeaderInPages title="Perks" />
-      {categories.length === 0 ? (
-        <View
-          style={{ alignItems: "center", justifyContent: "center", flex: 1 }}
-        >
-          <ActivityIndicator size="large" color="blue" />
-        </View>
-      ) : (
-        <ScrollView style={{ flex: 1, paddingVertical: 14 }}>
-          <View style={{ paddingHorizontal: 14 }}>
-            <View style={styles.searchInputWrapper}>
-              <TextInput
-                style={styles.searchInput}
-                placeholder="Search"
-                value={searchTxt}
-                onChangeText={setSearchTxt}
-              />
-              <Svg
-                width="18"
-                height="20"
-                viewBox="0 0 18 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <Circle
-                  cx="7.86436"
-                  cy="7.7573"
-                  r="6.65"
-                  stroke="#34519A"
-                  strokeWidth="2"
-                />
-                <Line
-                  x1="17.2929"
-                  y1="18.5999"
-                  x2="13.9074"
-                  y2="15.2145"
-                  stroke="#34519A"
-                  strokeWidth="2"
-                />
-              </Svg>
-            </View>
+      <SafeAreaView style={{
+        flex: 1,
+        width: "100%",
+        backgroundColor: "#EAF1F5",
+      }}>
+        <HeaderInPages title="Perks" />
+        {categories.length === 0 ? (
+          <View
+            style={{ alignItems: "center", justifyContent: "center", flex: 1 }}
+          >
+            <ActivityIndicator size="large" color="blue" />
           </View>
+        ) : (
+          <ScrollView style={{ flex: 1, paddingVertical: 14 }}>
+            <View style={{ paddingHorizontal: 14 }}>
+              <View style={styles.searchInputWrapper}>
+                <TextInput
+                  style={styles.searchInput}
+                  placeholder="Search"
+                  value={searchTxt}
+                  onChangeText={setSearchTxt}
+                />
+                <Svg
+                  width="18"
+                  height="20"
+                  viewBox="0 0 18 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <Circle
+                    cx="7.86436"
+                    cy="7.7573"
+                    r="6.65"
+                    stroke="#34519A"
+                    strokeWidth="2"
+                  />
+                  <Line
+                    x1="17.2929"
+                    y1="18.5999"
+                    x2="13.9074"
+                    y2="15.2145"
+                    stroke="#34519A"
+                    strokeWidth="2"
+                  />
+                </Svg>
+              </View>
+            </View>
 
-          <Carousel
-            data={categories}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-              activeOpacity={0.6}
-                onPress={() => setSelectedCategory(item)}
-                style={
-                  item === selectedCategory
-                    ? {
+            <Carousel
+              data={categories}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  activeOpacity={0.6}
+                  onPress={() => setSelectedCategory(item)}
+                  style={
+                    item === selectedCategory
+                      ? {
                         borderRadius: 21,
                         backgroundColor: "#34519A",
                         justifyContent: "center",
                         alignItems: "center",
                       }
-                    : {
+                      : {
                         backgroundColor: "#EDEEF1",
                         borderRadius: 21,
                         justifyContent: "center",
                         alignItems: "center",
                       }
-                }
-              >
-                <Text
-                  style={
-                    item === selectedCategory
-                      ? {
+                  }
+                >
+                  <Text
+                    style={
+                      item === selectedCategory
+                        ? {
                           fontSize: 16,
                           fontWeight: "500",
                           paddingVertical: 16,
                           paddingHorizontal: 24,
                           color: "#fff",
                         }
-                      : {
+                        : {
                           paddingVertical: 16,
                           paddingHorizontal: 24,
                           fontSize: 16,
                           fontWeight: "500",
                           color: "#242529",
                         }
-                  }
-                >
-                  {item.name}
-                </Text>
-              </TouchableOpacity>
-            )}
-            sliderWidth={screenWidth}
-            itemWidth={screenWidth / 2.2}
+                    }
+                  >
+                    {item.name}
+                  </Text>
+                </TouchableOpacity>
+              )}
+              sliderWidth={screenWidth}
+              itemWidth={screenWidth / 2.2}
             // onSnapToItem={index => onTabPress(docTypes[index].id)}
-          />
+            />
 
-          <View
-            style={{
-              height: 1,
-              width: "100%",
-              backgroundColor: "#D9D9D9",
-              marginVertical: 15,
-            }}
-          ></View>
+            <View
+              style={{
+                height: 1,
+                width: "100%",
+                backgroundColor: "#D9D9D9",
+                marginVertical: 15,
+              }}
+            ></View>
 
-          <View style={{ paddingHorizontal: 20, paddingVertical: 26 }}>
-            {businesses.length === 0 ? (
-              <View
-                style={{
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flex: 1,
-                }}
-              >
-                <ActivityIndicator size="large" color="blue" />
-              </View>
-            ) : searchTxt.trim().length === 0 ? (
-              businesses.map((item) =>
-                item.offers.map((businessesItem) => (
+            <View style={{ paddingHorizontal: 20, paddingVertical: 26 }}>
+              {businesses.length === 0 ? (
+                <View
+                  style={{
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flex: 1,
+                  }}
+                >
+                  <ActivityIndicator size="large" color="blue" />
+                </View>
+              ) : searchTxt.trim().length === 0 ? (
+                businesses.map((item) =>
+                  item.offers.map((businessesItem) => (
+                    <View key={businessesItem.id} style={styles.block}>
+                      <Image
+                        style={{ width: "24%", height: 86, borderRadius: 10 }}
+                        source={{ uri: businessesItem.heroImages[0].url }}
+                      />
+                      <View style={{ marginLeft: 10, width: "51%" }}>
+                        <Text
+                          style={{
+                            color: "#242529",
+                            fontWeight: "600",
+                            fontSize: 16,
+                            marginBottom: 5,
+                            width: "100%",
+                          }}
+                        >
+                          {businessesItem.headline}
+                        </Text>
+                        <Text
+                          style={{
+                            color: "#848587",
+                            fontWeight: "400",
+                            fontSize: 14,
+                            width: "65%",
+                          }}
+                        >
+                          {businessesItem.subhead}
+                        </Text>
+                      </View>
+                      <View style={{ width: "23%" }}>
+                        {businessesItem.flags.map((flagsItem, idx) => (
+                          <Text
+                            key={idx + "" + businessesItem.id}
+                            style={
+                              flagsItem.toLowerCase() === "limited"
+                                ? {
+                                  textTransform: "capitalize",
+                                  width: "100%",
+                                  backgroundColor: "#D94D2E",
+                                  borderRadius: 10,
+                                  color: "#fff",
+                                  paddingVertical: 8,
+                                  textAlign: "center",
+                                  marginBottom: 8,
+                                }
+                                : flagsItem.toLowerCase() === "exclusive"
+                                  ? {
+                                    textTransform: "capitalize",
+                                    width: "100%",
+                                    backgroundColor: "#46e695",
+                                    borderRadius: 10,
+                                    color: "#fff",
+                                    paddingVertical: 8,
+                                    textAlign: "center",
+                                    marginBottom: 8,
+                                  }
+                                  : flagsItem.toLowerCase() === "featured"
+                                    ? {
+                                      textTransform: "capitalize",
+                                      width: "100%",
+                                      backgroundColor: "#9b59b6",
+                                      borderRadius: 10,
+                                      color: "#fff",
+                                      paddingVertical: 8,
+                                      textAlign: "center",
+                                      marginBottom: 8,
+                                    }
+                                    : {
+                                      textTransform: "capitalize",
+                                      width: "100%",
+                                      backgroundColor: "#f1c40f",
+                                      borderRadius: 10,
+                                      color: "#fff",
+                                      paddingVertical: 8,
+                                      textAlign: "center",
+                                      marginBottom: 8,
+                                    }
+                            }
+                          >
+                            {flagsItem}
+                          </Text>
+                        ))}
+                      </View>
+                    </View>
+                  ))
+                )
+              ) : (
+                afterSearchOffers?.map((businessesItem) => (
                   <View key={businessesItem.id} style={styles.block}>
                     <Image
                       style={{ width: "24%", height: 86, borderRadius: 10 }}
@@ -296,93 +389,6 @@ export const Perks = ({ navigation, route }) => {
                           style={
                             flagsItem.toLowerCase() === "limited"
                               ? {
-                                  textTransform: "capitalize",
-                                  width: "100%",
-                                  backgroundColor: "#D94D2E",
-                                  borderRadius: 10,
-                                  color: "#fff",
-                                  paddingVertical: 8,
-                                  textAlign: "center",
-                                  marginBottom: 8,
-                                }
-                              : flagsItem.toLowerCase() === "exclusive"
-                              ? {
-                                  textTransform: "capitalize",
-                                  width: "100%",
-                                  backgroundColor: "#46e695",
-                                  borderRadius: 10,
-                                  color: "#fff",
-                                  paddingVertical: 8,
-                                  textAlign: "center",
-                                  marginBottom: 8,
-                                }
-                              : flagsItem.toLowerCase() === "featured"
-                              ? {
-                                  textTransform: "capitalize",
-                                  width: "100%",
-                                  backgroundColor: "#9b59b6",
-                                  borderRadius: 10,
-                                  color: "#fff",
-                                  paddingVertical: 8,
-                                  textAlign: "center",
-                                  marginBottom: 8,
-                                }
-                              : {
-                                  textTransform: "capitalize",
-                                  width: "100%",
-                                  backgroundColor: "#f1c40f",
-                                  borderRadius: 10,
-                                  color: "#fff",
-                                  paddingVertical: 8,
-                                  textAlign: "center",
-                                  marginBottom: 8,
-                                }
-                          }
-                        >
-                          {flagsItem}
-                        </Text>
-                      ))}
-                    </View>
-                  </View>
-                ))
-              )
-            ) : (
-              afterSearchOffers?.map((businessesItem) => (
-                <View key={businessesItem.id} style={styles.block}>
-                  <Image
-                    style={{ width: "24%", height: 86, borderRadius: 10 }}
-                    source={{ uri: businessesItem.heroImages[0].url }}
-                  />
-                  <View style={{ marginLeft: 10, width: "51%" }}>
-                    <Text
-                      style={{
-                        color: "#242529",
-                        fontWeight: "600",
-                        fontSize: 16,
-                        marginBottom: 5,
-                        width: "100%",
-                      }}
-                    >
-                      {businessesItem.headline}
-                    </Text>
-                    <Text
-                      style={{
-                        color: "#848587",
-                        fontWeight: "400",
-                        fontSize: 14,
-                        width: "65%",
-                      }}
-                    >
-                      {businessesItem.subhead}
-                    </Text>
-                  </View>
-                  <View style={{ width: "23%" }}>
-                    {businessesItem.flags.map((flagsItem, idx) => (
-                      <Text
-                        key={idx + "" + businessesItem.id}
-                        style={
-                          flagsItem.toLowerCase() === "limited"
-                            ? {
                                 textTransform: "capitalize",
                                 width: "100%",
                                 backgroundColor: "#D94D2E",
@@ -392,50 +398,51 @@ export const Perks = ({ navigation, route }) => {
                                 textAlign: "center",
                                 marginBottom: 8,
                               }
-                            : flagsItem.toLowerCase() === "exclusive"
-                            ? {
-                                textTransform: "capitalize",
-                                width: "100%",
-                                backgroundColor: "#46e695",
-                                borderRadius: 10,
-                                color: "#fff",
-                                paddingVertical: 8,
-                                textAlign: "center",
-                                marginBottom: 8,
-                              }
-                            : flagsItem.toLowerCase() === "featured"
-                            ? {
-                                textTransform: "capitalize",
-                                width: "100%",
-                                backgroundColor: "#9b59b6",
-                                borderRadius: 10,
-                                color: "#fff",
-                                paddingVertical: 8,
-                                textAlign: "center",
-                                marginBottom: 8,
-                              }
-                            : {
-                                textTransform: "capitalize",
-                                width: "100%",
-                                backgroundColor: "#f1c40f",
-                                borderRadius: 10,
-                                color: "#fff",
-                                paddingVertical: 8,
-                                textAlign: "center",
-                                marginBottom: 8,
-                              }
-                        }
-                      >
-                        {flagsItem}
-                      </Text>
-                    ))}
+                              : flagsItem.toLowerCase() === "exclusive"
+                                ? {
+                                  textTransform: "capitalize",
+                                  width: "100%",
+                                  backgroundColor: "#46e695",
+                                  borderRadius: 10,
+                                  color: "#fff",
+                                  paddingVertical: 8,
+                                  textAlign: "center",
+                                  marginBottom: 8,
+                                }
+                                : flagsItem.toLowerCase() === "featured"
+                                  ? {
+                                    textTransform: "capitalize",
+                                    width: "100%",
+                                    backgroundColor: "#9b59b6",
+                                    borderRadius: 10,
+                                    color: "#fff",
+                                    paddingVertical: 8,
+                                    textAlign: "center",
+                                    marginBottom: 8,
+                                  }
+                                  : {
+                                    textTransform: "capitalize",
+                                    width: "100%",
+                                    backgroundColor: "#f1c40f",
+                                    borderRadius: 10,
+                                    color: "#fff",
+                                    paddingVertical: 8,
+                                    textAlign: "center",
+                                    marginBottom: 8,
+                                  }
+                          }
+                        >
+                          {flagsItem}
+                        </Text>
+                      ))}
+                    </View>
                   </View>
-                </View>
-              ))
-            )}
-          </View>
-        </ScrollView>
-      )}
+                ))
+              )}
+            </View>
+          </ScrollView>
+        )}
+      </SafeAreaView>
     </>
   );
 };

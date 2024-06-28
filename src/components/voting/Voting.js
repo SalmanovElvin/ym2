@@ -127,120 +127,126 @@ export const Voting = ({ navigation, route }) => {
 
   return (
     <>
-      <HeaderInPages title="Voting" />
-      {electionsLoading ? (
-        <View
-          style={{ alignItems: "center", justifyContent: "center", flex: 1 }}
-        >
-          <ActivityIndicator size="large" color="blue" />
-        </View>
-      ) : (
-        <SafeAreaView style={{ flex: 1, }}>
-          <ScrollView refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={() => {
-              onRefresh();
-            }} />
-          } style={styles.wrapper}>
-            {actualElections.length !== 0 ? (
-              actualElections.map((item) => (
-                <ActualVote userData={userData} key={item.id} item={item} />
-              ))
-            ) : (
-              <Text
-                style={{
-                  padding: 15,
-                  textAlign: "center",
-                  fontWeight: "700",
-                  fontSize: 16,
-                  color: "#696666",
-                }}
-              >
-                There are no any actual votings.
-              </Text>
-            )}
-
-            {expiredElections.length === 0 ? (
-              <></>
-            ) : (
-              <>
+      <SafeAreaView style={{
+        flex: 1,
+        width: "100%",
+        backgroundColor: "#EAF1F5",
+      }}>
+        <HeaderInPages title="Voting" />
+        {electionsLoading ? (
+          <View
+            style={{ alignItems: "center", justifyContent: "center", flex: 1 }}
+          >
+            <ActivityIndicator size="large" color="blue" />
+          </View>
+        ) : (
+          <SafeAreaView style={{ flex: 1, }}>
+            <ScrollView refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={() => {
+                onRefresh();
+              }} />
+            } style={styles.wrapper}>
+              {actualElections.length !== 0 ? (
+                actualElections.map((item) => (
+                  <ActualVote userData={userData} key={item.id} item={item} />
+                ))
+              ) : (
                 <Text
                   style={{
-                    paddingVertical: 10,
+                    padding: 15,
                     textAlign: "center",
-                    marginBottom: 15,
-                    color: "#242529",
-                    fontSize: 18,
                     fontWeight: "700",
-                    borderBottomColor: "#242529",
-                    borderBottomWidth: 1,
-                    borderStyle: "solid",
+                    fontSize: 16,
+                    color: "#696666",
                   }}
                 >
-                  Elections that was expired:
+                  There are no any actual votings.
                 </Text>
-                {expiredElections.map((item) => (
-                  <View key={item.id} style={styles.block}>
-                    <Text
-                      style={{
-                        textAlign: "center",
-                        marginBottom: 10,
-                        color: "#242529",
-                        fontSizeL: 16,
-                        fontWeight: "600",
-                      }}
-                    >
-                      {item.title.toUpperCase()}
-                    </Text>
-                    <Text
-                      style={{
-                        textAlign: "center",
-                        marginBottom: 10,
-                        color: "#4A4A4A",
-                        fontSizeL: 14,
-                        fontWeight: "400",
-                      }}
-                    >
-                      Ended in{" "}
-                      {Math.ceil(
-                        Math.abs(
-                          new Date(item.endDate) - new Date(item.startDate)
-                        ) /
-                        (1000 * 60 * 60 * 24)
-                      )}{" "}
-                      day(s) |{" "}
-                      {new Date(item.startDate)
-                        .toLocaleDateString("en-US", {
-                          month: "long",
-                          day: "numeric",
-                          year: "numeric",
-                        })
-                        .replace(/(\d{1,2})(st|nd|rd|th)/, "$1$2")}
-                    </Text>
-                    <Text
-                      style={{
-                        textAlign: "center",
-                        color: "#4A4A4A",
-                        marginBottom: 10,
-                        fontWeight: "600",
-                        fontSize: 16,
-                      }}
-                    >
-                      End Date:{" "}
-                      {new Date(item.endDate)
-                        .toLocaleDateString("en-US", {
-                          month: "long",
-                          day: "numeric",
-                          year: "numeric",
-                        })
-                        .replace(/(\d{1,2})(st|nd|rd|th)/, "$1$2")}
-                    </Text>
-                  </View>
-                ))}
-              </>
-            )}
-          </ScrollView>
-        </SafeAreaView>
-      )}
+              )}
+
+              {expiredElections.length === 0 ? (
+                <></>
+              ) : (
+                <>
+                  <Text
+                    style={{
+                      paddingVertical: 10,
+                      textAlign: "center",
+                      marginBottom: 15,
+                      color: "#242529",
+                      fontSize: 18,
+                      fontWeight: "700",
+                      borderBottomColor: "#242529",
+                      borderBottomWidth: 1,
+                      borderStyle: "solid",
+                    }}
+                  >
+                    Elections that was expired:
+                  </Text>
+                  {expiredElections.map((item) => (
+                    <View key={item.id} style={styles.block}>
+                      <Text
+                        style={{
+                          textAlign: "center",
+                          marginBottom: 10,
+                          color: "#242529",
+                          fontSizeL: 16,
+                          fontWeight: "600",
+                        }}
+                      >
+                        {item.title.toUpperCase()}
+                      </Text>
+                      <Text
+                        style={{
+                          textAlign: "center",
+                          marginBottom: 10,
+                          color: "#4A4A4A",
+                          fontSizeL: 14,
+                          fontWeight: "400",
+                        }}
+                      >
+                        Ended in{" "}
+                        {Math.ceil(
+                          Math.abs(
+                            new Date(item.endDate) - new Date(item.startDate)
+                          ) /
+                          (1000 * 60 * 60 * 24)
+                        )}{" "}
+                        day(s) |{" "}
+                        {new Date(item.startDate)
+                          .toLocaleDateString("en-US", {
+                            month: "long",
+                            day: "numeric",
+                            year: "numeric",
+                          })
+                          .replace(/(\d{1,2})(st|nd|rd|th)/, "$1$2")}
+                      </Text>
+                      <Text
+                        style={{
+                          textAlign: "center",
+                          color: "#4A4A4A",
+                          marginBottom: 10,
+                          fontWeight: "600",
+                          fontSize: 16,
+                        }}
+                      >
+                        End Date:{" "}
+                        {new Date(item.endDate)
+                          .toLocaleDateString("en-US", {
+                            month: "long",
+                            day: "numeric",
+                            year: "numeric",
+                          })
+                          .replace(/(\d{1,2})(st|nd|rd|th)/, "$1$2")}
+                      </Text>
+                    </View>
+                  ))}
+                </>
+              )}
+            </ScrollView>
+          </SafeAreaView>
+        )}
+      </SafeAreaView>
     </>
   );
 };

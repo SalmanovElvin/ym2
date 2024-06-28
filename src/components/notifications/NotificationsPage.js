@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Button, FlatList, Image, ScrollView, TouchableOpacity, ActivityIndicator } from "react-native";
+import { View, Text, StyleSheet, Button, FlatList, Image, ScrollView, TouchableOpacity, ActivityIndicator, SafeAreaView } from "react-native";
 
 import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
 
@@ -151,18 +151,23 @@ export const NotificationsPage = ({ navigation, route }) => {
     }
 
     return (
-        <FlatList
-        style={styles.wrapper}
-            data={notifications}
-            renderItem={({ item }) => (
-                <Notification
-                    notification={item}
-                    sendDeletedItem={sendDeletedItem}
-                />
-            )}
-            keyExtractor={(item) => item?.id}
-        />
-
+        <SafeAreaView style={{
+            flex: 1,
+            width: "100%",
+            backgroundColor: "#EAF1F5",
+        }}>
+            <FlatList
+                style={styles.wrapper}
+                data={notifications}
+                renderItem={({ item }) => (
+                    <Notification
+                        notification={item}
+                        sendDeletedItem={sendDeletedItem}
+                    />
+                )}
+                keyExtractor={(item) => item?.id}
+            />
+        </SafeAreaView>
     );
 };
 
