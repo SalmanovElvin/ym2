@@ -5,7 +5,7 @@ import { bootstrap } from "./src/bootstrap";
 
 import AppNavigation from "./src/navigation/AppNavigation";
 import { UnionForm } from "./src/components/unionSignIn/UnionForm";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, SafeAreaView } from "react-native";
 import { Login } from "./src/components/login/Login";
 import { SignUp } from "./src/components/signUp/SignUp";
 import { EnterEmail } from "./src/components/changePassword/EnterEmail";
@@ -30,18 +30,18 @@ export default function App() {
 
   return (
     <ApolloProvider client={client}>
-          <UnionProvider>
-            <UserProvider>
-              <NotificationProvider>
-                {/* <ChangePassword/> */}
-                {/* <EnterEmail/> */}
-                {/* <SignUp/> */}
-                {/* <Login/> */}
-                {/* <UnionForm /> */}
-                <AppNavigation />
-              </NotificationProvider>
-            </UserProvider>
-          </UnionProvider>
+      <UnionProvider>
+        <UserProvider>
+          <NotificationProvider>
+            {/* <ChangePassword/> */}
+            {/* <EnterEmail/> */}
+            {/* <SignUp/> */}
+            {/* <Login/> */}
+            {/* <UnionForm /> */}
+            <AppNavigation />
+          </NotificationProvider>
+        </UserProvider>
+      </UnionProvider>
     </ApolloProvider>
   );
 }

@@ -293,7 +293,7 @@ export const Login = ({ navigation, route }) => {
         ) : (
           <></>
         )}
-        <View style={{ alignItems: 'center' }}>
+        <View style={{ alignItems: 'center', marginTop: 25, marginBottom: 60 }}>
           {logoURL === "" ? <ActivityIndicator size="large" color="blue" /> : <Image
             style={{ width: 100, height: 100, borderRadius: 20 }}
             source={logoURL}
@@ -380,8 +380,10 @@ const styles = StyleSheet.create({
     zIndex: 999,
     width: "100%",
     position: "absolute",
+    top: 0,
+    left: 0,
+    height: "110%",
     backgroundColor: "rgba(0, 0, 50, 0.5)",
-    height: "100%",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -421,9 +423,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#EAF1F5",
   },
   mainFormUnion: {
-    width: "80%",
+    width: "90%",
     alignItems: "center",
-    // margin: 45,
+    // marginVertical: 80,
     borderRadius: 10,
     backgroundColor: "#fff",
     paddingHorizontal: 24,
@@ -508,7 +510,7 @@ const styles = StyleSheet.create({
     color: "#0A93E1",
   },
   changeUnion: {
-    // marginTop: 30,
+    marginTop: 35,
     color: "#34519A",
     textTransform: "capitalize",
     fontWeight: "700",

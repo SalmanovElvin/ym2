@@ -255,9 +255,11 @@ const styles = StyleSheet.create({
     modalBack: {
         zIndex: 999,
         width: '100%',
-        position: 'absolute',
+        position: "absolute",
+        top: 0,
+        left: 0,
+        height: "110%",
         backgroundColor: 'rgba(0, 0, 50, 0.5)',
-        height: '100%',
         alignItems: 'center',
         justifyContent: 'center'
     },

@@ -5,8 +5,8 @@ import { useLazyQuery } from '@apollo/client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { GET_UNION, GET_UNION_BY_NAME } from '../../../graph/queries/unions';
-import { useMutation, useQuery } from '@apollo/client';
-import { useUserDispatch } from '../../../store/user-context';
+// import { useMutation, useQuery } from '@apollo/client';
+// import { useUserDispatch } from '../../../store/user-context';
 import { useUnionState, useUnionDispatch } from '../../../store/union-context';
 import LottieView from 'lottie-react-native';
 
@@ -16,9 +16,9 @@ export const UnionForm = ({ navigation }) => {
   };
 
 
-  const userDispatch = useUserDispatch();
+  // const userDispatch = useUserDispatch();
   const unionDispatch = useUnionDispatch();
-  const union = useUnionState();
+  // const union = useUnionState();
 
   const [unionIN, setUnionIN] = useState(false);
   useEffect(() => {
@@ -28,7 +28,6 @@ export const UnionForm = ({ navigation }) => {
         if (value !== null) {
           setUnionIN(true);
           navigation.navigate('login');
-          // console.log('Retrieved data:', JSON.parse(value).information.imageURL);
         } else {
           console.log('No data found');
         }
@@ -43,7 +42,6 @@ export const UnionForm = ({ navigation }) => {
     onCompleted: (data) => {
       setVisible(false);
       unionDispatch({ type: 'ASSIGN', payload: data.unionByName });
-      // console.log(data.unionByName);
       navigation.navigate("login");
 
     },
@@ -53,13 +51,11 @@ export const UnionForm = ({ navigation }) => {
       setErrMsg(`Union and or Local not found. Please enter your Union Name and your Local Number. If your Union does not have a Local, you can leave the field blank.`);
       setTip('Tip: You can do a quick web search or ask your Union Representative for this information.');
       setErrUnion(true);
-      // console.error(error);
     }
   });
 
   const getUnion = (e) => {
     e.preventDefault();
-    // console.log(unionVal.trim()+' '+localNumber.trim());
     if (unionVal.trim().length !== 0) {
       setVisible(true);
       getUnionByName({ variables: { name: unionVal.trim() + ' ' + localNumber.trim() } });
@@ -69,48 +65,18 @@ export const UnionForm = ({ navigation }) => {
       setTip('');
       setErrUnion(true);
       Keyboard.dismiss();
-      // alert('Please, write union.');
     }
   };
 
-
-
-  // // Define the key
-  // const UNION_KEY = 'UNION';
-
-  // // Function to get item from AsyncStorage with UNION key
-  // const getUnionItem = async () => {
-  //   try {
-  //     // Retrieve item from AsyncStorage
-  //     const item = await AsyncStorage.getItem(UNION_KEY);
-
-  //     // Check if item exists
-  //     if (item !== null) {
-  //       // Item found, do something with it
-  //       console.log('Item found:', item.id);
-  //     } else {
-  //       // Item not found
-  //       console.log('No item found with key:', UNION_KEY);
-  //     }
-  //   } catch (error) {
-  //     // Error retrieving data
-  //     console.error('Error getting item from AsyncStorage:', error);
-  //   }
-  // };
-
-  // // Call the function to get item from AsyncStorage
-  // getUnionItem();
 
   const [unionVal, setUnion] = useState('');
   const [localNumber, setLocalNumber] = useState('');
 
   const getUnionValue = (text) => {
     setUnion(text);
-    // console.log(text);
   }
   const getLNValue = (text) => {
     setLocalNumber(text);
-    // console.log(text);
   }
 
 
@@ -121,10 +87,12 @@ export const UnionForm = ({ navigation }) => {
   return (
     <SafeAreaView style={{
       flex: 1,
+      height:'110%',
       justifyContent: "center",
       alignItems: "center",
       width: "100%",
       backgroundColor: "#EAF1F5",
+      marginTop: -70
     }}>
       <View style={styles.mainContUnion}>
         {errUnion ?
@@ -217,9 +185,11 @@ const styles = StyleSheet.create({
   modalBack: {
     zIndex: 999,
     width: '100%',
-    position: 'absolute',
+    position: "absolute",
+    top:0,
+    left:0,
+    height: "110%",
     backgroundColor: 'rgba(0, 0, 50, 0.5)',
-    height: '100%',
     alignItems: 'center',
     justifyContent: 'center'
   },
