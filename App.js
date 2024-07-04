@@ -16,6 +16,7 @@ import { client } from './graph';
 import { UnionProvider } from './store/union-context';
 import { UserProvider } from './store/user-context';
 import { NotificationProvider } from './store/notification-context';
+import { StatusBar } from "expo-status-bar";
 
 export default function App() {
   const [isReady, setIsReady] = useState(false);
@@ -29,20 +30,25 @@ export default function App() {
   // }
 
   return (
-    <ApolloProvider client={client}>
-      <UnionProvider>
-        <UserProvider>
-          <NotificationProvider>
-            {/* <ChangePassword/> */}
-            {/* <EnterEmail/> */}
-            {/* <SignUp/> */}
-            {/* <Login/> */}
-            {/* <UnionForm /> */}
-            <AppNavigation />
-          </NotificationProvider>
-        </UserProvider>
-      </UnionProvider>
-    </ApolloProvider>
+    <SafeAreaView style={{ flex: 1, justifyContent: "center", marginVertical: 0 }}>
+      <StatusBar
+        barStyle='dark-content'
+      />
+      <ApolloProvider client={client}>
+        <UnionProvider>
+          <UserProvider>
+            <NotificationProvider>
+              {/* <ChangePassword/> */}
+              {/* <EnterEmail/> */}
+              {/* <SignUp/> */}
+              {/* <Login/> */}
+              {/* <UnionForm /> */}
+              <AppNavigation />
+            </NotificationProvider>
+          </UserProvider>
+        </UnionProvider>
+      </ApolloProvider>
+    </SafeAreaView>
   );
 }
 

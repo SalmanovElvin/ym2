@@ -349,7 +349,7 @@ l1162 1 0 -487z m530 -38 l302 -340 -298 -3 c-165 -1 -304 0 -311 3 -16 6 -19
               {openDoc ?
                 <View style={styles.modalBack}>
                   <View style={styles.modal}>
-                    <View style={{ height: screenHeight * 0.5 }}>
+                    <View style={{ height: screenHeight * 0.4 }}>
                       {openedFile.url.split('.').pop() === 'jpeg' || openedFile.url.split('.').pop() === "png" ?
                         <Image style={{ height: "100%", width: '100%' }} source={{ uri: openedFile.url }} />
                         :
@@ -405,9 +405,10 @@ const styles = StyleSheet.create({
     zIndex: 999,
     width: '100%',
     position: "absolute",
-    top:0,
-    left:0,
-    height: "110%",
+    top: 0,
+    left: 0,
+    // height: "110%",
+    height: '100%',
     backgroundColor: 'rgba(0, 0, 50, 0.5)',
     alignItems: 'center',
     justifyContent: 'center'
@@ -416,7 +417,7 @@ const styles = StyleSheet.create({
     width: '90%',
     borderRadius: 10,
     backgroundColor: '#fff',
-    padding: 15,
+    padding: 10,
     justifyContent: 'space-between',
     shadowColor: "#4468c1",
     shadowOffset: {

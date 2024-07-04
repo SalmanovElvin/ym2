@@ -191,10 +191,12 @@ export const FeedScreen = ({ navigation, route }) => {
             newsFeed.length === 0 ? (
               <View
                 style={{
-                  height: 100,
+                  // height: 100,
+                  height: '100%',
+                  width: '100%',
                   justifyContent: "center",
                   alignItems: "center",
-                  marginTop: 20
+                  marginTop: 100
                 }}
               >
                 <ActivityIndicator size="large" color="blue" />

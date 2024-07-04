@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Button, FlatList, Image, SafeAreaView, ScrollView, RefreshControl } from "react-native";
+import { View, Text, StyleSheet, Button, FlatList, Image, SafeAreaView, ScrollView, RefreshControl, Platform } from "react-native";
 
 import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
 import { useUnionState } from "../../../store/union-context";
@@ -23,7 +23,7 @@ export const Header = () => {
                 const value = await AsyncStorage.getItem("UNION"); // Replace 'key' with your actual key
 
                 if (value !== null) {
-                    setLogoURL({ uri: `${JSON.parse(value).information.imageURL}` });
+                    setLogoURL({ uri: `${JSON.parse(value).information?.imageURL}` });
                     // console.log('Retrieved data:', JSON.parse(value).information.imageURL);
                 } else {
                     console.log("No union data found");
@@ -178,7 +178,8 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "center",
         paddingHorizontal: 20,
-        paddingVertical: 40,
+        // paddingVertical: Platform.OS === 'android' ? 0 : 40,
+        paddingTop: Platform.OS === 'android' ? 45 : 10,
         paddingBottom: 5,
         backgroundColor: "#fff",
         shadowColor: "#000", // Shadow color

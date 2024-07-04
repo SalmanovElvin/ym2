@@ -92,7 +92,7 @@ export const UnionForm = ({ navigation }) => {
       alignItems: "center",
       width: "100%",
       backgroundColor: "#EAF1F5",
-      marginTop: -70
+      marginTop: -50
     }}>
       <View style={styles.mainContUnion}>
         {errUnion ?
