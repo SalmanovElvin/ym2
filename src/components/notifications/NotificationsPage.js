@@ -101,6 +101,7 @@ export const NotificationsPage = ({ navigation, route }) => {
         },
         onCompleted: () => {
             setNotifications(data.notifications);
+            console.log(data.notifications);
             let arr = [];
             for (let i = 0; i < data?.notifications?.length; i++) {
                 if (data.notifications[i].read == false) {
@@ -140,12 +141,20 @@ export const NotificationsPage = ({ navigation, route }) => {
         }, 300);
     }
 
-    if (notifications?.length === 0) {
+    if (loading) {
         return (
             <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
                 <ActivityIndicator size="large" color="blue" />
-                <Text style={{ marginTop: 10 }}>We trying to get notifications.</Text>
-                <Text>May be you don't have new notifications</Text>
+                {/* <Text style={{ marginTop: 10 }}>We trying to get notifications.</Text> */}
+                {/* <Text>May be you don't have new notifications</Text> */}
+            </View>
+        )
+    }
+
+    if (!notifications) {
+        return (
+            <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+                <Text style={{ fontSize: 16, fontWeight: '600' }}>You don't have any notifications.</Text>
             </View>
         )
     }

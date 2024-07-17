@@ -157,6 +157,14 @@ export const FeedScreen = ({ navigation, route }) => {
     getNewsFunc();
   }, []);
 
+  // if (newsFeed.length === 0) {
+  //   return (
+  //     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+  //       <ActivityIndicator size="large" color="blue" />
+  //     </View>
+  //   )
+  // }
+
   return (
     <>
       <SafeAreaView style={{
@@ -165,43 +173,38 @@ export const FeedScreen = ({ navigation, route }) => {
         backgroundColor: "#EAF1F5",
       }}>
         <Header />
-        {errUser ? (
-          <View style={styles.modalBack}>
-            <View style={styles.modal}>
-              <Text style={styles.errMsg}>{errMsg}</Text>
-              <Text style={styles.tip}>{tip}</Text>
-              <TouchableOpacity
-                onPress={() => setErrUser(false)}
-                activeOpacity={0.7}
-                style={styles.conf}
-              >
-                <Text style={styles.btnConf}>Close</Text>
-              </TouchableOpacity>
-            </View>
+
+        {newsFeed.length === 0 ? (
+          <View
+            style={{ alignItems: "center", justifyContent: "center", flex: 1 }}
+          >
+            <ActivityIndicator size="large" color="blue" />
           </View>
         ) : (
-          <></>
-        )}
-        <ScrollView style={styles.wrapper}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }>
-
-          {
-            newsFeed.length === 0 ? (
-              <View
-                style={{
-                  // height: 100,
-                  height: '100%',
-                  width: '100%',
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginTop: 100
-                }}
-              >
-                <ActivityIndicator size="large" color="blue" />
+          <>
+            {errUser ? (
+              <View style={styles.modalBack}>
+                <View style={styles.modal}>
+                  <Text style={styles.errMsg}>{errMsg}</Text>
+                  <Text style={styles.tip}>{tip}</Text>
+                  <TouchableOpacity
+                    onPress={() => setErrUser(false)}
+                    activeOpacity={0.7}
+                    style={styles.conf}
+                  >
+                    <Text style={styles.btnConf}>Close</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             ) : (
+              <></>
+            )}
+            <ScrollView style={styles.wrapper}
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }>
+
+
               <>
                 {newsFeed.map((item) => (
                   <NewsFeed
@@ -229,11 +232,12 @@ export const FeedScreen = ({ navigation, route }) => {
                   keyExtractor={(item) => item?.id}
                 /> */}
               </>
-            )
-          }
-        </ScrollView>
 
-      </SafeAreaView>
+            </ScrollView>
+          </>
+        )}
+
+      </SafeAreaView >
     </>
   );
 };

@@ -11,13 +11,17 @@ import Animated, {
     useSharedValue,
     withDecay,
 } from 'react-native-reanimated';
+import { useNavigation } from '@react-navigation/native';
+
 import {
     Gesture,
     GestureDetector,
     GestureHandlerRootView,
 } from 'react-native-gesture-handler';
 
-export const Notification = ({ navigation, notification, sendDeletedItem }) => {
+export const Notification = ({ notification, sendDeletedItem }) => {
+    const navigation = useNavigation();
+
     const offset = useSharedValue(0);
     const width = useSharedValue(0);
 
@@ -97,6 +101,49 @@ export const Notification = ({ navigation, notification, sendDeletedItem }) => {
         });
     }
 
+    const clickToNotification = () => {
+        if (notification?.message.toLowerCase().includes("new information has been posted in news feed")) {
+
+            markNotificationAsRead({
+                variables: {
+                    unionID: userData?.unionID,
+                    notificationID: notification?.id,
+                    userID: userData?.id,
+                },
+                onCompleted: () => {
+                    console.log('readed');
+                },
+                onError: (err) => {
+                    console.log(err);
+                }
+            });
+
+            navigation.navigate("Feed");
+
+        } else {
+            if (notification?.message.toLowerCase().includes("you received a new message")) {
+                markNotificationAsRead({
+                    variables: {
+                        unionID: userData?.unionID,
+                        notificationID: notification?.id,
+                        userID: userData?.id,
+                    },
+                    onCompleted: () => {
+                        console.log('readed');
+                    },
+                    onError: (err) => {
+                        console.log(err);
+                    }
+                });
+
+                navigation.navigate("Chats");
+            }
+            else {
+                alert('test other')
+            }
+        }
+    }
+
     const [isDeleted, setIsDeleted] = useState('relative');
 
 
@@ -130,7 +177,10 @@ export const Notification = ({ navigation, notification, sendDeletedItem }) => {
                 <GestureDetector gesture={pan}>
                     <Animated.View style={[styles.box, animatedStyles]} >
                         <View style={styles.wrapNot}>
-                            <TouchableOpacity onLongPress={readNotification} activeOpacity={0.6} style={styles.wrapper}>
+                            <TouchableOpacity
+                                onPress={clickToNotification}
+                                onLongPress={readNotification}
+                                activeOpacity={0.6} style={styles.wrapper}>
                                 {isRead == false ?
                                     <View style={styles.nonRead}></View>
                                     :
