@@ -139,7 +139,56 @@ export const Notification = ({ notification, sendDeletedItem }) => {
                 navigation.navigate("Chats");
             }
             else {
-                alert('test other')
+                if (notification?.message.toLowerCase().includes("there is a vote available for you")) {
+                    markNotificationAsRead({
+                        variables: {
+                            unionID: userData?.unionID,
+                            notificationID: notification?.id,
+                            userID: userData?.id,
+                        },
+                        onCompleted: () => {
+                            console.log('readed');
+                        },
+                        onError: (err) => {
+                            console.log(err);
+                        }
+                    });
+
+                    navigation.navigate("Voting"); //or Services
+                }
+                else {
+                    if (notification?.message.toLowerCase().includes("there is a campaign available")) {
+                        markNotificationAsRead({
+                            variables: {
+                                unionID: userData?.unionID,
+                                notificationID: notification?.id,
+                                userID: userData?.id,
+                            },
+                            onCompleted: () => {
+                                console.log('readed');
+                            },
+                            onError: (err) => {
+                                console.log(err);
+                            }
+                        });
+
+                        navigation.navigate("Calls"); //or Services
+                    } else {
+                        markNotificationAsRead({
+                            variables: {
+                                unionID: userData?.unionID,
+                                notificationID: notification?.id,
+                                userID: userData?.id,
+                            },
+                            onCompleted: () => {
+                                console.log('readed');
+                            },
+                            onError: (err) => {
+                                console.log(err);
+                            }
+                        });
+                    }
+                }
             }
         }
     }

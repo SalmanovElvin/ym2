@@ -127,6 +127,17 @@ export default function AppNavigation() {
           component={Perks}
         />
 
+        <Stack.Screen
+          name="Voting"
+          options={{ headerShown: false, title: "", }}
+          component={Voting}
+        />
+        <Stack.Screen
+          name="Calls"
+          options={{ headerShown: false, title: "", }}
+          component={Calls}
+        />
+
         {/* <Stack.Screen
           name="Services"
           options={{ title: "",  }}
@@ -173,6 +184,16 @@ export default function AppNavigation() {
           name="MessagesPage"
           options={{ title: "", }}
           component={MessagesPage}
+        />
+        <Stack.Screen
+          name="Voting"
+          options={{ headerShown: false, title: "", }}
+          component={Voting}
+        />
+        <Stack.Screen
+          name="Calls"
+          options={{ headerShown: false, title: "", }}
+          component={Calls}
         />
       </Stack.Navigator>
     );
@@ -246,6 +267,16 @@ export default function AppNavigation() {
           name="MessagesPage"
           options={{ title: "", }}
           component={MessagesPage}
+        />
+        <Stack.Screen
+          name="Voting"
+          options={{ headerShown: false, title: "", }}
+          component={Voting}
+        />
+        <Stack.Screen
+          name="Calls"
+          options={{ headerShown: false, title: "", }}
+          component={Calls}
         />
       </Stack.Navigator>
     );

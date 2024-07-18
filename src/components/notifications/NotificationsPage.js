@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Button, FlatList, Image, ScrollView, TouchableOpacity, ActivityIndicator, SafeAreaView } from "react-native";
+import React, { useEffect, useState, useCallback } from "react";
+import { View, Text, StyleSheet, Button, FlatList, Image, ScrollView, TouchableOpacity, ActivityIndicator, SafeAreaView, RefreshControl } from "react-native";
 
 import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
 
@@ -93,6 +93,12 @@ export const NotificationsPage = ({ navigation, route }) => {
 
     const [notifications, setNotifications] = useState([]),
         [nonReadNotifications, setNonReadNotifications] = useState([]);
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        refetchNotifications();
+    }, []);
 
     const { loading, error, data, refetch: refetchNotifications } = useQuery(GET_NOTIFICATIONS, {
         variables: {
@@ -109,6 +115,7 @@ export const NotificationsPage = ({ navigation, route }) => {
                 }
             }
             setNonReadNotifications(arr);
+            setRefreshing(false);
             // console.log(data.notifications);
         },
         onError: (err) => {
@@ -143,7 +150,7 @@ export const NotificationsPage = ({ navigation, route }) => {
 
     if (loading) {
         return (
-            <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+            <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, backgroundColor: "#EAF1F5" }}>
                 <ActivityIndicator size="large" color="blue" />
                 {/* <Text style={{ marginTop: 10 }}>We trying to get notifications.</Text> */}
                 {/* <Text>May be you don't have new notifications</Text> */}
@@ -165,17 +172,34 @@ export const NotificationsPage = ({ navigation, route }) => {
             width: "100%",
             backgroundColor: "#EAF1F5",
         }}>
-            <FlatList
-                style={styles.wrapper}
-                data={notifications}
-                renderItem={({ item }) => (
-                    <Notification
-                        notification={item}
-                        sendDeletedItem={sendDeletedItem}
-                    />
-                )}
-                keyExtractor={(item) => item?.id}
-            />
+            <ScrollView
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
+            >
+                {/* <FlatList
+                    style={styles.wrapper}
+                    data={notifications}
+                    renderItem={({ item }) => (
+                        <Notification
+                            notification={item}
+                            sendDeletedItem={sendDeletedItem}
+                        />
+                    )}
+                    keyExtractor={(item) => item?.id}
+                /> */}
+
+                <View style={styles.wrapper}>
+                    {notifications.map(item => (
+                        <Notification
+                            key={item.id}  // Ensure each item has a unique key
+                            notification={item}
+                            sendDeletedItem={sendDeletedItem}
+                        />
+                    ))}
+                </View>
+
+            </ScrollView>
         </SafeAreaView>
     );
 };
