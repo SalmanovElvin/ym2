@@ -107,7 +107,7 @@ export const NotificationsPage = ({ navigation, route }) => {
         },
         onCompleted: () => {
             setNotifications(data.notifications);
-            console.log(data.notifications);
+            // console.log(data.notifications);
             let arr = [];
             for (let i = 0; i < data?.notifications?.length; i++) {
                 if (data.notifications[i].read == false) {
@@ -115,6 +115,7 @@ export const NotificationsPage = ({ navigation, route }) => {
                 }
             }
             setNonReadNotifications(arr);
+            // console.log(arr);
             setRefreshing(false);
             // console.log(data.notifications);
         },
@@ -148,7 +149,7 @@ export const NotificationsPage = ({ navigation, route }) => {
         }, 300);
     }
 
-    if (loading) {
+    if (notifications?.length === 0) { //loading
         return (
             <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, backgroundColor: "#EAF1F5" }}>
                 <ActivityIndicator size="large" color="blue" />
