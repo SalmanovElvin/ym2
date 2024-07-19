@@ -22,6 +22,8 @@ export const Qr = ({ navigation, route }) => {
 
     const { user } = route.params;
 
+    console.log(user);
+
     navigation.setOptions({
         headerStyle: {
             backgroundColor: "#fff", // Change the color here
@@ -114,17 +116,18 @@ export const Qr = ({ navigation, route }) => {
             <View style={styles.wrapper}>
                 <View style={styles.header}>
                     <Text style={{ fontSize: 18, fontWeight: '700', color: '#242529' }}>
-                        Scan QR Code
+                        {/* Scan QR Code */}
+                        {user?.lastName} {user?.firstName}
                     </Text>
                 </View>
-                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <View style={{ justifyContent: 'center', alignItems: 'center', height: '87%' }}>
                     <QRCode size={180} value={user?.barcode} />
                 </View>
-                <TouchableOpacity onPress={shareContent} activeOpacity={0.6} style={styles.share}>
+                {/* <TouchableOpacity onPress={shareContent} activeOpacity={0.6} style={styles.share}>
                     <Text style={{ color: '#34519A', fontSize: 16, fontWeight: '700' }}>
                         Share as a link
                     </Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
         </SafeAreaView>
     );
@@ -133,14 +136,14 @@ const styles = StyleSheet.create({
     wrapper: {
         padding: 30,
         flex: 1,
-        justifyContent: 'space-around'
+        // justifyContent: 'space-around'
     },
     header: {
         borderRadius: 20,
         backgroundColor: '#e3e3e6',
-        padding: 32,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        height: '13%'
     },
     share: {
         justifyContent: 'center',

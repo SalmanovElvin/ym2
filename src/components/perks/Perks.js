@@ -36,6 +36,7 @@ import {
   GET_COLLECTION_BUSINESS_LIST,
 } from "../../../graph/queries/perks";
 import moment from "moment-timezone";
+import { GET_OFFER_DETAILS } from "../../../graph/queries/gitl";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -112,7 +113,7 @@ export const Perks = ({ navigation, route }) => {
     },
     onCompleted: (data) => {
       setBusinesses(data.collection.businessFeed.businesses);
-      // console.log(data.collection.businessFeed.businesses[0].offers[0].heroImages);
+      // console.log(data.collection.businessFeed.businesses[0].offers[0].locations);
     },
     onError: (err) => {
       console.error(err);
@@ -120,6 +121,23 @@ export const Perks = ({ navigation, route }) => {
     fetchPolicy: "cache-and-network",
     notifyOnNetworkStatusChange: true,
   });
+
+  const [getOfferDetails, { error: error_details, loading: loading_details }] =
+    useLazyQuery(GET_OFFER_DETAILS, {
+      context: { clientName: 'gitl' },
+
+      onCompleted: (data) => {
+        if (data && data.offer) {
+          console.log(data.offer.redeemUrl);
+          Linking.openURL(data.offer.redeemUrl);
+        }
+      },
+      onError: (err) => console.error(err)
+    });
+
+  const goToOfferPage = (id) => {
+    getOfferDetails({ variables: { id: id } });
+  }
 
   useEffect(() => {
     setBusinesses([]);
@@ -152,7 +170,7 @@ export const Perks = ({ navigation, route }) => {
         backgroundColor: "#EAF1F5",
       }}>
         <HeaderInPages title="Perks" />
-        {categories.length === 0 ? (
+        {categories.length === 0 || loading_details ? (
           <View
             style={{ alignItems: "center", justifyContent: "center", flex: 1 }}
           >
@@ -267,7 +285,8 @@ export const Perks = ({ navigation, route }) => {
               ) : searchTxt.trim().length === 0 ? (
                 businesses.map((item) =>
                   item.offers.map((businessesItem) => (
-                    <View key={businessesItem.id} style={styles.block}>
+                    <TouchableOpacity onPress={() => goToOfferPage(businessesItem.id)} activeOpacity={0.6} key={businessesItem.id} style={styles.block}>
+                      {/* <Text>aaa</Text> */}
                       <Image
                         style={{ width: "24%", height: 86, borderRadius: 10 }}
                         source={{ uri: businessesItem.heroImages[0].url }}
@@ -349,12 +368,13 @@ export const Perks = ({ navigation, route }) => {
                           </Text>
                         ))}
                       </View>
-                    </View>
+                    </TouchableOpacity>
                   ))
                 )
               ) : (
                 afterSearchOffers?.map((businessesItem) => (
-                  <View key={businessesItem.id} style={styles.block}>
+                  <TouchableOpacity onPress={() => goToOfferPage(businessesItem.id)} activeOpacity={0.6} key={businessesItem.id} style={styles.block}>
+                    {/* <Text>aaa</Text> */}
                     <Image
                       style={{ width: "24%", height: 86, borderRadius: 10 }}
                       source={{ uri: businessesItem.heroImages[0].url }}
@@ -436,7 +456,7 @@ export const Perks = ({ navigation, route }) => {
                         </Text>
                       ))}
                     </View>
-                  </View>
+                  </TouchableOpacity>
                 ))
               )}
             </View>
@@ -507,8 +527,8 @@ const styles = StyleSheet.create({
     zIndex: 999,
     width: "100%",
     position: "absolute",
-    top:0,
-    left:0,
+    top: 0,
+    left: 0,
     height: "110%",
     backgroundColor: "rgba(0, 0, 50, 0.5)",
     alignItems: "center",

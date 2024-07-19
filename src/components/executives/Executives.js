@@ -148,7 +148,7 @@ export const Executives = ({ navigation, route }) => {
                                 {item?.memberData?.profile?.email ?
                                     <>
                                         <View style={{ height: 2, backgroundColor: '#F4F4F4', marginVertical: 15 }}></View>
-                                        <TouchableOpacity onPress={() => Linking.openURL(item?.memberData?.profile?.email)}>
+                                        <TouchableOpacity onPress={() => Linking.openURL(`mailto:${item?.memberData?.profile?.email}`)}>
                                             <Text style={{ color: '#0A93E1', fontWeight: '400', fontSize: 16 }}>{item?.memberData?.profile?.email}</Text>
                                         </TouchableOpacity>
                                     </>
@@ -166,9 +166,16 @@ export const Executives = ({ navigation, route }) => {
                                             <Text style={{ color: '#242529', fontWeight: '700', fontSize: 16 }}>
                                                 Office:
                                             </Text>
-                                            <Text style={{ color: '#242529', fontSize: 16, fontWeight: '400' }}>
-                                                {item?.memberData?.profile?.phone} {item?.extension ? `EXT.${item?.extension}` : ''}
-                                            </Text>
+                                            <View style={{ flexDirection: 'row' }}>
+                                                <TouchableOpacity onPress={() => Linking.openURL(`tel:${item?.memberData?.profile?.phone}`)}>
+                                                    <Text style={{ color: '#242529', fontSize: 16, fontWeight: '400' }}>
+                                                        {item?.memberData?.profile?.phone}
+                                                    </Text>
+                                                </TouchableOpacity>
+                                                <Text style={{ color: '#242529', fontSize: 16, fontWeight: '400' }}>
+                                                    {item?.extension ? ` EXT.${item?.extension}` : ''}
+                                                </Text>
+                                            </View>
                                         </View>
 
                                         <View style={{ height: 2, backgroundColor: '#F4F4F4', marginTop: 15 }}></View>

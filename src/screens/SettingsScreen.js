@@ -11,6 +11,8 @@ import {
   ActivityIndicator,
   RefreshControl,
   SafeAreaView,
+  Linking,
+  TouchableOpacity
 } from "react-native";
 import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
 
@@ -172,18 +174,23 @@ export const SettingsScreen = ({ navigation, route }) => {
                     strokeWidth="1.4"
                   />
                 </Svg>
-
-                <Text
+                <TouchableOpacity
                   style={{
                     width: "70%",
-                    fontSize: 16,
-                    fontWeight: "400",
-                    color: "#242529",
                     marginLeft: 10,
                   }}
-                >
-                  {unionData?.information?.phone}
-                </Text>
+                  onPress={() => Linking.openURL(`tel:${unionData?.information?.phone}`)}>
+                  <Text
+                    style={{
+                      width: "100%",
+                      fontSize: 16,
+                      fontWeight: "400",
+                      color: "#242529",
+                    }}
+                  >
+                    {unionData?.information?.phone}
+                  </Text>
+                </TouchableOpacity>
               </View>
 
               <View
@@ -213,17 +220,23 @@ export const SettingsScreen = ({ navigation, route }) => {
                     fill="#5783EF"
                   />
                 </Svg>
-                <Text
+                <TouchableOpacity
                   style={{
                     width: "70%",
-                    fontSize: 16,
-                    fontWeight: "400",
-                    color: "#242529",
                     marginLeft: 10,
                   }}
-                >
-                  {unionData?.information?.email}
-                </Text>
+                  onPress={() => Linking.openURL(`mailto:${unionData?.information?.email}`)}>
+                  <Text
+                    style={{
+                      width: "100%",
+                      fontSize: 16,
+                      fontWeight: "400",
+                      color: "#242529",
+                    }}
+                  >
+                    {unionData?.information?.email}
+                  </Text>
+                </TouchableOpacity>
               </View>
 
               <View
@@ -551,7 +564,7 @@ export const SettingsScreen = ({ navigation, route }) => {
                     marginLeft: 10,
                   }}
                 >
-                  Version - 1.1.9
+                  Version - 1.2.0
                 </Text>
               </View>
             </View>
