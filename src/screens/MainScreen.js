@@ -159,7 +159,7 @@ export const MainScreen = ({ navigation, route }) => {
             </View>
           </TouchableOpacity>
 
-          {grievances ?
+          {/* {grievances ? */}
             <TouchableOpacity onPress={() => navigation.navigate('Grievances')} activeOpacity={0.6} style={styles.block}>
               <Text style={styles.firstTxt}>GRIEVANCES</Text>
               <Text style={styles.txt}>See grievances </Text>
@@ -175,9 +175,9 @@ export const MainScreen = ({ navigation, route }) => {
                 </Svg>
               </View>
             </TouchableOpacity>
-            :
+            {/* :
             <></>
-          }
+          } */}
 
 
           <TouchableOpacity onPress={() => navigation.navigate('Perks')} activeOpacity={0.6} style={styles.block}>

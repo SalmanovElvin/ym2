@@ -24,7 +24,7 @@ export const FeedScreen = ({ navigation, route }) => {
   // const union = useUnionState();
   // const userState = useUserState();
 
-  // const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState(null);
   const [unionData, setUnionData] = useState("");
 
   const [logoURL, setLogoURL] = useState("");

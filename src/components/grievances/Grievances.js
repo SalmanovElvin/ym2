@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
 import {
-    Dimensions,
     View,
     Text,
     StyleSheet,
@@ -11,7 +10,7 @@ import {
 import { useQuery } from "@apollo/client";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { GET_GRIEVANCES } from './../../../graph/queries/grievances';
+import { GET_GRIEVANCES, GET_GRIEVANCES_FOR } from './../../../graph/queries/grievances';
 import { HeaderInPages } from "../header/HeaderInPages";
 
 
@@ -57,18 +56,20 @@ export const Grievances = ({ navigation }) => {
     const [openGrievances, setOpenGrievances] = useState([]);
 
     //query
-    const { data, loading, error, refetch } = useQuery(GET_GRIEVANCES, {
+    const { data, loading, error, refetch } = useQuery(GET_GRIEVANCES_FOR, { //or GET_GRIEVANCES if we want get all grievances
         variables: {
             unionID: userData?.unionID,
+            userID: userData?.id
         },
         onCompleted: (data) => {
-            setGrievances(data?.grievances);
-            setClosedGrievances(data?.grievances.filter(grievance => grievance.status === "closed"));
-            setOpenGrievances(data?.grievances.filter(grievance => grievance.status != "closed"));
-            // console.log(data?.grievances.filter(grievance => grievance.status != "closed"));
+            setGrievances(data?.grievancesFor);
+            // console.log(data?.grievancesFor.filter(grievance => grievance.status != "closed"));
+
+            setClosedGrievances(data?.grievancesFor.filter(grievance => grievance.status === "closed"));
+            setOpenGrievances(data?.grievancesFor.filter(grievance => grievance.status != "closed"));
         },
         onError: (err) => {
-            console.log("Error with getting grievances");
+            console.log(err);
             refetch();
         },
         fetchPolicy: "cache-and-network",
