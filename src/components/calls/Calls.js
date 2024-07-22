@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Dimensions,
     View,
@@ -6,35 +6,20 @@ import {
     StyleSheet,
     ScrollView,
     SafeAreaView,
-    Button,
-    FlatList,
-    Image,
     TouchableOpacity,
-    TouchableWithoutFeedback,
     ActivityIndicator,
-    Platform,
-    TextInput,
-    KeyboardAvoidingView,
     Linking,
 } from "react-native";
-import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
-import Svg, {
-    G,
-    Circle,
-    Path,
-    Defs,
-    ClipPath,
-    Rect,
-    Ellipse,
-    Line,
-} from "react-native-svg";
+import { useQuery } from "@apollo/client";
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { HeaderInPages } from './../header/HeaderInPages';
 import { GET_CLICK_TO_CALLS } from "../../../graph/queries/clickToCall";
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
+// const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
-export const Calls = ({ navigation, route }) => {
+
+export const Calls = () => {
 
     const [userData, setUserData] = useState(null);
     const [unionData, setUnionData] = useState("");
@@ -71,6 +56,7 @@ export const Calls = ({ navigation, route }) => {
             unionID: userData?.unionID,
         },
         onCompleted: () => {
+            console.log(data.getClickToCalls.data);
             setCallsArr(data.getClickToCalls);
         },
         onError: (err) => {
@@ -80,7 +66,6 @@ export const Calls = ({ navigation, route }) => {
         fetchPolicy: 'cache-and-network',
         notifyOnNetworkStatusChange: true,
     });
-
 
     return (
         <>
@@ -102,6 +87,7 @@ export const Calls = ({ navigation, route }) => {
                                     <Text style={{ textTransform: 'uppercase', fontWeight: '600', fontSize: 16, color: '#242529' }}>
                                         {item.title}
                                     </Text>
+
                                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginVertical: 10, }}>
                                         <View style={{ width: '45%' }}>
                                             <Text style={{ color: '#A6A9B4', fontWeight: '300', fontSize: 14 }}>
@@ -122,6 +108,8 @@ export const Calls = ({ navigation, route }) => {
                                         </View>
                                     </View>
 
+                                    <CallMsg msg={item.script} />
+
                                     <TouchableOpacity onPress={() => Linking.openURL(`tel:${item.phone}`)} style={{ paddingVertical: 16, paddingHorizontal: 32, backgroundColor: '#34519A', alignItems: 'center', justifyContent: 'center', borderRadius: 5 }} activeOpacity={0.6}>
                                         <Text style={{ fontWeight: '700', fontSize: 16, color: '#FFFFFF' }}>Call:  {item.phone}</Text>
                                     </TouchableOpacity>
@@ -137,6 +125,42 @@ export const Calls = ({ navigation, route }) => {
         </>
     );
 };
+
+
+
+
+const CallMsg = ({ msg }) => {
+
+
+
+    const [showMessage, setShowMessage] = useState(false);
+
+    return (
+        <View style={{ marginVertical: 10 }}>
+
+            <TouchableOpacity
+                onPress={() => setShowMessage(!showMessage)}
+                style={{
+                    width: 130, paddingVertical: 8, alignItems: 'center', justifyContent: 'center', backgroundColor: '#34519A',
+                    borderRadius: 5
+                }} activeOpacity={0.6}>
+                <Text style={{ color: '#fff', fontSize: 14, fontWeight: '400' }}>
+                    {showMessage ? 'Hide' : 'Show'}  Message
+                </Text>
+            </TouchableOpacity>
+
+            {showMessage ? <View style={{ marginVertical: 8, borderRadius: 15, borderWidth: 1, borderStyle: 'solid', borderColor: '#34519A', padding: 8 }}>
+                <Text>
+                    {msg}
+                </Text>
+            </View> : <></>}
+
+
+
+        </View>
+    );
+};
+
 const styles = StyleSheet.create({
     wrapper: {
         paddingVertical: 28,
