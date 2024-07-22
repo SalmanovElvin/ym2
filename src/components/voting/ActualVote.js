@@ -4,38 +4,27 @@ import {
     View,
     Text,
     StyleSheet,
-    ScrollView,
-    Button,
-    FlatList,
-    Image,
     TouchableOpacity,
-    TouchableWithoutFeedback,
     ActivityIndicator,
-    Platform,
-    TextInput,
-    KeyboardAvoidingView,
-    Linking,
+
 } from "react-native";
-import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
-import Svg, {
-    G,
-    Circle,
-    Path,
-    Defs,
-    ClipPath,
-    Rect,
-    Ellipse,
-    Line,
-} from "react-native-svg";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useQuery } from "@apollo/client";
+// import Svg, {
+//     G,
+//     Circle,
+//     Path,
+//     Defs,
+//     ClipPath,
+//     Rect,
+//     Ellipse,
+//     Line,
+// } from "react-native-svg";
 import {
-    ELECTIONS_FOR_USER,
     ELECTION_REPORT,
-    GET_ELECTIONS,
 } from "../../../graph/queries/elections";
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
+// const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
 export const ActualVote = ({ item, userData }) => {
     const navigation = useNavigation();

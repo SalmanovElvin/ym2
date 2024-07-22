@@ -5,35 +5,19 @@ import {
     Text,
     StyleSheet,
     ScrollView,
-    Button,
-    FlatList,
-    Image,
     TouchableOpacity,
-    TouchableWithoutFeedback,
     ActivityIndicator,
-    Platform,
-    TextInput,
-    KeyboardAvoidingView,
-    Linking,
 } from "react-native";
-import { useMutation, useQuery } from "@apollo/client";
-import Svg, {
-    G,
-    Circle,
-    Path,
-    Defs,
-    ClipPath,
-    Rect,
-    Ellipse,
-} from "react-native-svg";
+import { useQuery } from "@apollo/client";
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { GET_GRIEVANCES } from './../../../graph/queries/grievances';
 import { HeaderInPages } from "../header/HeaderInPages";
 
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
+// const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
-export const Grievances = ({ navigation, route }) => {
+export const Grievances = ({ navigation }) => {
 
 
     const [userData, setUserData] = useState(null);

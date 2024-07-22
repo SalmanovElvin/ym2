@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground, SafeAreaView } from "react-native";
-import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
+import { View, Text, StyleSheet,  TouchableOpacity, ImageBackground, SafeAreaView } from "react-native";
+import Svg, {  Path,  } from "react-native-svg";
 
 import { useUnionState } from "../../store/union-context";
 import { useUserState } from "../../store/user-context";

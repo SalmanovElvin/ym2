@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, ActivityIndicator, Text, StyleSheet, Button, FlatList, TouchableOpacity, Image, SafeAreaView, ScrollView, RefreshControl } from "react-native";
+import { View, ActivityIndicator, Text, StyleSheet,  TouchableOpacity, SafeAreaView, ScrollView, RefreshControl } from "react-native";
 
 import { useUnionState } from "../../store/union-context";
 import { useUserState } from "../../store/user-context";
@@ -7,8 +7,7 @@ import { useUserState } from "../../store/user-context";
 import Svg, { G, Circle, Path, Defs, ClipPath, Rect, Line } from "react-native-svg";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { GET_NOTIFICATIONS } from "../../graph/queries/notifications";
-import { useMutation, useQuery } from "@apollo/client";
+import {  useQuery } from "@apollo/client";
 import { Header } from "../components/header/Header";
 import { GET_GRIEVANCES } from "../../graph/queries/grievances";
 // import { useRoute } from '@react-navigation/native';

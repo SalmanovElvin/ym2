@@ -4,15 +4,12 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  Button,
   Image,
   SafeAreaView,
-  ScrollView,
   TouchableOpacity,
   Keyboard,
   ActivityIndicator,
   Modal,
-  Animated, Easing
 } from "react-native";
 import { useMutation } from "@apollo/client";
 

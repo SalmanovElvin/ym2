@@ -5,27 +5,16 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  Button,
-  FlatList,
   Image,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   ActivityIndicator,
-  Platform,
   TextInput,
-  KeyboardAvoidingView,
-  Linking,
 } from "react-native";
-import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import Svg, {
   G,
   Circle,
   Path,
-  Defs,
-  ClipPath,
-  Rect,
-  Ellipse,
-  Line,
 } from "react-native-svg";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { HeaderInPages } from "./../header/HeaderInPages";
@@ -34,7 +23,7 @@ import { RadioButton, Checkbox } from "react-native-paper";
 import { SEND_EMAIL, SUBMIT_VOTE } from "./../../../graph/mutations/elections";
 // import AnimatedLoader from 'react-native-animated-loader';
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
+// const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
 export const ElectionPage = ({ navigation, route }) => {
   const { electionId, electiuonTitle } = route.params;

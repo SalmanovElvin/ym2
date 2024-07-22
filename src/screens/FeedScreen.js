@@ -3,9 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  Button,
-  FlatList,
-  Image,
   ScrollView,
   ActivityIndicator,
   TouchableOpacity,
@@ -13,7 +10,6 @@ import {
   RefreshControl,
   SafeAreaView,
 } from "react-native";
-import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
 
 import { useUnionState } from "../../store/union-context";
 import { useUserState } from "../../store/user-context";
@@ -25,10 +21,10 @@ import { useQuery } from "@apollo/client";
 import { Header } from "../components/header/Header";
 
 export const FeedScreen = ({ navigation, route }) => {
-  const union = useUnionState();
-  const userState = useUserState();
+  // const union = useUnionState();
+  // const userState = useUserState();
 
-  const [userData, setUserData] = useState(null);
+  // const [userData, setUserData] = useState(null);
   const [unionData, setUnionData] = useState("");
 
   const [logoURL, setLogoURL] = useState("");

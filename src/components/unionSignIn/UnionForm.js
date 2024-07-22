@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Text, TextInput, Button, TouchableOpacity, Keyboard, ScrollView, Modal, SafeAreaView } from "react-native";
-import Svg, { G, Path, Defs, LinearGradient, Stop } from "react-native-svg";
+import { View, StyleSheet, Text, TextInput, TouchableOpacity, Keyboard, Modal, SafeAreaView } from "react-native";
+import Svg, { Path, Defs, LinearGradient, Stop } from "react-native-svg";
 import { useLazyQuery } from '@apollo/client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { GET_UNION, GET_UNION_BY_NAME } from '../../../graph/queries/unions';
+import { GET_UNION_BY_NAME } from '../../../graph/queries/unions';
 // import { useMutation, useQuery } from '@apollo/client';
 // import { useUserDispatch } from '../../../store/user-context';
-import { useUnionState, useUnionDispatch } from '../../../store/union-context';
+import { useUnionDispatch } from '../../../store/union-context';
 import LottieView from 'lottie-react-native';
 
 export const UnionForm = ({ navigation }) => {
@@ -87,7 +87,7 @@ export const UnionForm = ({ navigation }) => {
   return (
     <SafeAreaView style={{
       flex: 1,
-      height:'110%',
+      height: '110%',
       justifyContent: "center",
       alignItems: "center",
       width: "100%",
@@ -186,8 +186,8 @@ const styles = StyleSheet.create({
     zIndex: 999,
     width: '100%',
     position: "absolute",
-    top:0,
-    left:0,
+    top: 0,
+    left: 0,
     height: "110%",
     backgroundColor: 'rgba(0, 0, 50, 0.5)',
     alignItems: 'center',

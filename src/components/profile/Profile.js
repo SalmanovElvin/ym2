@@ -1,23 +1,20 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
   SafeAreaView,
-  Button,
-  FlatList,
   Image,
   // TextInput,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   ActivityIndicator,
   Platform,
   KeyboardAvoidingView,
   Modal
 } from "react-native";
 import { TextInput } from 'react-native-paper';
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import Svg, {
   G,
   Circle,

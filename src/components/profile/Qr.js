@@ -9,13 +9,7 @@ import {
 } from "react-native";
 import QRCode from 'react-native-qrcode-svg';
 import Svg, {
-    G,
-    Circle,
     Path,
-    Defs,
-    ClipPath,
-    Rect,
-    Ellipse,
 } from "react-native-svg";
 
 export const Qr = ({ navigation, route }) => {

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Button, FlatList, Image, TouchableOpacity, ScrollView, Dimensions, } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions, } from "react-native";
 
-import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
+import Svg, { Path, } from "react-native-svg";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { DELETE_NOTIFICATION, MARK_NOTIFICATION } from "../../../graph/mutations/notifications";
 import Animated, {
     useAnimatedStyle,

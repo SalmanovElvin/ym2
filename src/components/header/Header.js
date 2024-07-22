@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Button, FlatList, Image, SafeAreaView, ScrollView, RefreshControl, Platform } from "react-native";
+import { View, StyleSheet, Image, Platform } from "react-native";
 
-import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
-import { useUnionState } from "../../../store/union-context";
+import Svg, { Circle, Path, } from "react-native-svg";
+// import { useUnionState } from "../../../store/union-context";
 import { useUserState } from "../../../store/user-context";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { GET_NOTIFICATIONS } from "../../../graph/queries/notifications";
-import { useMutation, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { useNavigation } from '@react-navigation/native';
 
 export const Header = () => {
     const navigation = useNavigation();
-    const unionState = useUnionState();
+    // const unionState = useUnionState();
 
     const [userData, setUserData] = useState(useUserState());
 

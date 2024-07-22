@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { View, ActivityIndicator, NativeModules } from "react-native";
+// import { View, ActivityIndicator, NativeModules } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Platform } from "react-native";
+// import { Platform } from "react-native";
 
 import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
 
@@ -11,7 +11,7 @@ import { MainScreen } from "../screens/MainScreen";
 import { FeedScreen } from "../screens/FeedScreen";
 import { ServicesScreen } from "../screens/ServicesScreen";
 import { SettingsScreen } from "../screens/SettingsScreen";
-import { THEME } from "../theme";
+// import { THEME } from "../theme";
 import { UnionForm } from "../components/unionSignIn/UnionForm";
 import { Login } from "../components/login/Login";
 import { EnterEmail } from "../components/changePassword/EnterEmail";

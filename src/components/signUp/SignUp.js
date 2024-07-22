@@ -1,20 +1,18 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
   Text,
   TextInput,
-  Button,
   Image,
   SafeAreaView,
   TouchableOpacity,
   ScrollView,
-  StatusBar,
   KeyboardAvoidingView,
   Platform,
   Modal
 } from "react-native";
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 
 import LottieView from 'lottie-react-native';
 

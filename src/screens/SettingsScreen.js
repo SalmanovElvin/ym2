@@ -1,26 +1,23 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useEffect, useCallback, useState } from "react";
+import React, { useEffect,  useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
-  Image,
-  Button,
   ScrollView,
-  Alert,
   ActivityIndicator,
   RefreshControl,
   SafeAreaView,
   Linking,
   TouchableOpacity
 } from "react-native";
-import Svg, { G, Circle, Path, Defs, ClipPath, Rect } from "react-native-svg";
+import Svg, {  Circle, Path,  } from "react-native-svg";
 
 import { Switch } from "react-native-paper";
-import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
+import { useMutation, useQuery, } from "@apollo/client";
 
-import { useUnionState } from "../../store/union-context";
-import { useUserState } from "../../store/user-context";
+// import { useUnionState } from "../../store/union-context";
+// import { useUserState } from "../../store/user-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Header } from "../components/header/Header";
 import { SINGLE_USER } from "../../graph/queries/users";

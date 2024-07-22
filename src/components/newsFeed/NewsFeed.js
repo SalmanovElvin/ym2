@@ -3,23 +3,13 @@ import {
   View,
   Text,
   StyleSheet,
-  Button,
-  FlatList,
   Image,
   TouchableOpacity,
-  TouchableWithoutFeedback,
-  ActivityIndicator,
   Platform
 } from "react-native";
 import { useMutation, useQuery } from "@apollo/client";
 import Svg, {
-  G,
-  Circle,
   Path,
-  Defs,
-  ClipPath,
-  Rect,
-  Ellipse,
 } from "react-native-svg";
 import { LIKE_NEWS_ITEM, PIN_NEWS, SHOW_PIN } from "../../../graph/mutations/news";
 import { GET_NEWS_COMMENT } from "../../../graph/queries/news";

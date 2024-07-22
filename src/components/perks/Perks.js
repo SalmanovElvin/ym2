@@ -6,31 +6,20 @@ import {
   StyleSheet,
   ScrollView,
   SafeAreaView,
-  Button,
-  FlatList,
   Image,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   ActivityIndicator,
-  Platform,
   TextInput,
-  KeyboardAvoidingView,
   Linking,
 } from "react-native";
-import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
+import { useQuery, useLazyQuery } from "@apollo/client";
 import Svg, {
-  G,
   Circle,
-  Path,
-  Defs,
-  ClipPath,
-  Rect,
-  Ellipse,
   Line,
 } from "react-native-svg";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { HeaderInPages } from "./../header/HeaderInPages";
-import Carousel, { Pagination } from "react-native-snap-carousel";
+import Carousel from "react-native-snap-carousel";
 import {
   GET_CATEGORIES,
   GET_COLLECTION_BUSINESS_LIST,
@@ -40,7 +29,7 @@ import { GET_OFFER_DETAILS } from "../../../graph/queries/gitl";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
-export const Perks = ({ navigation, route }) => {
+export const Perks = () => {
   const [userData, setUserData] = useState(null);
   const [unionData, setUnionData] = useState("");
 
