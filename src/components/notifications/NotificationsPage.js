@@ -173,12 +173,12 @@ export const NotificationsPage = ({ navigation, route }) => {
             width: "100%",
             backgroundColor: "#EAF1F5",
         }}>
-            <ScrollView
+            {/* <ScrollView
                 refreshControl={
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                 }
-            >
-                {/* <FlatList
+            > */}
+                <FlatList
                     style={styles.wrapper}
                     data={notifications}
                     renderItem={({ item }) => (
@@ -188,9 +188,9 @@ export const NotificationsPage = ({ navigation, route }) => {
                         />
                     )}
                     keyExtractor={(item) => item?.id}
-                /> */}
+                />
 
-                <View style={styles.wrapper}>
+                {/* <View style={styles.wrapper}>
                     {notifications.map(item => (
                         <Notification
                             key={item.id}  // Ensure each item has a unique key
@@ -198,9 +198,9 @@ export const NotificationsPage = ({ navigation, route }) => {
                             sendDeletedItem={sendDeletedItem}
                         />
                     ))}
-                </View>
+                </View> */}
 
-            </ScrollView>
+            {/* </ScrollView> */}
         </SafeAreaView>
     );
 };

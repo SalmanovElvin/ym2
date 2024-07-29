@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useEffect,  useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -11,7 +11,7 @@ import {
   Linking,
   TouchableOpacity
 } from "react-native";
-import Svg, {  Circle, Path,  } from "react-native-svg";
+import Svg, { Circle, Path, } from "react-native-svg";
 
 import { Switch } from "react-native-paper";
 import { useMutation, useQuery, } from "@apollo/client";
@@ -561,7 +561,7 @@ export const SettingsScreen = ({ navigation, route }) => {
                     marginLeft: 10,
                   }}
                 >
-                  Version - 1.2.3
+                  Version - 1.2.9
                 </Text>
               </View>
             </View>

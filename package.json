@@ -49,6 +49,7 @@
     "react-native-screens": "~3.29.0",
     "react-native-snap-carousel": "^3.9.1",
     "react-native-svg": "14.1.0",
+    "react-native-swipe-delete-view": "^1.0.5",
     "react-native-swipe-list-view": "^3.2.9",
     "react-native-webview": "13.6.4",
     "react-native-woodpicker": "^0.3.17",

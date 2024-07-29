@@ -2,7 +2,7 @@
   "expo": {
     "name": "YOUnified",
     "slug": "younified-app",
-    "version": "1.2.3",
+    "version": "1.2.9",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
