@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { View, Text, StyleSheet, Button, FlatList, Image, ScrollView, TouchableOpacity, ActivityIndicator, SafeAreaView, RefreshControl } from "react-native";
 
-import Svg, {Path } from "react-native-svg";
+import Svg, { Path } from "react-native-svg";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useMutation, useQuery } from "@apollo/client";
@@ -173,12 +173,15 @@ export const NotificationsPage = ({ navigation, route }) => {
             width: "100%",
             backgroundColor: "#EAF1F5",
         }}>
-            {/* <ScrollView
+            <ScrollView
+                alwaysBounceHorizontal={false}
+                alwaysBounceVertical={false}
+                bounces={false}
                 refreshControl={
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                 }
-            > */}
-                <FlatList
+            >
+                {/* <FlatList
                     style={styles.wrapper}
                     data={notifications}
                     renderItem={({ item }) => (
@@ -188,9 +191,9 @@ export const NotificationsPage = ({ navigation, route }) => {
                         />
                     )}
                     keyExtractor={(item) => item?.id}
-                />
+                /> */}
 
-                {/* <View style={styles.wrapper}>
+                <View style={styles.wrapper}>
                     {notifications.map(item => (
                         <Notification
                             key={item.id}  // Ensure each item has a unique key
@@ -198,9 +201,9 @@ export const NotificationsPage = ({ navigation, route }) => {
                             sendDeletedItem={sendDeletedItem}
                         />
                     ))}
-                </View> */}
+                </View>
 
-            {/* </ScrollView> */}
+            </ScrollView>
         </SafeAreaView>
     );
 };
@@ -208,6 +211,6 @@ export const NotificationsPage = ({ navigation, route }) => {
 const styles = StyleSheet.create({
     wrapper: {
         padding: 10,
-        overflow: 'scroll'
+        // overflow: 'scroll'
     },
 });

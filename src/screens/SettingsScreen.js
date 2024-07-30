@@ -561,7 +561,7 @@ export const SettingsScreen = ({ navigation, route }) => {
                     marginLeft: 10,
                   }}
                 >
-                  Version - 1.2.9
+                  Version - 1.3.2
                 </Text>
               </View>
             </View>

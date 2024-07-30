@@ -175,6 +175,7 @@ const styles = StyleSheet.create({
     containerForSwipe: {
         flex: 1,
         backgroundColor: '#f5f5f5',
+        marginVertical: 8
     },
     hiddenContainer: {
         backgroundColor: '#D94D2E',
