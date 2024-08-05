@@ -59,30 +59,19 @@ export const Notification = ({ notification, sendDeletedItem }) => {
         let route = "";
         if (notification?.message.toLowerCase().includes("new information has been posted in news feed")) {
             route = "Feed";
+            navigation.navigate("Feed");
         } else if (notification?.message.toLowerCase().includes("you received a new message")) {
             route = "Chats";
+            navigation.navigate("Chats");
         } else if (notification?.message.toLowerCase().includes("there is a vote available for you")) {
             route = "Voting";
+            navigation.navigate("Voting");
         } else if (notification?.message.toLowerCase().includes("there is a campaign available")) {
             route = "Calls";
+            navigation.navigate("Calls");
         }
 
         if (route) {
-            markNotificationAsRead({
-                variables: {
-                    unionID: userData?.unionID,
-                    notificationID: notification?.id,
-                    userID: userData?.id,
-                },
-                onCompleted: () => navigation.navigate(route),
-                onError: (err) => {
-                    console.log(err);
-                    if (swipeRowRef.current) {
-                        swipeRowRef.current.closeRow(); // Close the swipe on error
-                    }
-                }
-            });
-        } else {
             markNotificationAsRead({
                 variables: {
                     unionID: userData?.unionID,
@@ -212,7 +201,7 @@ const styles = StyleSheet.create({
     nonRead: {
         position: 'absolute',
         width: 10,
-        height: '100%',
+        height: '200%',
         backgroundColor: '#4468C1',
         left: 0,
     },

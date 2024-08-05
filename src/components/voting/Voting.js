@@ -9,12 +9,12 @@ import {
   RefreshControl,
   SafeAreaView,
 } from "react-native";
-import {  useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { HeaderInPages } from "./../header/HeaderInPages";
 import {
- 
+
   GET_ELECTIONS,
 } from "../../../graph/queries/elections";
 import { ActualVote } from "./ActualVote";
@@ -52,8 +52,8 @@ export const Voting = ({ navigation, route }) => {
     getData();
   }, []);
 
-  const [actualElections, setActualElections] = useState([]),
-    [expiredElections, setExpiredElections] = useState([]);
+  const [actualElections, setActualElections] = useState(null),
+    [expiredElections, setExpiredElections] = useState(null);
   const [votedElections, setVotedElections] = useState([]);
   const [electionId, setElectionId] = useState('');
 
@@ -100,8 +100,8 @@ export const Voting = ({ navigation, route }) => {
 
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = React.useCallback(() => {
-    setActualElections([]);
-    setExpiredElections([]);
+    // setActualElections([]);
+    // setExpiredElections([]);
     refetch();
     setRefreshing(true);
   }, []);
@@ -114,7 +114,8 @@ export const Voting = ({ navigation, route }) => {
         backgroundColor: "#EAF1F5",
       }}>
         <HeaderInPages title="Voting" />
-        {electionsLoading ? (
+        {/* electionsLoading */}
+        {actualElections == null || expiredElections == null ? (
           <View
             style={{ alignItems: "center", justifyContent: "center", flex: 1 }}
           >
@@ -127,8 +128,8 @@ export const Voting = ({ navigation, route }) => {
                 onRefresh();
               }} />
             } style={styles.wrapper}>
-              {actualElections.length !== 0 ? (
-                actualElections.map((item) => (
+              {actualElections?.length !== 0 ? (
+                actualElections?.map((item) => (
                   <ActualVote userData={userData} key={item.id} item={item} />
                 ))
               ) : (
@@ -145,7 +146,7 @@ export const Voting = ({ navigation, route }) => {
                 </Text>
               )}
 
-              {expiredElections.length === 0 ? (
+              {expiredElections?.length === 0 ? (
                 <></>
               ) : (
                 <>
@@ -164,7 +165,7 @@ export const Voting = ({ navigation, route }) => {
                   >
                     Elections that was expired:
                   </Text>
-                  {expiredElections.map((item) => (
+                  {expiredElections?.map((item) => (
                     <View key={item.id} style={styles.block}>
                       <Text
                         style={{
