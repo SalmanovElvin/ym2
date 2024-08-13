@@ -17,8 +17,10 @@ import HTMLView from "react-native-htmlview";
 import LottieView from "lottie-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const NewsFeed = ({ navigation, setNewsArrToNull, news, getNews, showErr, openComments }) => {
-  // console.log(news.likes);
+export const NewsFeed = ({ navigation, setNewsArrToNull, news, getNews, showErr, openComments, asUnion }) => {
+
+  // console.log(news.asUnion);
+
   const [isCollapsed, setIsCollapsed] = useState(false);
   const toggleCollapsible = () => {
     setIsCollapsed(!isCollapsed);
@@ -260,42 +262,87 @@ export const NewsFeed = ({ navigation, setNewsArrToNull, news, getNews, showErr,
   return (
     <View style={styles.wrapper}>
       <View style={styles.feedHeader}>
+
         <View style={styles.photo}>
-          {news?.creator?.profile?.imageURL !== "" ? (
-            <Image
-              style={{ width: 40, height: 40, borderRadius: 50 }}
-              source={{ uri: news?.creator?.profile?.imageURL }}
-            />
-          ) : (
-            <Svg
-              style={{ width: 30, height: 30, borderRadius: 50 }}
-              viewBox="0 0 1024 1024"
-              class="icon"
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <Path
-                d="M691.573 338.89c-1.282 109.275-89.055 197.047-198.33 198.331-109.292 1.282-197.065-90.984-198.325-198.331-0.809-68.918-107.758-68.998-106.948 0 1.968 167.591 137.681 303.31 305.272 305.278C660.85 646.136 796.587 503.52 798.521 338.89c0.811-68.998-106.136-68.918-106.948 0z"
-                fill="#4A5699"
-              />
-              <Path
-                d="M294.918 325.158c1.283-109.272 89.051-197.047 198.325-198.33 109.292-1.283 197.068 90.983 198.33 198.33 0.812 68.919 107.759 68.998 106.948 0C796.555 157.567 660.839 21.842 493.243 19.88c-167.604-1.963-303.341 140.65-305.272 305.278-0.811 68.998 106.139 68.919 106.947 0z"
-                fill="#C45FA0"
-              />
-              <Path
-                d="M222.324 959.994c0.65-74.688 29.145-144.534 80.868-197.979 53.219-54.995 126.117-84.134 201.904-84.794 74.199-0.646 145.202 29.791 197.979 80.867 54.995 53.219 84.13 126.119 84.79 201.905 0.603 68.932 107.549 68.99 106.947 0-1.857-213.527-176.184-387.865-389.716-389.721-213.551-1.854-387.885 178.986-389.721 389.721-0.601 68.991 106.349 68.933 106.949 0.001z"
-                fill="#E5594F"
-              />
-            </Svg>
-          )}
+          {news.asUnion ?
+            <>
+              {unionData?.information?.imageURL !== "" ? (
+                <Image
+                  style={{ width: 40, height: 40, borderRadius: 50 }}
+                  source={{ uri: unionData?.information?.imageURL }}
+                />
+              ) : (
+                <Svg
+                  style={{ width: 30, height: 30, borderRadius: 50 }}
+                  viewBox="0 0 1024 1024"
+                  class="icon"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <Path
+                    d="M691.573 338.89c-1.282 109.275-89.055 197.047-198.33 198.331-109.292 1.282-197.065-90.984-198.325-198.331-0.809-68.918-107.758-68.998-106.948 0 1.968 167.591 137.681 303.31 305.272 305.278C660.85 646.136 796.587 503.52 798.521 338.89c0.811-68.998-106.136-68.918-106.948 0z"
+                    fill="#4A5699"
+                  />
+                  <Path
+                    d="M294.918 325.158c1.283-109.272 89.051-197.047 198.325-198.33 109.292-1.283 197.068 90.983 198.33 198.33 0.812 68.919 107.759 68.998 106.948 0C796.555 157.567 660.839 21.842 493.243 19.88c-167.604-1.963-303.341 140.65-305.272 305.278-0.811 68.998 106.139 68.919 106.947 0z"
+                    fill="#C45FA0"
+                  />
+                  <Path
+                    d="M222.324 959.994c0.65-74.688 29.145-144.534 80.868-197.979 53.219-54.995 126.117-84.134 201.904-84.794 74.199-0.646 145.202 29.791 197.979 80.867 54.995 53.219 84.13 126.119 84.79 201.905 0.603 68.932 107.549 68.99 106.947 0-1.857-213.527-176.184-387.865-389.716-389.721-213.551-1.854-387.885 178.986-389.721 389.721-0.601 68.991 106.349 68.933 106.949 0.001z"
+                    fill="#E5594F"
+                  />
+                </Svg>
+              )}
+            </>
+            :
+            <>
+              {news?.creator?.profile?.imageURL !== "" ? (
+                <Image
+                  style={{ width: 40, height: 40, borderRadius: 50 }}
+                  source={{ uri: news?.creator?.profile?.imageURL }}
+                />
+              ) : (
+                <Svg
+                  style={{ width: 30, height: 30, borderRadius: 50 }}
+                  viewBox="0 0 1024 1024"
+                  class="icon"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <Path
+                    d="M691.573 338.89c-1.282 109.275-89.055 197.047-198.33 198.331-109.292 1.282-197.065-90.984-198.325-198.331-0.809-68.918-107.758-68.998-106.948 0 1.968 167.591 137.681 303.31 305.272 305.278C660.85 646.136 796.587 503.52 798.521 338.89c0.811-68.998-106.136-68.918-106.948 0z"
+                    fill="#4A5699"
+                  />
+                  <Path
+                    d="M294.918 325.158c1.283-109.272 89.051-197.047 198.325-198.33 109.292-1.283 197.068 90.983 198.33 198.33 0.812 68.919 107.759 68.998 106.948 0C796.555 157.567 660.839 21.842 493.243 19.88c-167.604-1.963-303.341 140.65-305.272 305.278-0.811 68.998 106.139 68.919 106.947 0z"
+                    fill="#C45FA0"
+                  />
+                  <Path
+                    d="M222.324 959.994c0.65-74.688 29.145-144.534 80.868-197.979 53.219-54.995 126.117-84.134 201.904-84.794 74.199-0.646 145.202 29.791 197.979 80.867 54.995 53.219 84.13 126.119 84.79 201.905 0.603 68.932 107.549 68.99 106.947 0-1.857-213.527-176.184-387.865-389.716-389.721-213.551-1.854-387.885 178.986-389.721 389.721-0.601 68.991 106.349 68.933 106.949 0.001z"
+                    fill="#E5594F"
+                  />
+                </Svg>
+              )}
+            </>
+          }
+
+
 
           <View style={styles.nameWrapper}>
-            <Text style={styles.name}>
-              {news?.creator?.firstName} {news?.creator?.lastName}
-            </Text>
+            {news.asUnion ?
+              <Text style={styles.name}>
+                {unionData.name}
+              </Text> :
+              <Text style={styles.name}>
+                {news?.creator?.firstName} {news?.creator?.lastName}
+              </Text>
+            }
             <Text style={styles.postedTime}>posted {postedTime} ago</Text>
           </View>
         </View>
+
+
+
         <View style={styles.headerIcons}>
           <TouchableOpacity
             onPress={pinCard}

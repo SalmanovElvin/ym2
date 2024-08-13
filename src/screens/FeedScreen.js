@@ -36,6 +36,8 @@ export const FeedScreen = ({ navigation, route }) => {
         if (value !== null) {
           setLogoURL({ uri: `${JSON.parse(value).information.imageURL}` });
           setUnionData(JSON.parse(value));
+          // console.log(JSON.parse(value).name);
+
           // console.log('Retrieved data:', JSON.parse(value).information.imageURL);
         } else {
           console.log("No union data found");
@@ -78,6 +80,8 @@ export const FeedScreen = ({ navigation, route }) => {
         data.newsFeed.data.length
       ) {
         setNewsFeed([...data.newsFeed.data]);
+        // console.log([...data.newsFeed.data][0].asUnion);
+
         setRefreshing(false);
 
       }
@@ -90,6 +94,8 @@ export const FeedScreen = ({ navigation, route }) => {
         data.newsFeed.pinned.length
       ) {
         setNewsFeed([...data.newsFeed.pinned, ...data.newsFeed.data]);
+        // console.log([...data.newsFeed.pinned, ...data.newsFeed.data]);
+
         setRefreshing(false);
 
         // console.log([...data.newsFeed.pinned, ...data.newsFeed.data]);
