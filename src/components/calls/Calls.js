@@ -108,7 +108,11 @@ export const Calls = () => {
                                         </View>
                                     </View>
 
-                                    <CallMsg msg={item.script} />
+                                    {item.script.trim() == '' ?
+                                        <></> :
+                                        <CallMsg msg={item.script} />
+                                    }
+
 
                                     <TouchableOpacity onPress={() => Linking.openURL(`tel:${item.phone}`)} style={{ paddingVertical: 16, paddingHorizontal: 32, backgroundColor: '#34519A', alignItems: 'center', justifyContent: 'center', borderRadius: 5 }} activeOpacity={0.6}>
                                         <Text style={{ fontWeight: '700', fontSize: 16, color: '#FFFFFF' }}>Call:  {item.phone}</Text>

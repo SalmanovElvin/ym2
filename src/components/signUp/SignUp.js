@@ -457,7 +457,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   backCont: {
-    paddingTop: 45,
+    paddingTop: 25,//was 45
     paddingBottom: 15,
     flex: 1,
     backgroundColor: "#EAF1F5",

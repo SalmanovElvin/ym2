@@ -454,7 +454,7 @@ export const NewsFeed = ({ navigation, setNewsArrToNull, news, getNews, showErr,
         </View>
         <View style={styles.bottomIconWrapper}>
           <Svg
-            onPress={() => openComments(news.id, userData, commentCount)}
+            onPress={() => openComments(news.id, userData, commentCount, isLiked)}
             width="20"
             height="21"
             viewBox="0 0 20 21"

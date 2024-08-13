@@ -71,6 +71,8 @@ export const Executives = ({ navigation, route }) => {
         },
         onCompleted: () => {
             setExecutives(data.executives);
+            // console.log(data.executives[0]);
+
         },
         onError: (err) => {
             console.log(err);
@@ -156,6 +158,17 @@ export const Executives = ({ navigation, route }) => {
                                     <></>
                                 }
 
+                                {item?.memberData?.profile?.unionMail ?
+                                    <>
+                                        <View style={{ height: 2, backgroundColor: '#F4F4F4', marginVertical: 15 }}></View>
+                                        <TouchableOpacity onPress={() => Linking.openURL(`mailto:${item?.memberData?.profile?.unionMail}`)}>
+                                            <Text style={{ color: '#0A93E1', fontWeight: '400', fontSize: 16 }}>{item?.memberData?.profile?.unionMail}</Text>
+                                        </TouchableOpacity>
+                                    </>
+                                    :
+                                    <></>
+                                }
+
                                 {!item?.memberData?.profile?.phone && !item?.extension ?
                                     <></>
                                     :
@@ -167,14 +180,48 @@ export const Executives = ({ navigation, route }) => {
                                                 Office:
                                             </Text>
                                             <View style={{ flexDirection: 'row' }}>
-                                                <TouchableOpacity onPress={() => Linking.openURL(`tel:${item?.memberData?.profile?.phone}`)}>
-                                                    <Text style={{ color: '#242529', fontSize: 16, fontWeight: '400' }}>
-                                                        {item?.memberData?.profile?.phone}
-                                                    </Text>
-                                                </TouchableOpacity>
+                                                {!item?.memberData?.profile?.phone ?
+                                                    <TouchableOpacity onPress={() => Linking.openURL(`tel:${unionData?.information?.phone}`)}>
+                                                        <Text style={{ color: '#242529', fontSize: 16, fontWeight: '400' }}>
+                                                            {unionData?.information?.phone}
+                                                        </Text>
+                                                    </TouchableOpacity>
+                                                    :
+                                                    <TouchableOpacity onPress={() => Linking.openURL(`tel:${item?.memberData?.profile?.phone}`)}>
+                                                        <Text style={{ color: '#242529', fontSize: 16, fontWeight: '400' }}>
+                                                            {item?.memberData?.profile?.phone}
+                                                        </Text>
+                                                    </TouchableOpacity>
+                                                }
+
+
+
                                                 <Text style={{ color: '#242529', fontSize: 16, fontWeight: '400' }}>
                                                     {item?.extension ? ` EXT.${item?.extension}` : ''}
                                                 </Text>
+                                            </View>
+                                        </View>
+
+                                        <View style={{ height: 2, backgroundColor: '#F4F4F4', marginTop: 15 }}></View>
+                                    </>
+                                }
+
+                                {!item?.memberData?.profile?.mobile ?
+                                    <></>
+                                    :
+                                    <>
+                                        <View style={{ marginTop: 15 }}></View>
+
+                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                            <Text style={{ color: '#242529', fontWeight: '700', fontSize: 16 }}>
+                                                Mobile:
+                                            </Text>
+                                            <View style={{ flexDirection: 'row' }}>
+                                                <TouchableOpacity onPress={() => Linking.openURL(`tel:${item?.memberData?.profile?.mobile}`)}>
+                                                    <Text style={{ color: '#242529', fontSize: 16, fontWeight: '400' }}>
+                                                        {item?.memberData?.profile?.mobile}
+                                                    </Text>
+                                                </TouchableOpacity>
                                             </View>
                                         </View>
 

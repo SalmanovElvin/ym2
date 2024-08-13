@@ -131,13 +131,14 @@ export const FeedScreen = ({ navigation, route }) => {
     setErrUser(true);
   };
 
-  const openComments = (newsID, userData, commentCount) => {
+  const openComments = (newsID, userData, commentCount, isLiked) => {
     // console.log(newsFeed.find(item => item.id === newsID));
     navigation.navigate("Comment", {
       news: newsFeed.find((item) => item.id === newsID),
       userData: userData,
       logoURL: logoURL,
       commentCount: commentCount,
+      isLiked: isLiked
     });
   };
 

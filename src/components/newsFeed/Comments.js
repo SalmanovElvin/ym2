@@ -44,6 +44,7 @@ const Comment = ({ comment, openDeleteModal }) => {
   const secondsDifference = Math.floor(difference / 1000);
   const minutesDifference = Math.floor(difference / (1000 * 60));
   const hoursDifference = Math.floor(difference / (1000 * 60 * 60));
+  const daysDifference = Math.floor(difference / (1000 * 60 * 60 * 24));
   const weeksDifference = Math.floor(difference / (1000 * 60 * 60 * 24 * 7));
   const monthsDifference = Math.floor(
     currentDate.getMonth() -
@@ -77,25 +78,33 @@ const Comment = ({ comment, openDeleteModal }) => {
             setPostedTime(`${weeksDifference} weeks`);
           }
         } else {
-          if (hoursDifference !== 0) {
-            if (hoursDifference === 1) {
-              setPostedTime(`${hoursDifference} hour`);
+          if (daysDifference !== 0) {
+            if (daysDifference === 1) {
+              setPostedTime(`${daysDifference} day`);
             } else {
-              setPostedTime(`${hoursDifference} hours`);
+              setPostedTime(`${daysDifference} days`);
             }
           } else {
-            if (minutesDifference !== 0) {
-              if (minutesDifference === 1) {
-                setPostedTime(`${minutesDifference} minute`);
+            if (hoursDifference !== 0) {
+              if (hoursDifference === 1) {
+                setPostedTime(`${hoursDifference} hour`);
               } else {
-                setPostedTime(`${minutesDifference} minutes`);
+                setPostedTime(`${hoursDifference} hours`);
               }
             } else {
-              if (secondsDifference !== 0) {
-                if (secondsDifference === 1) {
-                  setPostedTime(`${secondsDifference} second`);
+              if (minutesDifference !== 0) {
+                if (minutesDifference === 1) {
+                  setPostedTime(`${minutesDifference} minute`);
                 } else {
-                  setPostedTime(`${secondsDifference} seconds`);
+                  setPostedTime(`${minutesDifference} minutes`);
+                }
+              } else {
+                if (secondsDifference !== 0) {
+                  if (secondsDifference === 1) {
+                    setPostedTime(`${secondsDifference} second`);
+                  } else {
+                    setPostedTime(`${secondsDifference} seconds`);
+                  }
                 }
               }
             }
@@ -177,6 +186,8 @@ const Comment = ({ comment, openDeleteModal }) => {
 
 export const Comments = React.memo(({ navigation, route }) => {
   const { news, userData, logoURL, commentCount } = route.params;
+
+
 
   navigation.setOptions({
     headerStyle: {
@@ -298,6 +309,7 @@ export const Comments = React.memo(({ navigation, route }) => {
   const secondsDifference = Math.floor(difference / 1000);
   const minutesDifference = Math.floor(difference / (1000 * 60));
   const hoursDifference = Math.floor(difference / (1000 * 60 * 60));
+  const daysDifference = Math.floor(difference / (1000 * 60 * 60 * 24));
   const weeksDifference = Math.floor(difference / (1000 * 60 * 60 * 24 * 7));
   const monthsDifference = Math.floor(
     currentDate.getMonth() -
@@ -310,13 +322,7 @@ export const Comments = React.memo(({ navigation, route }) => {
   const [postedTime, setPostedTime] = useState("");
 
   useEffect(() => {
-    refetch();
-    for (let i = 0; i < news?.likes?.length; i++) {
-      if (news.likes[i] == userData.id) {
-        setIsLiked(true);
-      }
-    }
-
+    setIsLiked(news.likes.includes(userData.id));
     if (yearsDifference !== 0) {
       if (yearsDifference === 1) {
         setPostedTime(`${yearsDifference} year`);
@@ -338,25 +344,33 @@ export const Comments = React.memo(({ navigation, route }) => {
             setPostedTime(`${weeksDifference} weeks`);
           }
         } else {
-          if (hoursDifference !== 0) {
-            if (hoursDifference === 1) {
-              setPostedTime(`${hoursDifference} hour`);
+          if (daysDifference !== 0) {
+            if (daysDifference === 1) {
+              setPostedTime(`${daysDifference} day`);
             } else {
-              setPostedTime(`${hoursDifference} hours`);
+              setPostedTime(`${daysDifference} days`);
             }
           } else {
-            if (minutesDifference !== 0) {
-              if (minutesDifference === 1) {
-                setPostedTime(`${minutesDifference} minute`);
+            if (hoursDifference !== 0) {
+              if (hoursDifference === 1) {
+                setPostedTime(`${hoursDifference} hour`);
               } else {
-                setPostedTime(`${minutesDifference} minutes`);
+                setPostedTime(`${hoursDifference} hours`);
               }
             } else {
-              if (secondsDifference !== 0) {
-                if (secondsDifference === 1) {
-                  setPostedTime(`${secondsDifference} second`);
+              if (minutesDifference !== 0) {
+                if (minutesDifference === 1) {
+                  setPostedTime(`${minutesDifference} minute`);
                 } else {
-                  setPostedTime(`${secondsDifference} seconds`);
+                  setPostedTime(`${minutesDifference} minutes`);
+                }
+              } else {
+                if (secondsDifference !== 0) {
+                  if (secondsDifference === 1) {
+                    setPostedTime(`${secondsDifference} second`);
+                  } else {
+                    setPostedTime(`${secondsDifference} seconds`);
+                  }
                 }
               }
             }
