@@ -60,57 +60,114 @@ export const REGISTER = gql`
   }
 `;
 export const LOGIN_WITH_TOKEN = gql`
-  mutation loginWithToken($token: String!, $device: String) {
-    loginWithToken(token: $token, device: $device) {
-      user {
-        id
-        token
-        username
-        firstName
-        lastName
-        unionID
-        status
-        memberID
-        unionPosition
-        startDate
-        jobTitle
-        unit
-        employmentType
-        barcode
-        permission
-        employmentStatus
-        dateOfBirth
-        device
-        isAdmin
-        profile {
-          email
-          imageURL
-          address
-          city
-          province
-          postalCode
-          phone
-        }
-      }
-      union {
-        id
-        name
-        information {
-          email
-          imageURL
-          address
-          city
-          province
-          postalCode
-          phone
-          description
-          bannerURL
-        }
-        modules
-        bargainingUnits
-      }
-    }
-  }
+	mutation loginWithToken($token: String!, $device: String) {
+		loginWithToken(token: $token, device: $device) {
+			user {
+				id
+				unionID
+				firstName
+				lastName
+				status
+				profile {
+					imageURL
+					email
+					phone
+					unionMail
+					mobile
+				}
+				unionPosition
+				token
+				barcode
+				permission
+				unit
+				isAdmin
+				emailPassword
+			}
+			union {
+				id
+				name
+				hostEmail
+				defaultEmailPassword
+				infoTabs {
+					title
+					key
+					display
+					position
+					category
+					kind
+					public
+				}
+				information {
+					email
+					imageURL
+					address
+					city
+					province
+					postalCode
+					phone
+					fax
+					description
+					bannerURL
+					presidentMessage
+					importantLinks {
+						url
+						name
+					}
+					websiteLinks {
+						url
+						name
+					}
+				}
+				grievance {
+					title
+					type
+					key
+					errorMsg
+					required
+					display
+					modify
+					position
+				}
+				modules
+				registration {
+					title
+					type
+					key
+					errorMsg
+					required
+					display
+					modify
+					position
+				}
+				bannedDomains
+				bargainingUnits
+				domain
+				bannerURL
+				theme
+				themeImage
+				twitter
+				twitterLinks
+				facebook
+				facebookLinks
+				instagram
+				instagramLinks
+				accountManager {
+					firstName
+					lastName
+					email
+					phone
+					imageURL
+				}
+				communicationRep {
+					firstName
+					lastName
+					email
+					phone
+					imageURL
+				}
+			}
+		}
+	}
 `;
 
 //gql mutation for new user creation on the registration screen

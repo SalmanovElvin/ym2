@@ -30,6 +30,7 @@ import { Profile } from "../components/profile/Profile";
 import { Qr } from "../components/profile/Qr";
 import { Executives } from "../components/executives/Executives";
 import { Documents } from "../components/documents/Documents";
+import { DocumentsOfRetirees } from "../components/documents/DocumentsOfRetirees";
 import { Grievances } from "../components/grievances/Grievances";
 import { Grievance } from "../components/grievances/Grievance";
 import { Perks } from "../components/perks/Perks";
@@ -110,6 +111,11 @@ export default function AppNavigation() {
           name="Documents"
           options={{ headerShown: false, title: "", }}
           component={Documents}
+        />
+        <Stack.Screen
+          name="DocumentsOfRetirees"
+          options={{ headerShown: false, title: "", }}
+          component={DocumentsOfRetirees}
         />
         <Stack.Screen
           name="Grievances"

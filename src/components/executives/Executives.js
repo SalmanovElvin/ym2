@@ -158,7 +158,7 @@ export const Executives = ({ navigation, route }) => {
                                     <></>
                                 }
 
-                                {item?.memberData?.profile?.unionMail ?
+                                {item?.memberData?.profile?.unionMail && item?.memberData?.profile?.email.trim() !== item?.memberData?.profile?.unionMail.trim() ?
                                     <>
                                         <View style={{ height: 2, backgroundColor: '#F4F4F4', marginVertical: 15 }}></View>
                                         <TouchableOpacity onPress={() => Linking.openURL(`mailto:${item?.memberData?.profile?.unionMail}`)}>

@@ -101,7 +101,8 @@ export const Documents = ({ navigation, route }) => {
         }
       }
       setDocTypes(arr);
-      setSelectedDoc("YOUnified Tutorials");
+
+      setSelectedDoc(arr[0]);
     },
     onError: (error) => {
       console.error("Query Error", error); // eslint-disable-line
