@@ -196,6 +196,38 @@ export const GET_EXECUTIVES = gql`
   }
 `;
 
+export const GET_STANDING_COMMITTEE = gql`
+  query standingCommittee(
+    $unionID: UnifiedID! 
+    $category: String!
+  ) {
+    standingCommittee(unionID: $unionID, category: $category) {
+      id
+      committeeID
+      committeeName
+      extension
+      orderNumber
+      display {
+        mobile
+        extension
+        email
+      }
+      memberData {
+        firstName
+        lastName
+        profile {
+          email
+          unionMail
+          imageURL
+          phone
+          mobile
+        }
+      }
+    }
+  }
+`;
+
+
 
 /* export const GET_USERS = gql`
   query GetUsers($unionID: UnifiedID!) {

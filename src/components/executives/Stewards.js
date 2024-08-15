@@ -27,10 +27,10 @@ import Svg, {
     Ellipse,
 } from "react-native-svg";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { GET_EXECUTIVES } from "../../../graph/queries/users";
+import { GET_STANDING_COMMITTEE } from "../../../graph/queries/users";
 import { HeaderInPages } from "../header/HeaderInPages";
 
-export const Executives = ({ navigation, route }) => {
+export const Stewards = ({ navigation, route }) => {
 
     const [userData, setUserData] = useState(null);
     const [unionData, setUnionData] = useState("");
@@ -62,16 +62,18 @@ export const Executives = ({ navigation, route }) => {
     }, []);
 
 
-    const [executives, setExecutives] = useState([]);
+    const [stewards, setStewards] = useState([]);
 
-    const { data, refetch } = useQuery(GET_EXECUTIVES, {
+    const { data, refetch } = useQuery(GET_STANDING_COMMITTEE, {
         variables: {
             unionID: userData?.unionID,
             category: ""
         },
         onCompleted: () => {
-            setExecutives(data.executives);
-            // console.log(data.executives[0]);
+            setStewards(data.standingCommittee);
+            console.log(data.standingCommittee);
+            
+            // console.log(data.stewards[0]);
 
         },
         onError: (err) => {
@@ -95,14 +97,14 @@ export const Executives = ({ navigation, route }) => {
                 width: "100%",
                 backgroundColor: "#EAF1F5",
             }}>
-                <HeaderInPages title="Executives" />
-                {executives.length === 0 ?
+                <HeaderInPages title="Stewards" />
+                {stewards.length === 0 ?
                     <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
                         <ActivityIndicator size="large" color="blue" />
                     </View>
                     :
                     <ScrollView style={styles.wrapper}>
-                        {executives.map((item) => (
+                        {stewards.map((item) => (
                             <View key={item?.id} style={styles.block}>
                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                     {item?.memberData?.profile?.imageURL !== "" ?
@@ -140,7 +142,7 @@ export const Executives = ({ navigation, route }) => {
                                             {item?.memberData?.firstName} {item?.memberData?.lastName}
                                         </Text>
                                         <Text style={{ fontWeight: '300', fontSize: 16, color: "#000" }}>
-                                            {item?.position}
+                                            {item?.committeeName}
                                         </Text>
                                     </View>
                                 </View>

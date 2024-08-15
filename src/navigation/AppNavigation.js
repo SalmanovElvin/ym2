@@ -37,6 +37,7 @@ import { Perks } from "../components/perks/Perks";
 import { Voting } from "../components/voting/Voting";
 import { Calls } from "../components/calls/Calls";
 import { ElectionPage } from "../components/voting/ElectionPage";
+import { Stewards } from "../components/executives/Stewards";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -106,6 +107,11 @@ export default function AppNavigation() {
           name="Executives"
           options={{ headerShown: false, title: "", }}
           component={Executives}
+        />
+        <Stack.Screen
+          name="Stewards"
+          options={{ headerShown: false, title: "", }}
+          component={Stewards}
         />
         <Stack.Screen
           name="Documents"
