@@ -38,6 +38,8 @@ import { Voting } from "../components/voting/Voting";
 import { Calls } from "../components/calls/Calls";
 import { ElectionPage } from "../components/voting/ElectionPage";
 import { Stewards } from "../components/executives/Stewards";
+import { Memorium } from "../components/memorium/Memorium";
+import { CommentsOfMemorium } from "../components/memorium/CommentsOfMemorium";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -112,6 +114,16 @@ export default function AppNavigation() {
           name="Stewards"
           options={{ headerShown: false, title: "", }}
           component={Stewards}
+        />
+        <Stack.Screen
+          name="Memorium"
+          options={{ headerShown: false, title: "", }}
+          component={Memorium}
+        />
+        <Stack.Screen
+          name="CommentsOfMemorium"
+          options={{ headerShown: true, title: "", }}
+          component={CommentsOfMemorium}
         />
         <Stack.Screen
           name="Documents"

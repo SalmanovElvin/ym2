@@ -14,7 +14,7 @@ import {
   Keyboard,
 } from "react-native";
 import { useMutation, useQuery } from "@apollo/client";
-import { GET_NEWS_COMMENT } from "../../../graph/queries/news";
+import { SINGLE_MEMORIUM } from "../../../graph/queries/memorium";
 
 import Svg, {
   Path,
@@ -28,6 +28,7 @@ import {
 import HTMLView from "react-native-htmlview";
 import LottieView from "lottie-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { NEW_COMMENT_MEMORIUM } from "../../../graph/mutations/memorium";
 
 const Comment = ({ comment, openDeleteModal }) => {
   // console.log(comment.comment);
@@ -185,7 +186,7 @@ const Comment = ({ comment, openDeleteModal }) => {
   );
 };
 
-export const Comments = React.memo(({ navigation, route }) => {
+export const CommentsOfMemorium = React.memo(({ navigation, route }) => {
   const { news, userData, logoURL, commentCount } = route.params;
 
   const [unionData, setUnionData] = useState("");
@@ -255,7 +256,7 @@ export const Comments = React.memo(({ navigation, route }) => {
             color: "#242529",
           }}
         >
-          News List
+          Memoriums List
         </Text>
       </TouchableOpacity>
     ),
@@ -265,15 +266,15 @@ export const Comments = React.memo(({ navigation, route }) => {
   const [avatar, setAvatar] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const { data, loading, error, refetch } = useQuery(GET_NEWS_COMMENT, {
+  const { data, loading, error, refetch } = useQuery(SINGLE_MEMORIUM, {
     variables: {
       unionID: userData?.unionID,
-      newsID: news?.id,
+      memoriumID: news?.id,
     },
     onCompleted: (data) => {
       // console.log(data.newsComments[0].creator.profile.imageURL);
-      setComments(data.newsComments);
-      //   console.log(data.newsComments);
+      setComments(data.singleMemorium.comments);
+      // console.log(data.singleMemorium.comments);
       setIsLoaded(true);
     },
     onError: (err) => {
@@ -285,10 +286,10 @@ export const Comments = React.memo(({ navigation, route }) => {
 
   const [newCommentContent, setNewCommentContent] = useState("");
 
-  const [addNewComment] = useMutation(NEW_COMMENT, {
+  const [addNewComment] = useMutation(NEW_COMMENT_MEMORIUM, {
     variables: {
       unionID: userData.unionID,
-      newsID: news.id,
+      memoriumID: news.id,
       comment: {
         content: "" + newCommentContent,
         createdOn: new Date(),

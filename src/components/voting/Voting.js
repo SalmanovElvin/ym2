@@ -106,6 +106,35 @@ export const Voting = ({ navigation, route }) => {
     setRefreshing(true);
   }, []);
 
+
+  const calculateDifference = (start, end) => {
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+
+    // Calculate the difference in milliseconds
+    const diffInMs = Math.abs(endDate - startDate);
+
+    // Convert milliseconds to days
+    const diffInDays = Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
+
+    // Calculate difference in years, months, weeks, days
+    const diffInYears = Math.floor(diffInDays / 365);
+    const diffInMonths = Math.floor(diffInDays / 30);
+    const diffInWeeks = Math.floor(diffInDays / 7);
+
+    let result = `${diffInDays} day(s)`;
+
+    if (diffInYears > 0) {
+      result = `${diffInYears} year(s)`;
+    } else if (diffInMonths > 0) {
+      result = `${diffInMonths} month(s)`;
+    } else if (diffInWeeks > 0) {
+      result = `${diffInWeeks} week(s)`;
+    }
+
+    return result;
+  };
+
   return (
     <>
       <SafeAreaView style={{
@@ -188,13 +217,8 @@ export const Voting = ({ navigation, route }) => {
                         }}
                       >
                         Ended in{" "}
-                        {Math.ceil(
-                          Math.abs(
-                            new Date(item.endDate) - new Date(item.startDate)
-                          ) /
-                          (1000 * 60 * 60 * 24)
-                        )}{" "}
-                        day(s) |{" "}
+                        {calculateDifference(new Date(item.startDate), new Date(item.endDate))}{" "}
+                        |{" "}
                         {new Date(item.startDate)
                           .toLocaleDateString("en-US", {
                             month: "long",

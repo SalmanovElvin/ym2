@@ -177,51 +177,56 @@ export const FeedScreen = ({ navigation, route }) => {
       }}>
         <Header />
 
-        {newsFeed.length === 0 ? (
+        {loading ? (
           <View
             style={{ alignItems: "center", justifyContent: "center", flex: 1 }}
           >
             <ActivityIndicator size="large" color="blue" />
           </View>
-        ) : (
-          <>
-            {errUser ? (
-              <View style={styles.modalBack}>
-                <View style={styles.modal}>
-                  <Text style={styles.errMsg}>{errMsg}</Text>
-                  <Text style={styles.tip}>{tip}</Text>
-                  <TouchableOpacity
-                    onPress={() => setErrUser(false)}
-                    activeOpacity={0.7}
-                    style={styles.conf}
-                  >
-                    <Text style={styles.btnConf}>Close</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            ) : (
-              <></>
-            )}
-            <ScrollView style={styles.wrapper}
-              refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-              }>
-
-
+        ) :
+          newsFeed.length === 0 ?
+            <>
+              <Text style={{ padding: 15, textAlign: 'center', fontWeight: '700', fontSize: 16, color: '#696666' }}>There are no any memorium feeds...</Text>
+            </> :
+            (
               <>
-                {newsFeed.map((item) => (
-                  <NewsFeed
-                    openComments={openComments}
-                    showErr={showErr}
-                    getNews={getNewsFunc}
-                    setNewsArrToNull={arrToNull}
-                    key={item?.id}
-                    news={item}
-                  />
-                ))}
+                {errUser ? (
+                  <View style={styles.modalBack}>
+                    <View style={styles.modal}>
+                      <Text style={styles.errMsg}>{errMsg}</Text>
+                      <Text style={styles.tip}>{tip}</Text>
+                      <TouchableOpacity
+                        onPress={() => setErrUser(false)}
+                        activeOpacity={0.7}
+                        style={styles.conf}
+                      >
+                        <Text style={styles.btnConf}>Close</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                ) : (
+                  <></>
+                )}
+                <ScrollView style={styles.wrapper}
+                  refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                  }>
 
 
-                {/* <FlatList
+                  <>
+                    {newsFeed.map((item) => (
+                      <NewsFeed
+                        openComments={openComments}
+                        showErr={showErr}
+                        getNews={getNewsFunc}
+                        setNewsArrToNull={arrToNull}
+                        key={item?.id}
+                        news={item}
+                      />
+                    ))}
+
+
+                    {/* <FlatList
                   data={newsFeed}
                   renderItem={({ item }) => (
                     <NewsFeed
@@ -234,11 +239,11 @@ export const FeedScreen = ({ navigation, route }) => {
                   )}
                   keyExtractor={(item) => item?.id}
                 /> */}
-              </>
+                  </>
 
-            </ScrollView>
-          </>
-        )}
+                </ScrollView>
+              </>
+            )}
 
       </SafeAreaView >
     </>
