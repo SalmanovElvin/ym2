@@ -14,7 +14,7 @@ import {
 import Svg, { Circle, Path, } from "react-native-svg";
 
 import { Switch } from "react-native-paper";
-import { useMutation, useQuery, } from "@apollo/client";
+import { useLazyQuery, useMutation, useQuery, } from "@apollo/client";
 
 // import { useUnionState } from "../../store/union-context";
 // import { useUserState } from "../../store/user-context";
@@ -22,6 +22,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Header } from "../components/header/Header";
 import { SINGLE_USER } from "../../graph/queries/users";
 import { OPTION_OUT } from "../../graph/mutations/notifications";
+import { GET_UNION, GET_UNION_BY_NAME } from "../../graph/queries/unions";
 
 export const SettingsScreen = ({ navigation, route }) => {
   const [userData, setUserData] = useState(null);
@@ -51,6 +52,7 @@ export const SettingsScreen = ({ navigation, route }) => {
       }
     };
     getData();
+
   }, []);
 
   const [singleUserData, setSingleUserData] = useState([]);
@@ -86,6 +88,20 @@ export const SettingsScreen = ({ navigation, route }) => {
     },
   });
 
+  const [unionInfo, setUnionInfo] = useState([]);
+
+  const { loading, error, refetch: getUnion } = useQuery(GET_UNION, {
+    variables: { unionID: unionData?.id },
+    notifyOnNetworkStatusChange: true,
+    onCompleted: (data) => {
+      setUnionInfo(data);
+    },
+    onError: (error) => {
+      console.log(error);
+    }
+  });
+
+
   const [optionOut] = useMutation(OPTION_OUT, {
     onCompleted: () => {
       console.log("success");
@@ -98,6 +114,7 @@ export const SettingsScreen = ({ navigation, route }) => {
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     refreshUser();
+    getUnion();
   }, []);
 
   const [refreshing, setRefreshing] = React.useState(false);
@@ -110,7 +127,7 @@ export const SettingsScreen = ({ navigation, route }) => {
     }}>
       <View style={{ flex: 1 }}>
         <Header />
-        {singleUserData.length === 0 ? (
+        {singleUserData.length === 0 || unionInfo.length === 0 ? (
           <View
             style={{ alignItems: "center", justifyContent: "center", flex: 1 }}
           >
@@ -176,7 +193,7 @@ export const SettingsScreen = ({ navigation, route }) => {
                     width: "70%",
                     marginLeft: 10,
                   }}
-                  onPress={() => Linking.openURL(`tel:${unionData?.information?.phone}`)}>
+                  onPress={() => Linking.openURL(`tel:${unionInfo?.singleUnion?.information?.phone}`)}>
                   <Text
                     style={{
                       width: "100%",
@@ -185,7 +202,7 @@ export const SettingsScreen = ({ navigation, route }) => {
                       color: "#242529",
                     }}
                   >
-                    {unionData?.information?.phone}
+                    {unionInfo?.singleUnion?.information?.phone}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -222,7 +239,7 @@ export const SettingsScreen = ({ navigation, route }) => {
                     width: "70%",
                     marginLeft: 10,
                   }}
-                  onPress={() => Linking.openURL(`mailto:${unionData?.information?.email}`)}>
+                  onPress={() => Linking.openURL(`mailto:${unionInfo?.singleUnion?.information?.email}`)}>
                   <Text
                     style={{
                       width: "100%",
@@ -231,7 +248,7 @@ export const SettingsScreen = ({ navigation, route }) => {
                       color: "#242529",
                     }}
                   >
-                    {unionData?.information?.email}
+                    {unionInfo?.singleUnion?.information?.email}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -276,9 +293,9 @@ export const SettingsScreen = ({ navigation, route }) => {
                     marginLeft: 10,
                   }}
                 >
-                  {unionData?.information?.address},{" "}
-                  {unionData?.information?.province}{" "}
-                  {unionData?.information?.postalCode}
+                  {unionInfo?.singleUnion?.information?.address},{" "}
+                  {unionInfo?.singleUnion?.information?.province}{" "}
+                  {unionInfo?.singleUnion?.information?.postalCode}
                 </Text>
               </View>
             </View>
@@ -561,7 +578,7 @@ export const SettingsScreen = ({ navigation, route }) => {
                     marginLeft: 10,
                   }}
                 >
-                  Version - 1.3.9
+                  Version - 1.4.1
                 </Text>
               </View>
             </View>

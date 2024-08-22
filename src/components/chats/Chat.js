@@ -44,9 +44,9 @@ export const Chat = ({ route, chat, participants }) => {
         pollInterval: 5000,
     });
 
-    // console.log(chat);
+    // console.log(participants);
 
-    const participantsrArr = participants.filter((item) => { return item.firstName.toLowerCase() !== userData?.firstName.toLowerCase() && item.lastName.toLowerCase() !== userData?.lastName.toLowerCase() });
+    const participantsrArr = participants.filter((item) => { return item.firstName.toLowerCase() !== userData?.firstName.toLowerCase() || item.lastName.toLowerCase() !== userData?.lastName.toLowerCase() });
     let participantsString = "";
     for (let i = 0; i < participantsrArr.length; i++) {
         if (i == 0) {
@@ -84,7 +84,7 @@ export const Chat = ({ route, chat, participants }) => {
         const yearsDifference = Math.floor(
             currentDate.getFullYear() - firstDate.getFullYear()
         );
-        
+
         if (yearsDifference !== 0) {
             if (yearsDifference === 1) {
                 setPostedTime(`${yearsDifference} year`);

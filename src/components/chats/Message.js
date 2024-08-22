@@ -46,14 +46,17 @@ export const Message = ({ msg }) => {
     .getDate()
     .toString()
     .padStart(2, "0")}.${(originalTimestamp.getMonth() + 1)
-    .toString()
-    .padStart(2, "0")}.${originalTimestamp.getFullYear()} ${originalTimestamp
-    .getHours()
-    .toString()
-    .padStart(2, "0")}:${originalTimestamp
-    .getMinutes()
-    .toString()
-    .padStart(2, "0")}`;
+      .toString()
+      .padStart(2, "0")}.${originalTimestamp.getFullYear()} ${originalTimestamp
+        .getHours()
+        .toString()
+        .padStart(2, "0")}:${originalTimestamp
+          .getMinutes()
+          .toString()
+          .padStart(2, "0")}`;
+
+  // console.log(msg?.sender?.profile?.imageURL);
+
 
   if (msg?.sender?.id === userData?.id) {
     return (
@@ -64,7 +67,7 @@ export const Message = ({ msg }) => {
           marginBottom: 10,
         }}
       >
-        {msg?.sender?.profile?.imageURL !== "" ? (
+        {msg?.sender?.profile?.imageURL !== "" || msg?.sender?.profile?.imageURL.includes('file:///var/mobile/Containers/Data/Application') ? (
           <Image
             style={{ width: 35, height: 35, borderRadius: 50, marginLeft: 5 }}
             source={{ uri: msg?.sender?.profile?.imageURL }}
@@ -133,7 +136,7 @@ export const Message = ({ msg }) => {
         marginBottom: 10,
       }}
     >
-      {msg?.sender?.profile?.imageURL !== "" ? (
+      {msg?.sender?.profile?.imageURL !== "" || msg?.sender?.profile?.imageURL.includes('file:///var/mobile/Containers/Data/Application') ? (
         <Image
           style={{ width: 35, height: 35, borderRadius: 50, marginRight: 5 }}
           source={{ uri: msg?.sender?.profile?.imageURL }}

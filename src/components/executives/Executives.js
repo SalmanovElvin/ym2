@@ -76,7 +76,6 @@ export const Executives = ({ navigation, route }) => {
                 setExecutives([]);
             }
             // console.log(data.executives);
-
         },
         onError: (err) => {
             console.log(err);
@@ -154,7 +153,7 @@ export const Executives = ({ navigation, route }) => {
 
 
 
-                                    {item?.memberData?.profile?.email ?
+                                    {item?.memberData?.profile?.email && item?.display.email == true ?
                                         <>
                                             <View style={{ height: 2, backgroundColor: '#F4F4F4', marginVertical: 15 }}></View>
                                             <TouchableOpacity onPress={() => Linking.openURL(`mailto:${item?.memberData?.profile?.email}`)}>
@@ -167,19 +166,18 @@ export const Executives = ({ navigation, route }) => {
 
                                     {item?.memberData?.profile?.unionMail && item?.memberData?.profile?.email.trim() !== item?.memberData?.profile?.unionMail.trim() ?
                                         <>
-                                            <View style={{ height: 2, backgroundColor: '#F4F4F4', marginVertical: 15 }}></View>
-                                            <TouchableOpacity onPress={() => Linking.openURL(`mailto:${item?.memberData?.profile?.unionMail}`)}>
-                                                <Text style={{ color: '#0A93E1', fontWeight: '400', fontSize: 16 }}>{item?.memberData?.profile?.unionMail}</Text>
-                                            </TouchableOpacity>
-                                            <View style={{ height: 2, backgroundColor: '#F4F4F4', marginTop: 15 }}></View>
+                                            {item?.display.email == true ? <>
+                                                <View style={{ height: 2, backgroundColor: '#F4F4F4', marginVertical: 15 }}></View>
+                                                <TouchableOpacity onPress={() => Linking.openURL(`mailto:${item?.memberData?.profile?.unionMail}`)}>
+                                                    <Text style={{ color: '#0A93E1', fontWeight: '400', fontSize: 16 }}>{item?.memberData?.profile?.unionMail}</Text>
+                                                </TouchableOpacity>
+                                            </> : <></>}
                                         </>
                                         :
                                         <></>
                                     }
 
-                                    {!item?.memberData?.profile?.phone && !item?.extension ?
-                                        <></>
-                                        :
+                                    {item?.extension && item?.display.extension == true ?
                                         <>
                                             <View style={{ height: 2, backgroundColor: '#F4F4F4', marginVertical: 15 }}></View>
 
@@ -203,22 +201,23 @@ export const Executives = ({ navigation, route }) => {
                                                     }
 
 
+                                                    {item?.display.extension == true && item?.extension ?
+                                                        <Text style={{ color: '#242529', fontSize: 16, fontWeight: '400' }}>
+                                                            {item?.extension ? ` EXT.${item?.extension}` : ''}
+                                                        </Text>
+                                                        : <></>}
 
-                                                    <Text style={{ color: '#242529', fontSize: 16, fontWeight: '400' }}>
-                                                        {item?.extension ? ` EXT.${item?.extension}` : ''}
-                                                    </Text>
                                                 </View>
                                             </View>
 
-                                            <View style={{ height: 2, backgroundColor: '#F4F4F4', marginTop: 15 }}></View>
                                         </>
+                                        :
+                                        <></>
                                     }
 
-                                    {!item?.memberData?.profile?.mobile ?
-                                        <></>
-                                        :
+                                    {item?.memberData?.profile?.mobile && item?.display.mobile == true ?
                                         <>
-                                            <View style={{ marginTop: 15 }}></View>
+                                            <View style={{ height: 2, backgroundColor: '#F4F4F4', marginVertical: 15 }}></View>
 
                                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                                                 <Text style={{ color: '#242529', fontWeight: '700', fontSize: 16 }}>
@@ -233,8 +232,9 @@ export const Executives = ({ navigation, route }) => {
                                                 </View>
                                             </View>
 
-                                            <View style={{ height: 2, backgroundColor: '#F4F4F4', marginTop: 15 }}></View>
                                         </>
+                                        :
+                                        <></>
                                     }
 
 

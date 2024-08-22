@@ -142,17 +142,7 @@ export const MainScreen = ({ navigation, route }) => {
           }
         >
 
-          <TouchableOpacity onPress={() => navigation.navigate('Profile')} activeOpacity={0.6} style={styles.block}>
-            <Text style={styles.firstTxt}>PROFILE</Text>
-            <Text style={styles.txt}>Manage your </Text>
-            <Text style={styles.txt}>profile from here.</Text>
-            <View style={styles.iconWrapper}>
-              <Svg width="33" height="36" viewBox="0 0 33 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <Circle cx="16.5" cy="8.5" r="8.5" fill="#5783EF" />
-                <Rect y="20" width="33" height="16" rx="8" fill="#34519A" />
-              </Svg>
-            </View>
-          </TouchableOpacity>
+
 
           {tabs.map(item => {
 
@@ -377,7 +367,17 @@ export const MainScreen = ({ navigation, route }) => {
 
 
 
-
+          <TouchableOpacity onPress={() => navigation.navigate('Profile')} activeOpacity={0.6} style={styles.block}>
+            <Text style={styles.firstTxt}>PROFILE</Text>
+            <Text style={styles.txt}>Manage your </Text>
+            <Text style={styles.txt}>profile from here.</Text>
+            <View style={styles.iconWrapper}>
+              <Svg width="33" height="36" viewBox="0 0 33 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <Circle cx="16.5" cy="8.5" r="8.5" fill="#5783EF" />
+                <Rect y="20" width="33" height="16" rx="8" fill="#34519A" />
+              </Svg>
+            </View>
+          </TouchableOpacity>
 
 
           {/* {grievances ? */}
