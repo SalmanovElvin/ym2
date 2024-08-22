@@ -40,6 +40,12 @@ import { ElectionPage } from "../components/voting/ElectionPage";
 import { Stewards } from "../components/executives/Stewards";
 import { Memorium } from "../components/memorium/Memorium";
 import { CommentsOfMemorium } from "../components/memorium/CommentsOfMemorium";
+import { Home2 } from "../components/home_second/Home2";
+import { CommentsOfHome2 } from "../components/home_second/CommentsOfHome2";
+import { Memorium2 } from "../components/memorium_second/Memorium2";
+import { CommentsOfMemorium2 } from "../components/memorium_second/CommentsOfMemorium2";
+import { Stewards2 } from "../components/executives/Stewards2";
+import { Executives2 } from "../components/executives/Executives2";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -111,9 +117,19 @@ export default function AppNavigation() {
           component={Executives}
         />
         <Stack.Screen
+          name="Executives2"
+          options={{ headerShown: false, title: "", }}
+          component={Executives2}
+        />
+        <Stack.Screen
           name="Stewards"
           options={{ headerShown: false, title: "", }}
           component={Stewards}
+        />
+        <Stack.Screen
+          name="Stewards2"
+          options={{ headerShown: false, title: "", }}
+          component={Stewards2}
         />
         <Stack.Screen
           name="Memorium"
@@ -124,6 +140,26 @@ export default function AppNavigation() {
           name="CommentsOfMemorium"
           options={{ headerShown: true, title: "", }}
           component={CommentsOfMemorium}
+        />
+        <Stack.Screen
+          name="Home2"
+          options={{ headerShown: false, title: "", }}
+          component={Home2}
+        />
+        <Stack.Screen
+          name="CommentsOfHome2"
+          options={{ headerShown: true, title: "", }}
+          component={CommentsOfHome2}
+        />
+        <Stack.Screen
+          name="Memorium2"
+          options={{ headerShown: false, title: "", }}
+          component={Memorium2}
+        />
+        <Stack.Screen
+          name="CommentsOfMemorium2"
+          options={{ headerShown: true, title: "", }}
+          component={CommentsOfMemorium2}
         />
         <Stack.Screen
           name="Documents"

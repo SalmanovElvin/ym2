@@ -30,7 +30,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { GET_EXECUTIVES } from "../../../graph/queries/users";
 import { HeaderInPages } from "../header/HeaderInPages";
 
-export const Executives = ({ navigation, route }) => {
+export const Executives2 = ({ navigation, route }) => {
 
     const [userData, setUserData] = useState(null);
     const [unionData, setUnionData] = useState("");
@@ -67,7 +67,7 @@ export const Executives = ({ navigation, route }) => {
     const { data, loading, refetch } = useQuery(GET_EXECUTIVES, {
         variables: {
             unionID: userData?.unionID,
-            category: ""
+            category: "executive_second"
         },
         onCompleted: () => {
             if (data.executives) {
@@ -76,7 +76,6 @@ export const Executives = ({ navigation, route }) => {
                 setExecutives([]);
             }
             // console.log(data.executives);
-
         },
         onError: (err) => {
             console.log(err);
@@ -99,7 +98,7 @@ export const Executives = ({ navigation, route }) => {
                 width: "100%",
                 backgroundColor: "#EAF1F5",
             }}>
-                <HeaderInPages title="Executives" />
+                <HeaderInPages title="Second Executives" />
                 {loading ?
                     <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
                         <ActivityIndicator size="large" color="blue" />
@@ -109,7 +108,7 @@ export const Executives = ({ navigation, route }) => {
                         <Text style={{ padding: 15, textAlign: 'center', fontWeight: '700', fontSize: 16, color: '#696666' }}>There are no any executives.</Text>
                         :
                         <ScrollView style={styles.wrapper}>
-                            {executives.map((item) => (
+                            {executives?.map((item) => (
                                 <View key={item?.id} style={styles.block}>
                                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                         {item?.memberData?.profile?.imageURL !== "" ?

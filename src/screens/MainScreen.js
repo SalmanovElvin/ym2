@@ -141,6 +141,19 @@ export const MainScreen = ({ navigation, route }) => {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
         >
+
+          <TouchableOpacity onPress={() => navigation.navigate('Profile')} activeOpacity={0.6} style={styles.block}>
+            <Text style={styles.firstTxt}>PROFILE</Text>
+            <Text style={styles.txt}>Manage your </Text>
+            <Text style={styles.txt}>profile from here.</Text>
+            <View style={styles.iconWrapper}>
+              <Svg width="33" height="36" viewBox="0 0 33 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <Circle cx="16.5" cy="8.5" r="8.5" fill="#5783EF" />
+                <Rect y="20" width="33" height="16" rx="8" fill="#34519A" />
+              </Svg>
+            </View>
+          </TouchableOpacity>
+
           {tabs.map(item => {
 
             if (item.key.toLowerCase() == "documents") {
@@ -148,8 +161,12 @@ export const MainScreen = ({ navigation, route }) => {
                 return (
                   <TouchableOpacity key={item.key} onPress={() => navigation.navigate('Documents')} activeOpacity={0.6} style={styles.block}>
                     <Text style={styles.firstTxt}>{item.title.toUpperCase()}</Text>
-                    <Text style={styles.txt}>See your</Text>
-                    <Text style={styles.txt}>Documents here.</Text>
+                    <Text style={styles.txt}>
+                      {/* See your */}
+                    </Text>
+                    <Text style={styles.txt}>
+                      {/* Documents here. */}
+                    </Text>
                     <View style={styles.iconWrapper}>
                       <Svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <Path d="M0 13.9996V20.9996C0 25.9504 -1.30385e-07 28.4249 1.53825 29.9631C1.918 30.3429 2.3555 30.6281 2.8735 30.8451C2.86179 30.7671 2.85071 30.6889 2.84025 30.6106C2.625 29.0041 2.625 27.0004 2.625 24.6729V10.3281C2.625 8.00063 2.625 5.99513 2.84025 4.39038L2.87525 4.15588C2.37519 4.35772 1.9206 4.65762 1.53825 5.03788C-1.30385e-07 6.57613 0 9.05063 0 13.9996ZM35 13.9996V20.9996C35 25.9504 35 28.4249 33.4618 29.9631C33.082 30.3429 32.6445 30.6281 32.1265 30.8451L32.1598 30.6106C32.375 29.0041 32.375 27.0004 32.375 24.6729V10.3281C32.375 8.00063 32.375 5.99513 32.1598 4.39038C32.1487 4.31212 32.137 4.23396 32.1248 4.15588C32.6445 4.37113 33.082 4.65813 33.4618 5.03788C35 6.57613 35 9.05063 35 13.9996Z" fill="#34519A" />
@@ -167,8 +184,37 @@ export const MainScreen = ({ navigation, route }) => {
                 return (
                   <TouchableOpacity key={item.key} onPress={() => navigation.navigate('Executives')} activeOpacity={0.6} style={styles.block}>
                     <Text style={styles.firstTxt}>{item.title.toUpperCase()}</Text>
-                    <Text style={styles.txt}>Find executives</Text>
-                    <Text style={styles.txt}>here.</Text>
+                    <Text style={styles.txt}>
+                      {/* Find executives */}
+                    </Text>
+                    <Text style={styles.txt}>
+                      {/* here. */}
+                    </Text>
+                    <View style={styles.iconWrapper}>
+                      <Svg width="34" height="36" viewBox="0 0 34 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <Circle cx="16.6543" cy="8.5" r="8.5" fill="#5783EF" />
+                        <Rect x="0.154297" y="20" width="33" height="16" rx="8" fill="#34519A" />
+                        <Path d="M16.6543 33L9.1543 20L24.1543 20L16.6543 33Z" fill="#DBDDE6" />
+                        <Path d="M15.6543 20H17.6543L18.1447 27.5957C18.151 27.6923 18.1291 27.7886 18.0816 27.873L16.7414 30.2569C16.7032 30.3249 16.6053 30.3249 16.5671 30.2569L15.227 27.873C15.1795 27.7886 15.1576 27.6923 15.1639 27.5957L15.6543 20Z" fill="#34519A" />
+                      </Svg>
+                    </View>
+                  </TouchableOpacity>
+                )
+
+              }
+            }
+
+            if (item.key.toLowerCase() == "executive_second") {
+              if (item.display == true) {
+                return (
+                  <TouchableOpacity key={item.key} onPress={() => navigation.navigate('Executives2')} activeOpacity={0.6} style={styles.block}>
+                    <Text style={styles.firstTxt}>{item.title.toUpperCase()}</Text>
+                    <Text style={styles.txt}>
+                      {/* Find executives */}
+                    </Text>
+                    <Text style={styles.txt}>
+                      {/* here. */}
+                    </Text>
                     <View style={styles.iconWrapper}>
                       <Svg width="34" height="36" viewBox="0 0 34 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <Circle cx="16.6543" cy="8.5" r="8.5" fill="#5783EF" />
@@ -188,8 +234,12 @@ export const MainScreen = ({ navigation, route }) => {
                 return (
                   <TouchableOpacity key={item.key} onPress={() => navigation.navigate('DocumentsOfRetirees')} activeOpacity={0.6} style={styles.block}>
                     <Text style={styles.firstTxt}>{item.title.toUpperCase()}</Text>
-                    <Text style={styles.txt}>See documents</Text>
-                    <Text style={styles.txt}>of retirees</Text>
+                    <Text style={styles.txt}>
+                      {/* See documents */}
+                    </Text>
+                    <Text style={styles.txt}>
+                      {/* of retirees */}
+                    </Text>
                     <View style={styles.iconWrapper}>
                       <Svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <Path d="M0 13.9996V20.9996C0 25.9504 -1.30385e-07 28.4249 1.53825 29.9631C1.918 30.3429 2.3555 30.6281 2.8735 30.8451C2.86179 30.7671 2.85071 30.6889 2.84025 30.6106C2.625 29.0041 2.625 27.0004 2.625 24.6729V10.3281C2.625 8.00063 2.625 5.99513 2.84025 4.39038L2.87525 4.15588C2.37519 4.35772 1.9206 4.65762 1.53825 5.03788C-1.30385e-07 6.57613 0 9.05063 0 13.9996ZM35 13.9996V20.9996C35 25.9504 35 28.4249 33.4618 29.9631C33.082 30.3429 32.6445 30.6281 32.1265 30.8451L32.1598 30.6106C32.375 29.0041 32.375 27.0004 32.375 24.6729V10.3281C32.375 8.00063 32.375 5.99513 32.1598 4.39038C32.1487 4.31212 32.137 4.23396 32.1248 4.15588C32.6445 4.37113 33.082 4.65813 33.4618 5.03788C35 6.57613 35 9.05063 35 13.9996Z" fill="#34519A" />
@@ -207,8 +257,37 @@ export const MainScreen = ({ navigation, route }) => {
                 return (
                   <TouchableOpacity key={item.key} onPress={() => navigation.navigate('Stewards')} activeOpacity={0.6} style={styles.block}>
                     <Text style={styles.firstTxt}>{item.title.toUpperCase()}</Text>
-                    <Text style={styles.txt}>Find stewards</Text>
-                    <Text style={styles.txt}>here</Text>
+                    <Text style={styles.txt}>
+                      {/* Find stewards */}
+                    </Text>
+                    <Text style={styles.txt}>
+                      {/* here */}
+                    </Text>
+                    <View style={styles.iconWrapper}>
+                      <Svg width="34" height="36" viewBox="0 0 34 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <Circle cx="16.6543" cy="8.5" r="8.5" fill="#5783EF" />
+                        <Rect x="0.154297" y="20" width="33" height="16" rx="8" fill="#34519A" />
+                        <Path d="M16.6543 33L9.1543 20L24.1543 20L16.6543 33Z" fill="#DBDDE6" />
+                        <Path d="M15.6543 20H17.6543L18.1447 27.5957C18.151 27.6923 18.1291 27.7886 18.0816 27.873L16.7414 30.2569C16.7032 30.3249 16.6053 30.3249 16.5671 30.2569L15.227 27.873C15.1795 27.7886 15.1576 27.6923 15.1639 27.5957L15.6543 20Z" fill="#34519A" />
+                      </Svg>
+                    </View>
+                  </TouchableOpacity>
+                )
+
+              }
+            }
+
+            if (item.key.toLowerCase() == "standingcommittee_second") {
+              if (item.display == true) {
+                return (
+                  <TouchableOpacity key={item.key} onPress={() => navigation.navigate('Stewards2')} activeOpacity={0.6} style={styles.block}>
+                    <Text style={styles.firstTxt}>{item.title.toUpperCase()}</Text>
+                    <Text style={styles.txt}>
+                      {/* Find stewards */}
+                    </Text>
+                    <Text style={styles.txt}>
+                      {/* here */}
+                    </Text>
                     <View style={styles.iconWrapper}>
                       <Svg width="34" height="36" viewBox="0 0 34 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <Circle cx="16.6543" cy="8.5" r="8.5" fill="#5783EF" />
@@ -228,8 +307,59 @@ export const MainScreen = ({ navigation, route }) => {
                 return (
                   <TouchableOpacity key={item.key} onPress={() => navigation.navigate('Memorium')} activeOpacity={0.6} style={styles.block}>
                     <Text style={styles.firstTxt}>{item.title.toUpperCase()}</Text>
-                    <Text style={styles.txt}>Find memorium</Text>
-                    <Text style={styles.txt}>here</Text>
+                    <Text style={styles.txt}>
+                      {/* Find memorium */}
+                    </Text>
+                    <Text style={styles.txt}>
+                      {/* here */}
+                    </Text>
+                    <View style={styles.iconWrapper}>
+                      <Svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <Path d="M0 13.9996V20.9996C0 25.9504 -1.30385e-07 28.4249 1.53825 29.9631C1.918 30.3429 2.3555 30.6281 2.8735 30.8451C2.86179 30.7671 2.85071 30.6889 2.84025 30.6106C2.625 29.0041 2.625 27.0004 2.625 24.6729V10.3281C2.625 8.00063 2.625 5.99513 2.84025 4.39038L2.87525 4.15588C2.37519 4.35772 1.9206 4.65762 1.53825 5.03788C-1.30385e-07 6.57613 0 9.05063 0 13.9996ZM35 13.9996V20.9996C35 25.9504 35 28.4249 33.4618 29.9631C33.082 30.3429 32.6445 30.6281 32.1265 30.8451L32.1598 30.6106C32.375 29.0041 32.375 27.0004 32.375 24.6729V10.3281C32.375 8.00063 32.375 5.99513 32.1598 4.39038C32.1487 4.31212 32.137 4.23396 32.1248 4.15588C32.6445 4.37113 33.082 4.65813 33.4618 5.03788C35 6.57613 35 9.05063 35 13.9996Z" fill="#34519A" />
+                        <Path fillRule="evenodd" clipRule="evenodd" d="M6.78825 1.53825C5.25 3.07475 5.25 5.551 5.25 10.5V24.5C5.25 29.449 5.25 31.9253 6.78825 33.4618C8.32475 35 10.801 35 15.75 35H19.25C24.199 35 26.6753 35 28.2118 33.4618C29.75 31.9253 29.75 29.449 29.75 24.5V10.5C29.75 5.551 29.75 3.07475 28.2118 1.53825C26.6753 -1.04308e-07 24.199 0 19.25 0H15.75C10.801 0 8.32475 -1.04308e-07 6.78825 1.53825ZM10.9375 26.25C10.9375 25.9019 11.0758 25.5681 11.3219 25.3219C11.5681 25.0758 11.9019 24.9375 12.25 24.9375H17.5C17.8481 24.9375 18.1819 25.0758 18.4281 25.3219C18.6742 25.5681 18.8125 25.9019 18.8125 26.25C18.8125 26.5981 18.6742 26.9319 18.4281 27.1781C18.1819 27.4242 17.8481 27.5625 17.5 27.5625H12.25C11.9019 27.5625 11.5681 27.4242 11.3219 27.1781C11.0758 26.9319 10.9375 26.5981 10.9375 26.25ZM12.25 17.9375C11.9019 17.9375 11.5681 18.0758 11.3219 18.3219C11.0758 18.5681 10.9375 18.9019 10.9375 19.25C10.9375 19.5981 11.0758 19.9319 11.3219 20.1781C11.5681 20.4242 11.9019 20.5625 12.25 20.5625H22.75C23.0981 20.5625 23.4319 20.4242 23.6781 20.1781C23.9242 19.9319 24.0625 19.5981 24.0625 19.25C24.0625 18.9019 23.9242 18.5681 23.6781 18.3219C23.4319 18.0758 23.0981 17.9375 22.75 17.9375H12.25ZM10.9375 12.25C10.9375 11.9019 11.0758 11.5681 11.3219 11.3219C11.5681 11.0758 11.9019 10.9375 12.25 10.9375H22.75C23.0981 10.9375 23.4319 11.0758 23.6781 11.3219C23.9242 11.5681 24.0625 11.9019 24.0625 12.25C24.0625 12.5981 23.9242 12.9319 23.6781 13.1781C23.4319 13.4242 23.0981 13.5625 22.75 13.5625H12.25C11.9019 13.5625 11.5681 13.4242 11.3219 13.1781C11.0758 12.9319 10.9375 12.5981 10.9375 12.25Z" fill="#5783EF" />
+                      </Svg>
+                    </View>
+                  </TouchableOpacity>
+                )
+
+              }
+            }
+
+            if (item.key.toLowerCase() == "home_second") {
+              if (item.display == true) {
+                return (
+                  <TouchableOpacity key={item.key} onPress={() => navigation.navigate('Home2')} activeOpacity={0.6} style={styles.block}>
+                    <Text style={styles.firstTxt}>{item.title.toUpperCase()}</Text>
+                    <Text style={styles.txt}>
+                      {/* Find memorium */}
+                    </Text>
+                    <Text style={styles.txt}>
+                      {/* here */}
+                    </Text>
+                    <View style={styles.iconWrapper}>
+                      <Svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <Path d="M0 13.9996V20.9996C0 25.9504 -1.30385e-07 28.4249 1.53825 29.9631C1.918 30.3429 2.3555 30.6281 2.8735 30.8451C2.86179 30.7671 2.85071 30.6889 2.84025 30.6106C2.625 29.0041 2.625 27.0004 2.625 24.6729V10.3281C2.625 8.00063 2.625 5.99513 2.84025 4.39038L2.87525 4.15588C2.37519 4.35772 1.9206 4.65762 1.53825 5.03788C-1.30385e-07 6.57613 0 9.05063 0 13.9996ZM35 13.9996V20.9996C35 25.9504 35 28.4249 33.4618 29.9631C33.082 30.3429 32.6445 30.6281 32.1265 30.8451L32.1598 30.6106C32.375 29.0041 32.375 27.0004 32.375 24.6729V10.3281C32.375 8.00063 32.375 5.99513 32.1598 4.39038C32.1487 4.31212 32.137 4.23396 32.1248 4.15588C32.6445 4.37113 33.082 4.65813 33.4618 5.03788C35 6.57613 35 9.05063 35 13.9996Z" fill="#34519A" />
+                        <Path fillRule="evenodd" clipRule="evenodd" d="M6.78825 1.53825C5.25 3.07475 5.25 5.551 5.25 10.5V24.5C5.25 29.449 5.25 31.9253 6.78825 33.4618C8.32475 35 10.801 35 15.75 35H19.25C24.199 35 26.6753 35 28.2118 33.4618C29.75 31.9253 29.75 29.449 29.75 24.5V10.5C29.75 5.551 29.75 3.07475 28.2118 1.53825C26.6753 -1.04308e-07 24.199 0 19.25 0H15.75C10.801 0 8.32475 -1.04308e-07 6.78825 1.53825ZM10.9375 26.25C10.9375 25.9019 11.0758 25.5681 11.3219 25.3219C11.5681 25.0758 11.9019 24.9375 12.25 24.9375H17.5C17.8481 24.9375 18.1819 25.0758 18.4281 25.3219C18.6742 25.5681 18.8125 25.9019 18.8125 26.25C18.8125 26.5981 18.6742 26.9319 18.4281 27.1781C18.1819 27.4242 17.8481 27.5625 17.5 27.5625H12.25C11.9019 27.5625 11.5681 27.4242 11.3219 27.1781C11.0758 26.9319 10.9375 26.5981 10.9375 26.25ZM12.25 17.9375C11.9019 17.9375 11.5681 18.0758 11.3219 18.3219C11.0758 18.5681 10.9375 18.9019 10.9375 19.25C10.9375 19.5981 11.0758 19.9319 11.3219 20.1781C11.5681 20.4242 11.9019 20.5625 12.25 20.5625H22.75C23.0981 20.5625 23.4319 20.4242 23.6781 20.1781C23.9242 19.9319 24.0625 19.5981 24.0625 19.25C24.0625 18.9019 23.9242 18.5681 23.6781 18.3219C23.4319 18.0758 23.0981 17.9375 22.75 17.9375H12.25ZM10.9375 12.25C10.9375 11.9019 11.0758 11.5681 11.3219 11.3219C11.5681 11.0758 11.9019 10.9375 12.25 10.9375H22.75C23.0981 10.9375 23.4319 11.0758 23.6781 11.3219C23.9242 11.5681 24.0625 11.9019 24.0625 12.25C24.0625 12.5981 23.9242 12.9319 23.6781 13.1781C23.4319 13.4242 23.0981 13.5625 22.75 13.5625H12.25C11.9019 13.5625 11.5681 13.4242 11.3219 13.1781C11.0758 12.9319 10.9375 12.5981 10.9375 12.25Z" fill="#5783EF" />
+                      </Svg>
+                    </View>
+                  </TouchableOpacity>
+                )
+
+              }
+            }
+
+
+            if (item.key.toLowerCase() == "memorium_second") {
+              if (item.display == true) {
+                return (
+                  <TouchableOpacity key={item.key} onPress={() => navigation.navigate('Memorium2')} activeOpacity={0.6} style={styles.block}>
+                    <Text style={styles.firstTxt}>{item.title.toUpperCase()}</Text>
+                    <Text style={styles.txt}>
+                      {/* Find memorium */}
+                    </Text>
+                    <Text style={styles.txt}>
+                      {/* here */}
+                    </Text>
                     <View style={styles.iconWrapper}>
                       <Svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <Path d="M0 13.9996V20.9996C0 25.9504 -1.30385e-07 28.4249 1.53825 29.9631C1.918 30.3429 2.3555 30.6281 2.8735 30.8451C2.86179 30.7671 2.85071 30.6889 2.84025 30.6106C2.625 29.0041 2.625 27.0004 2.625 24.6729V10.3281C2.625 8.00063 2.625 5.99513 2.84025 4.39038L2.87525 4.15588C2.37519 4.35772 1.9206 4.65762 1.53825 5.03788C-1.30385e-07 6.57613 0 9.05063 0 13.9996ZM35 13.9996V20.9996C35 25.9504 35 28.4249 33.4618 29.9631C33.082 30.3429 32.6445 30.6281 32.1265 30.8451L32.1598 30.6106C32.375 29.0041 32.375 27.0004 32.375 24.6729V10.3281C32.375 8.00063 32.375 5.99513 32.1598 4.39038C32.1487 4.31212 32.137 4.23396 32.1248 4.15588C32.6445 4.37113 33.082 4.65813 33.4618 5.03788C35 6.57613 35 9.05063 35 13.9996Z" fill="#34519A" />
@@ -248,17 +378,7 @@ export const MainScreen = ({ navigation, route }) => {
 
 
 
-          <TouchableOpacity onPress={() => navigation.navigate('Profile')} activeOpacity={0.6} style={styles.block}>
-            <Text style={styles.firstTxt}>PROFILE</Text>
-            <Text style={styles.txt}>Manage your </Text>
-            <Text style={styles.txt}>profile from here.</Text>
-            <View style={styles.iconWrapper}>
-              <Svg width="33" height="36" viewBox="0 0 33 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <Circle cx="16.5" cy="8.5" r="8.5" fill="#5783EF" />
-                <Rect y="20" width="33" height="16" rx="8" fill="#34519A" />
-              </Svg>
-            </View>
-          </TouchableOpacity>
+
 
           {/* {grievances ? */}
           <TouchableOpacity onPress={() => navigation.navigate('Grievances')} activeOpacity={0.6} style={styles.block}>
