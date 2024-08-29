@@ -108,7 +108,7 @@ export const Executives = ({ navigation, route }) => {
                         <Text style={{ padding: 15, textAlign: 'center', fontWeight: '700', fontSize: 16, color: '#696666' }}>There are no any executives.</Text>
                         :
                         <ScrollView style={styles.wrapper}>
-                            {executives.map((item) => (
+                            {executives?.map((item) => (
                                 <View key={item?.id} style={styles.block}>
                                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                         {item?.memberData?.profile?.imageURL !== "" ?

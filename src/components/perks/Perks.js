@@ -159,7 +159,7 @@ export const Perks = () => {
         backgroundColor: "#EAF1F5",
       }}>
         <HeaderInPages title="Perks" />
-        {categories.length === 0 || loading_details ? (
+        {categories.length === 0 && loading_details ? (
           <View
             style={{ alignItems: "center", justifyContent: "center", flex: 1 }}
           >
@@ -261,7 +261,7 @@ export const Perks = () => {
             ></View>
 
             <View style={{ paddingHorizontal: 20, paddingVertical: 26 }}>
-              {businesses.length === 0 ? (
+              {businesses.length === 0 && loading ? (
                 <View
                   style={{
                     alignItems: "center",
@@ -272,7 +272,7 @@ export const Perks = () => {
                   <ActivityIndicator size="large" color="blue" />
                 </View>
               ) : searchTxt.trim().length === 0 ? (
-                businesses.map((item) =>
+                businesses?.map((item) =>
                   item.offers.map((businessesItem) => (
                     <TouchableOpacity onPress={() => goToOfferPage(businessesItem.id)} activeOpacity={0.6} key={businessesItem.id} style={styles.block}>
                       {/* <Text>aaa</Text> */}
@@ -304,7 +304,7 @@ export const Perks = () => {
                         </Text>
                       </View>
                       <View style={{ width: "23%" }}>
-                        {businessesItem.flags.map((flagsItem, idx) => (
+                        {businessesItem?.flags.map((flagsItem, idx) => (
                           <Text
                             key={idx + "" + businessesItem.id}
                             style={
@@ -392,7 +392,7 @@ export const Perks = () => {
                       </Text>
                     </View>
                     <View style={{ width: "23%" }}>
-                      {businessesItem.flags.map((flagsItem, idx) => (
+                      {businessesItem?.flags.map((flagsItem, idx) => (
                         <Text
                           key={idx + "" + businessesItem.id}
                           style={

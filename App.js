@@ -1,15 +1,15 @@
-import { AppLoading } from "expo";
-import { Provider } from "react-redux";
+// import { AppLoading } from "expo";
+// import { Provider } from "react-redux";
 import { useState } from "react";
-import { bootstrap } from "./src/bootstrap";
+// import { bootstrap } from "./src/bootstrap";
 
 import AppNavigation from "./src/navigation/AppNavigation";
-import { UnionForm } from "./src/components/unionSignIn/UnionForm";
+// import { UnionForm } from "./src/components/unionSignIn/UnionForm";
 import { View, StyleSheet, SafeAreaView } from "react-native";
-import { Login } from "./src/components/login/Login";
-import { SignUp } from "./src/components/signUp/SignUp";
-import { EnterEmail } from "./src/components/changePassword/EnterEmail";
-import { ChangePassword } from "./src/components/changePassword/ChangePassword";
+// import { Login } from "./src/components/login/Login";
+// import { SignUp } from "./src/components/signUp/SignUp";
+// import { EnterEmail } from "./src/components/changePassword/EnterEmail";
+// import { ChangePassword } from "./src/components/changePassword/ChangePassword";
 
 import { ApolloProvider } from '@apollo/client';
 import { client } from './graph';

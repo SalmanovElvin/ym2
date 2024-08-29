@@ -107,7 +107,7 @@ export const NotificationsPage = ({ navigation, route }) => {
         },
         onCompleted: () => {
             setNotifications(data.notifications);
-            // console.log(data.notifications);
+            console.log(data.notifications);
             let arr = [];
             for (let i = 0; i < data?.notifications?.length; i++) {
                 if (data.notifications[i].read == false) {
